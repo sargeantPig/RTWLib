@@ -1,0 +1,9 @@
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\bin\Debug\RTWLib.dll
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\bin\Debug\RTWLib.pdb
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\obj\Debug\RTWLib.csprojAssemblyReference.cache
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\obj\Debug\RTWLib.csproj.CoreCompileInputs.cache
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\obj\Debug\RTWLib.dll
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\obj\Debug\RTWLib.pdb
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\bin\Debug\Magick.NET-Q16-AnyCPU.dll
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\bin\Debug\Magick.NET-Q16-AnyCPU.xml
+C:\Users\aaron\Documents\Repositories\RTWLib\RTWLib\obj\Debug\RTWLib.csproj.CopyComplete
