@@ -447,8 +447,6 @@ namespace RTWLib.Objects
 
 	}
 
-	
-
 	public class CoreBuilding
 	{
 		public string buildingType; //eg. "core_building"
@@ -704,7 +702,6 @@ namespace RTWLib.Objects
 
 	}
 
-	
 	public class Region
 	{
 		public string name = "";
@@ -760,6 +757,21 @@ namespace RTWLib.Objects
 
 
 		}
+
+		public Settlement(Settlement s)
+		{
+			s_level = s.s_level;
+			region = s.region;
+			faction_creator = s.faction_creator;
+			yearFounded = s.yearFounded;
+			population = s.population;
+			b_types = s.b_types;
+
+
+		}
+
+		public Settlement()
+		{ }
 
 		public string outputSettlement()
 		{
@@ -898,7 +910,6 @@ namespace RTWLib.Objects
 
 
 	}
-
 
 	public class Faction
 	{

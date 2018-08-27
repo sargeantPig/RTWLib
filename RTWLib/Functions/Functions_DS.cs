@@ -9,30 +9,37 @@ using RTWLib.Data;
 
 namespace RTWLib.Functions
 {
-	public class Descr_Strat : Logger.Logger
+	public class Descr_Strat : Logger.Logger, IFile
 	{
-		private List<string> ds_data = new List<string>();
-		private string campaign = "";
-		private List<string> playableFactions = new List<string>();
-		private List<string> campaignNonPlayable = new List<string>();
-		private List<string> unlockableFactions = new List<string>();
-		private string startDate = "";
-		private string endDate = "";
-		private int brigand_spawn_value = 0;
-		private int pirate_spawn_value = 0;
-		private List<Landmark> landmarks = new List<Landmark>();
-		private List<Resource> resources = new List<Resource>();
-		private List<Faction> factions = new List<Faction>();
-		private List<string> core_attributes = new List<string>();
-		private List<string> faction_relationships = new List<string>();
+		public List<string> ds_data = new List<string>();
+		public string campaign = "";
+		public List<string> playableFactions = new List<string>();
+		public List<string> campaignNonPlayable = new List<string>();
+		public List<string> unlockableFactions = new List<string>();
+		public string startDate = "";
+		public string endDate = "";
+		public int brigand_spawn_value = 0;
+		public int pirate_spawn_value = 0;
+		public List<Landmark> landmarks = new List<Landmark>();
+		public List<Resource> resources = new List<Resource>();
+		public List<Faction> factions = new List<Faction>();
+		public List<string> core_attributes = new List<string>();
+		public List<string> faction_relationships = new List<string>();
 
-		
+		const string FILEPATH = @"data\world\maps\campaign\imperial_campaign\descr_strat.txt";
+		const string DESCRIPTION = "Campaign Info";
 
-		public void ParseDscrStrat(string filepath)
+		public Descr_Strat()
+		{ }
+
+		public Task Parse()
 		{
+			if (!FileCheck(FILEPATH))
+				DisplayLog();
+
 			LookUpTables tb = new LookUpTables();
 
-			string PATH = filepath;
+			string PATH = FILEPATH;
 			string line;
 
 			StreamReader strat = new StreamReader(PATH);
@@ -323,7 +330,7 @@ namespace RTWLib.Functions
 			strat.Close();
 
 			//Descr_Strat ds = new Descr_Strat(settlementOwnership, settlements, ds_data);
-
+			return Task.CompletedTask;
 		}
 
 		public string Output()
@@ -411,6 +418,16 @@ namespace RTWLib.Functions
 
 			sw.Close();
 			
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
+		}
+
+		public string Description
+		{
+			get { return DESCRIPTION; }
 		}
 
 	}

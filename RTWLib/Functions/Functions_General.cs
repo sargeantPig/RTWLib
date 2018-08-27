@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Functions
 {
+	public interface IFile
+	{
+		Task Parse();
+		string Log(string txt);
+		string Description
+		{
+			get;
+		}
+	}
+
 	static public class Functions_General
 	{
 		public static string RemoveFirstWord(string String)
@@ -75,5 +85,29 @@ namespace RTWLib.Functions
 
 			return newString;
 		}
+
+		public static T RandomFlag<T>(Random rnd)
+		{
+			Array flags = Enum.GetValues(typeof(T));
+			var a = (T)flags.GetValue(rnd.Next(flags.Length));
+
+			return a;
+		}
+
+		public static T RandomFlag<T>(Random rnd, int min, int max)
+		{
+			Array flags = Enum.GetValues(typeof(T));
+			var a = (T)flags.GetValue(rnd.Next(min, max));
+
+			return a;
+		}
+
+		public static double DistanceTo(int[] a, int[] b)
+		{
+			double dis = Math.Sqrt(Math.Pow((a[0] - b[0]), 2) + Math.Pow((a[1] - b[1]), 2));
+
+			return dis;
+		}
+
 	}
 }

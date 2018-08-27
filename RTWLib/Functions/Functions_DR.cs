@@ -10,68 +10,33 @@ using System.Drawing;
 using RTWLib.Data;
 namespace RTWLib.Functions
 {
-	public class Functions_DR : Logger.Logger
+	public class Descr_Region : Logger.Logger,  IFile
 	{
-		private Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
-		
-		private void GetCityCoordinates(string filepath)
+		const string DESCRIPTION = "Regions"; 
+		const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
+		const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
+		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
+
+		public Descr_Region()
+		{ }
+
+		public Descr_Region(Descr_Region _Region)
 		{
-			MagickImage img = new MagickImage(filepath);
-			var pixels = img.GetPixels();
-			img.Flip();
-
-			MagickColor white = MagickColor.FromRgb(0, 0, 0);
-			MagickColor water = MagickColor.FromRgb(41, 140, 233);
-
-			for (int x = 0; x < img.Width; x++)
-				for (int y = 0; y < img.Height; y++)
-				{
-					int[] pixelCol = new int[] {pixels[x,y].ToColor().R, pixels[x, y].ToColor().G, pixels[x, y].ToColor().B };
-
-					if (CompareColour(pixelCol, white )) //check for city
-					{
-						int tr, tg, tb;
-						tr = pixels[x, y + 1].ToColor().R;
-						tg = pixels[x, y + 1].ToColor().G;
-						tb = pixels[x, y + 1].ToColor().B;
-
-						if (CompareColour(new int[] {tr, tg, tb}, water)) // check for water
-						{
-							tr = pixels[x, y - 1].ToColor().R;
-							tg = pixels[x, y - 1].ToColor().G;
-							tb = pixels[x, y - 1].ToColor().B;
-
-						}
-						string index = FindRegionByColour(new int[] { tr, tg, tb });
-						rgbRegions[index].x = x;
-						rgbRegions[index].y = y;
-						Misc_Data.regionWater[x, y] = false;
-						
-					}
-
-
-					else if (CompareColour(pixelCol, water))
-					{
-						Misc_Data.regionWater[x, y] = true;
-					}
-
-					else
-					{
-						Misc_Data.regionWater[x, y] = false;
-					}
-
-				}
-
-
+			rgbRegions = new Dictionary<string, Objects.Region>(_Region.rgbRegions);
 		}
 
-		public Dictionary<string, Objects.Region> ParseVanRegions(string filePath, string regions_image_path)
+		public Task Parse()
 		{
+			if (!FileCheck(FILEPATH_DR))
+				DisplayLog();
+
+			if (!FileCheck(FILEPATH_REGIONS))
+				DisplayLog();
+
 			//add an output for this in the tool section
 			string line;
 
-			StreamReader reg = new StreamReader(filePath);
-
+			StreamReader reg = new StreamReader(FILEPATH_DR);
 
 			int counter = -1;
 			string name = "";
@@ -111,10 +76,9 @@ namespace RTWLib.Functions
 
 			reg.Close();
 
-			GetCityCoordinates(regions_image_path);
+			GetCityCoordinates(FILEPATH_REGIONS);
 
-			return rgbRegions;
-
+			return Task.CompletedTask;
 		}
 
 		private string FindRegionByColour(int[] colour)
@@ -131,7 +95,56 @@ namespace RTWLib.Functions
 			return null;
 
 		}
+		private void GetCityCoordinates(string filepath)
+		{
+			MagickImage img = new MagickImage(filepath);
+			var pixels = img.GetPixels();
+			img.Flip();
 
+			MagickColor white = MagickColor.FromRgb(0, 0, 0);
+			MagickColor water = MagickColor.FromRgb(41, 140, 233);
+
+			for (int x = 0; x < img.Width; x++)
+				for (int y = 0; y < img.Height; y++)
+				{
+					int[] pixelCol = new int[] { pixels[x, y].ToColor().R, pixels[x, y].ToColor().G, pixels[x, y].ToColor().B };
+
+					if (CompareColour(pixelCol, white)) //check for city
+					{
+						int tr, tg, tb;
+						tr = pixels[x, y + 1].ToColor().R;
+						tg = pixels[x, y + 1].ToColor().G;
+						tb = pixels[x, y + 1].ToColor().B;
+
+						if (CompareColour(new int[] { tr, tg, tb }, water)) // check for water
+						{
+							tr = pixels[x, y - 1].ToColor().R;
+							tg = pixels[x, y - 1].ToColor().G;
+							tb = pixels[x, y - 1].ToColor().B;
+
+						}
+						string index = FindRegionByColour(new int[] { tr, tg, tb });
+						rgbRegions[index].x = x;
+						rgbRegions[index].y = y;
+						Misc_Data.regionWater[x, y] = false;
+
+					}
+
+
+					else if (CompareColour(pixelCol, water))
+					{
+						Misc_Data.regionWater[x, y] = true;
+					}
+
+					else
+					{
+						Misc_Data.regionWater[x, y] = false;
+					}
+
+				}
+
+
+		}
 		private bool CompareColour(int[] col1, int[] col2)
 		{
 			if (col1[0] == col2[0] && col1[1] == col2[1] && col1[2] == col2[2])
@@ -156,6 +169,22 @@ namespace RTWLib.Functions
 			else return false;
 
 		}
+
+		public int[] GetCityCoords(string name)
+		{
+			return new int[] {rgbRegions[name].x, rgbRegions[name].y };
+		}
+
+		public string Description
+		{
+			get { return DESCRIPTION; }
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
+		}
+
 	}
 
 }

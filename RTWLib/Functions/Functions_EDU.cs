@@ -12,12 +12,26 @@ using RTWLib.Data;
 
 namespace RTWLib.Functions
 {
-	public class Functions_EDU : Logger.Logger
+	public class EDU : Logger.Logger, IFile
 	{
-		private List<Unit> units = new List<Unit>();
+		const string FILEPATH = @"data\export_descr_unit.txt";
+		const string DESCRIPTION = "Units";
+		public List<Unit> units = new List<Unit>();
 
-		public List<Unit> ParseEdu(string filePath)
+		public EDU()
 		{
+		}
+
+		public string Description
+		{
+			get { return DESCRIPTION; }
+		}
+
+		public Task Parse()
+		{
+			if (!FileCheck(FILEPATH))
+				DisplayLog();
+
 			LookUpTables lookUp = new LookUpTables();
 			units.Clear();
 			string txt_Output = "";
@@ -25,7 +39,7 @@ namespace RTWLib.Functions
 			string trimmed = "";
 			int counter = -1;
 
-			StreamReader edu = new StreamReader(filePath);
+			StreamReader edu = new StreamReader(FILEPATH);
 
 			Action<Action> trimApply = (action) =>
 			{
@@ -46,12 +60,12 @@ namespace RTWLib.Functions
 
 				else if (line.StartsWith("dictionary"))
 				{
-					trimApply(() => 
+					trimApply(() =>
 					{
-						string[] splitted = trimmed.Split(';'); 
+						string[] splitted = trimmed.Split(';');
 						trimmed = splitted[0].TrimEnd();
 						units[counter].dictionary = trimmed;
-						});
+					});
 				}
 
 				else if (line.StartsWith("category"))
@@ -108,9 +122,9 @@ namespace RTWLib.Functions
 
 				else if (line.StartsWith("engine"))
 				{
-					trimApply(() => 
+					trimApply(() =>
 					{
-						string[] splitted = trimmed.Split(';'); 
+						string[] splitted = trimmed.Split(';');
 						trimmed = splitted[0].TrimEnd();
 						units[counter].engine = trimmed;
 					});
@@ -177,7 +191,7 @@ namespace RTWLib.Functions
 				}
 
 
-				else if (line.StartsWith("attributes")  )
+				else if (line.StartsWith("attributes"))
 				{
 					trimApply(() => {
 						string[] splitted = trimmed.Split(',');
@@ -230,10 +244,10 @@ namespace RTWLib.Functions
 				else if (line.StartsWith("stat_health"))
 				{
 					trimApply(() => {
-						string[]  splitted = trimmed.Split(',');
+						string[] splitted = trimmed.Split(',');
 						units[counter].heatlh[0] = Convert.ToInt16(splitted[0]);
 						units[counter].heatlh[1] = Convert.ToInt16(splitted[1]);
-					});	
+					});
 				}
 
 				else if (line.StartsWith("stat_pri_attr"))
@@ -429,7 +443,7 @@ namespace RTWLib.Functions
 					});
 				}
 
-				else if (line.StartsWith("ownership")  )
+				else if (line.StartsWith("ownership"))
 				{
 					trimApply(() => {
 						string[] splitted = trimmed.Split(',');
@@ -440,7 +454,7 @@ namespace RTWLib.Functions
 						{
 							var a = lookUp.LookUpKey<FactionOwnership>(STRING.Trim());
 
-							if(a != null)
+							if (a != null)
 								units[counter].ownership |= a;
 							else units[counter].ownership |= lookUp.LookUpKey<FactionOwnership>(STRING.Trim());
 
@@ -451,21 +465,11 @@ namespace RTWLib.Functions
 				}
 			}
 
-			txt_Output+=("\n" + units.Count + "Units loaded from EDU");
+			txt_Output += ("\n" + units.Count + "Units loaded from EDU");
 
 			edu.Close();
 
-			return units;
-		}
-	}
-
-	public class EDU : Logger.Logger
-	{
-		List<Unit> units;
-
-		public EDU(List<Unit> newUnits)
-		{
-			units = new List<Unit>(newUnits);
+			return Task.CompletedTask;
 		}
 
 		public Unit FindUnit(string name)
@@ -501,6 +505,11 @@ namespace RTWLib.Functions
 			return new List<Unit>();
 			
 
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
 		}
 
 		public string UnitListOutput(List<Unit> units)

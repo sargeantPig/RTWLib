@@ -6,15 +6,35 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
 using RTWLib.Data;
-namespace RTWLib.Functions
-{
-	public class Functions_SMF : Logger.Logger
-	{
-		Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
 
-		public Dictionary<FactionOwnership, Color[]> ParseSMFactions(string filepath)
+namespace RTWLib.Functions
+{	
+	public class SM_Factions : Logger.Logger, IFile
+	{
+		const string FILEPATH = @"data\descr_sm_factions.txt";
+		const string DESCRIPTION = "faction colours";
+		public Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
+
+		public SM_Factions()
 		{
-			StreamReader edu = new StreamReader(filepath);
+		}
+
+		public string Description
+		{
+			get { return DESCRIPTION; }
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
+		}
+
+		public Task Parse()
+		{
+			if (!FileCheck(FILEPATH))
+				DisplayLog();
+
+			StreamReader edu = new StreamReader(FILEPATH);
 
 			string line, faction = "";
 
@@ -25,7 +45,7 @@ namespace RTWLib.Functions
 			while ((line = edu.ReadLine()) != null)
 			{
 				string trim = line.Trim();
-			
+
 				if (trim.StartsWith("faction"))
 				{
 					string[] split = trim.Split('\t');
@@ -38,7 +58,7 @@ namespace RTWLib.Functions
 				if (trim.StartsWith("primary_colour"))
 				{
 					Color col = SMFGetColour(trim);
-					factionColours.Add(f, new Color[2] {col, col});
+					factionColours.Add(f, new Color[2] { col, col });
 				}
 
 				if (trim.StartsWith("secondary_colour"))
@@ -47,8 +67,10 @@ namespace RTWLib.Functions
 					factionColours[f][1] = col;
 				}
 			}
-			return factionColours;
+
+			return Task.CompletedTask;
 		}
+
 		private Color SMFGetColour(string line)
 		{
 			string[] split = line.Split(' ');
@@ -59,17 +81,6 @@ namespace RTWLib.Functions
 			}
 			return Color.FromArgb(Convert.ToInt32(split[1]), Convert.ToInt32(split[3]), Convert.ToInt32(split[5]));
 
-		}
-
-	}
-
-	public class SM_Factions : Logger.Logger
-	{
-		Dictionary<FactionOwnership, Color[]> factionColours;
-
-		public SM_Factions(Dictionary<FactionOwnership, Color[]> dic)
-		{
-			factionColours = new Dictionary<FactionOwnership, Color[]>(dic);
 		}
 
 		public string OutputColours()

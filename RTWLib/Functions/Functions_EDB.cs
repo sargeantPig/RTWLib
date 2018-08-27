@@ -16,10 +16,13 @@ namespace RTWLib.Functions
 	}
 
 
-	public class EDB : Logger.Logger
+	public class EDB : Logger.Logger, IFile
 	{
-		private List<string> hiddenResources = new List<string>();
-		private List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
+		public List<string> hiddenResources = new List<string>();
+		public List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
+
+		const string FILEPATH = @"data\export_descr_buildings.txt";
+		const string DESCRIPTION = "Buildings";
 
 		public EDB(List<string> hiddenRes, List<CoreBuilding> buildings)
 		{
@@ -30,12 +33,20 @@ namespace RTWLib.Functions
 		public EDB()
 		{ }
 
-		public EDB ParseEdb(string filepath)
+		public string Description
 		{
+			get { return DESCRIPTION; }
+		}
+
+		public Task Parse()
+		{
+			if (!FileCheck(FILEPATH))
+				DisplayLog();
+
 			string line;
 			int counter = -1;
 
-			StreamReader strat = new StreamReader(filepath);
+			StreamReader strat = new StreamReader(FILEPATH);
 
 			//get factions
 			while ((line = strat.ReadLine()) != null)
@@ -364,7 +375,8 @@ namespace RTWLib.Functions
 				}
 			}
 			strat.Close();
-			return new EDB(hiddenResources, buildingTrees);
+
+			return Task.CompletedTask;
 		}
 
 		public string outputEDB()
@@ -387,6 +399,11 @@ namespace RTWLib.Functions
 			}
 
 			return a;
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
 		}
 
 	}
