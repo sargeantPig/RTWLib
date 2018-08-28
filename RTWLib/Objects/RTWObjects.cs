@@ -877,6 +877,9 @@ namespace RTWLib.Objects
 				if(traits != null && traits != "")
 					output += "traits " + traits + "\r\n";
 
+				if (ancillaries != null && ancillaries != "")
+					output += "ancillaries " + ancillaries + "\r\n";
+
 				if (type == "admiral" || type == "named character" || type == "general")
 				{
 					output += "army\r\n";

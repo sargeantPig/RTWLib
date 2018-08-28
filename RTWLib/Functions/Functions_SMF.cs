@@ -11,7 +11,7 @@ namespace RTWLib.Functions
 {	
 	public class SM_Factions : Logger.Logger, IFile
 	{
-		const string FILEPATH = @"data\descr_sm_factions.txt";
+		public const string FILEPATH = @"data\descr_sm_factions.txt";
 		const string DESCRIPTION = "faction colours";
 		public Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
 
@@ -94,6 +94,16 @@ namespace RTWLib.Functions
 			}
 
 			return output;
+		}
+
+		public string Output()
+		{
+			return null;
+		}
+
+		public string FilePath
+		{
+			get { return FILEPATH; }
 		}
 	}
 }

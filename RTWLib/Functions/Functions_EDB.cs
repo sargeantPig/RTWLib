@@ -21,7 +21,7 @@ namespace RTWLib.Functions
 		public List<string> hiddenResources = new List<string>();
 		public List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
 
-		const string FILEPATH = @"data\export_descr_buildings.txt";
+		public const string FILEPATH = @"data\export_descr_buildings.txt";
 		const string DESCRIPTION = "Buildings";
 
 		public EDB(List<string> hiddenRes, List<CoreBuilding> buildings)
@@ -379,7 +379,7 @@ namespace RTWLib.Functions
 			return Task.CompletedTask;
 		}
 
-		public string outputEDB()
+		public string Output()
 		{
 			string a = "";
 
@@ -406,5 +406,9 @@ namespace RTWLib.Functions
 			return base.PLog(txt);
 		}
 
+		public string FilePath
+		{
+			get { return FILEPATH; }
+		}
 	}
 }

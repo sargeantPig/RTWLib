@@ -26,8 +26,8 @@ namespace RTWLib.Functions
 		public List<string> core_attributes = new List<string>();
 		public List<string> faction_relationships = new List<string>();
 
-		const string FILEPATH = @"data\world\maps\campaign\imperial_campaign\descr_strat.txt";
-		const string DESCRIPTION = "Campaign Info";
+		public const string FILEPATH = @"data\world\maps\campaign\imperial_campaign\descr_strat.txt";
+		public const string DESCRIPTION = "Campaign Info";
 
 		public Descr_Strat()
 		{ }
@@ -428,6 +428,16 @@ namespace RTWLib.Functions
 		public string Description
 		{
 			get { return DESCRIPTION; }
+		}
+
+		public void ShuffleFactions(Random rnd)
+		{
+			factions.Shuffle(rnd);
+		}
+
+		public string FilePath
+		{
+			get { return FILEPATH;  }
 		}
 
 	}

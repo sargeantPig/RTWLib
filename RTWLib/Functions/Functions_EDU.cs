@@ -14,7 +14,7 @@ namespace RTWLib.Functions
 {
 	public class EDU : Logger.Logger, IFile
 	{
-		const string FILEPATH = @"data\export_descr_unit.txt";
+		public const string FILEPATH = @"data\export_descr_unit.txt";
 		const string DESCRIPTION = "Units";
 		public List<Unit> units = new List<Unit>();
 
@@ -512,7 +512,7 @@ namespace RTWLib.Functions
 			return base.PLog(txt);
 		}
 
-		public string UnitListOutput(List<Unit> units)
+		public string Output()
 		{
 			string output = "";
 
@@ -522,6 +522,11 @@ namespace RTWLib.Functions
 			}
 
 			return output;
+		}
+
+		public string FilePath
+		{
+			get { return FILEPATH; }
 		}
 	}
 }

@@ -12,9 +12,9 @@ namespace RTWLib.Functions
 {
 	public class Descr_Region : Logger.Logger,  IFile
 	{
-		const string DESCRIPTION = "Regions"; 
-		const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
-		const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
+		const string DESCRIPTION = "Regions";
+		public const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
+		public const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
 		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
 
 		public Descr_Region()
@@ -99,17 +99,16 @@ namespace RTWLib.Functions
 		{
 			MagickImage img = new MagickImage(filepath);
 			var pixels = img.GetPixels();
-			img.Flip();
 
-			MagickColor white = MagickColor.FromRgb(0, 0, 0);
+			MagickColor black = MagickColor.FromRgb(0, 0, 0);
 			MagickColor water = MagickColor.FromRgb(41, 140, 233);
-
+			img.Rotate(180);
 			for (int x = 0; x < img.Width; x++)
 				for (int y = 0; y < img.Height; y++)
 				{
 					int[] pixelCol = new int[] { pixels[x, y].ToColor().R, pixels[x, y].ToColor().G, pixels[x, y].ToColor().B };
 
-					if (CompareColour(pixelCol, white)) //check for city
+					if (CompareColour(pixelCol, black)) //check for city
 					{
 						int tr, tg, tb;
 						tr = pixels[x, y + 1].ToColor().R;
@@ -121,25 +120,26 @@ namespace RTWLib.Functions
 							tr = pixels[x, y - 1].ToColor().R;
 							tg = pixels[x, y - 1].ToColor().G;
 							tb = pixels[x, y - 1].ToColor().B;
-
 						}
+
 						string index = FindRegionByColour(new int[] { tr, tg, tb });
 						rgbRegions[index].x = x;
-						rgbRegions[index].y = y;
-						Misc_Data.regionWater[x, y] = false;
+						rgbRegions[index].y = (img.Height - y) -1;
+						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
 
 					}
 
-
 					else if (CompareColour(pixelCol, water))
 					{
-						Misc_Data.regionWater[x, y] = true;
+						Misc_Data.regionWater[x, (img.Height - y) - 1] = true;
 					}
 
 					else
 					{
-						Misc_Data.regionWater[x, y] = false;
+						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
 					}
+
+
 
 				}
 
@@ -183,6 +183,16 @@ namespace RTWLib.Functions
 		public string Log(string txt)
 		{
 			return base.PLog(txt);
+		}
+
+		public string Output()
+		{
+			return null;
+		}
+
+		public string FilePath
+		{
+			get { return FILEPATH_DR; }
 		}
 
 	}
