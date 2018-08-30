@@ -9,7 +9,7 @@ using RTWLib.Data;
 
 namespace RTWLib.Functions
 {
-	public class Descr_Strat : Logger.Logger, IFile
+	public class Descr_Strat : Logger.Logger, IFile, ICloneable
 	{
 		public List<string> ds_data = new List<string>();
 		public string campaign = "";
@@ -31,6 +31,24 @@ namespace RTWLib.Functions
 
 		public Descr_Strat()
 		{ }
+
+		protected Descr_Strat(Descr_Strat ds)
+		{
+			ds_data = new List<string>(ds.ds_data);
+			campaign = ds.campaign;
+			playableFactions = new List<string>(ds.playableFactions);
+			campaignNonPlayable = new List<string>(ds.campaignNonPlayable);
+			unlockableFactions = new List<string>(ds.unlockableFactions);
+			startDate = ds.startDate;
+			endDate = ds.endDate;
+			brigand_spawn_value = ds.brigand_spawn_value;
+			pirate_spawn_value = ds.pirate_spawn_value;
+			landmarks = new List<Landmark>(ds.landmarks);
+			resources = new List<Resource>(ds.resources);
+			factions = new List<Faction>(ds.factions);
+			core_attributes = new List<string>(ds.core_attributes);
+			faction_relationships = new List<string>(ds.faction_relationships);
+		}
 
 		public Task Parse()
 		{
@@ -296,8 +314,37 @@ namespace RTWLib.Functions
 
 				if (line.StartsWith("unit"))
 				{
-					string army = Functions_General.RemoveFirstWord(line, '\t').Trim();
-					newCharacter.army.Add(army);
+					string[] army = line.Split('\t', ' ');
+					bool nameFetched = false;
+					string name = "";
+					int exp = 0;
+					int weapon = 0;
+					int armour = 0;
+					for (int i = 0; i < army.Length; i++)
+					{
+						if (army[i] == "armour")
+						{
+							nameFetched = true;
+							armour = Convert.ToInt32(army[i + 1]);
+						}
+
+						if (army[i] == "weapon")
+						{
+							nameFetched = true;
+							weapon = Convert.ToInt32(army[i + 1]);
+						}
+
+						if (army[i] == "exp")
+						{
+							nameFetched = true;
+							exp = Convert.ToInt32(army[i + 1]);   
+						}
+
+						if (army[i] != "unit" && !nameFetched)
+							name += army[i];
+					}
+					
+					newCharacter.army.Add(new DSUnit(name, exp, armour, weapon));
 				}
 
 				if (line.StartsWith("character_record"))
@@ -438,6 +485,11 @@ namespace RTWLib.Functions
 		public string FilePath
 		{
 			get { return FILEPATH;  }
+		}
+
+		public Object Clone()
+		{
+			return new Descr_Strat(this);
 		}
 
 	}

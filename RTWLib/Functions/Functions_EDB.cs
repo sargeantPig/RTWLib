@@ -16,7 +16,7 @@ namespace RTWLib.Functions
 	}
 
 
-	public class EDB : Logger.Logger, IFile
+	public class EDB : Logger.Logger, IFile, ICloneable
 	{
 		public List<string> hiddenResources = new List<string>();
 		public List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
@@ -28,6 +28,12 @@ namespace RTWLib.Functions
 		{
 			hiddenResources = new List<string>(hiddenRes);
 			buildingTrees = new List<CoreBuilding>(buildings);
+		}
+
+		protected EDB(EDB edb)
+		{
+			hiddenResources = new List<string>(edb.hiddenResources);
+			buildingTrees = new List<CoreBuilding>(edb.buildingTrees);
 		}
 
 		public EDB()
@@ -409,6 +415,11 @@ namespace RTWLib.Functions
 		public string FilePath
 		{
 			get { return FILEPATH; }
+		}
+
+		public Object Clone()
+		{
+			return new EDB(this);
 		}
 	}
 }

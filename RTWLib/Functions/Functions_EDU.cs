@@ -12,7 +12,7 @@ using RTWLib.Data;
 
 namespace RTWLib.Functions
 {
-	public class EDU : Logger.Logger, IFile
+	public class EDU : Logger.Logger, IFile, ICloneable
 	{
 		public const string FILEPATH = @"data\export_descr_unit.txt";
 		const string DESCRIPTION = "Units";
@@ -20,6 +20,12 @@ namespace RTWLib.Functions
 
 		public EDU()
 		{
+		}
+
+		public EDU(EDU edu)
+		{
+			units = new List<Unit>(edu.units);
+
 		}
 
 		public string Description
@@ -527,6 +533,11 @@ namespace RTWLib.Functions
 		public string FilePath
 		{
 			get { return FILEPATH; }
+		}
+
+		public Object Clone()
+		{
+			return new EDU(this);
 		}
 	}
 }

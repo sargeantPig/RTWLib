@@ -97,7 +97,6 @@ namespace RTWLib.Objects
 		{ }
 	}
 
-	[Serializable]
 	public class Unit
 	{
 		public string type; //internal name
@@ -706,6 +705,7 @@ namespace RTWLib.Objects
 	{
 		public string name = "";
 		public string cityName = "";
+		public string faction_creator = "";
 		public int[] rgb = { 0, 0, 0 };
 		public int x = 0, y = 0;
 
@@ -843,7 +843,7 @@ namespace RTWLib.Objects
 		public string sub_faction, name, type, rank, traits, ancillaries;
 		public int age;
 		public int[] coords = new int[2];
-		public List<string> army = new List<string>();
+		public List<DSUnit> army = new List<DSUnit>();
 		
 		public DSCharacter()
 		{ }
@@ -859,7 +859,7 @@ namespace RTWLib.Objects
 			age = character.age;
 			coords[0] = character.coords[0];
 			coords[1] = character.coords[1];
-			army = new List<string>(character.army);
+			army = new List<DSUnit>(character.army);
 		}
 
 		public string Output()
@@ -883,10 +883,9 @@ namespace RTWLib.Objects
 				if (type == "admiral" || type == "named character" || type == "general")
 				{
 					output += "army\r\n";
-					foreach (string str in army)
+					foreach (DSUnit str in army)
 					{
-
-						output += "unit\t\t" + str + "\r\n";
+						str.Output();
 					}
 				}
 
@@ -900,10 +899,9 @@ namespace RTWLib.Objects
 				"ancillaries " + ancillaries + "\r\n" +
 				"army\r\n";
 
-			foreach (string str in army)
+			foreach (DSUnit str in army)
 			{
-
-				output += "unit\t\t" + str + "\r\n";
+				str.Output();
 			}
 
 			return output;
@@ -912,6 +910,36 @@ namespace RTWLib.Objects
 
 
 
+	}
+
+	public class DSUnit
+	{
+		string name;
+		int exp;
+		int armour;
+		int weapon;
+
+		public DSUnit(string alias, int Exp, int Armour, int Weapon)
+		{
+			name = alias;
+			exp = Exp;
+			armour = Armour;
+			weapon = Weapon;
+		}
+
+		public DSUnit(DSUnit dsu)
+		{
+			name = dsu.name;
+			exp = dsu.exp;
+			armour = dsu.armour;
+			weapon = dsu.weapon;
+		}
+
+		public string Output()
+		{
+			string output = "unit\t\t" + name + " \t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
+			return output;
+		}
 	}
 
 	public class Faction

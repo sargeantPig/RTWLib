@@ -41,6 +41,7 @@ namespace RTWLib.Functions
 			int counter = -1;
 			string name = "";
 			string cityName = "";
+			string faction_creator = "";
 			while ((line = reg.ReadLine()) != null)
 			{
 				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
@@ -54,6 +55,9 @@ namespace RTWLib.Functions
 					line = reg.ReadLine();
 					cityName = line.Trim();
 					rgbRegions[name].cityName = cityName;
+					line = reg.ReadLine();
+					faction_creator = line.Trim();
+					rgbRegions[name].faction_creator = faction_creator;
 				}
 
 				else if (line.Split(' ').Count() == 3)
@@ -175,6 +179,16 @@ namespace RTWLib.Functions
 			return new int[] {rgbRegions[name].x, rgbRegions[name].y };
 		}
 
+		public int[] GetRGBValue(string name)
+		{
+			return new int[] { rgbRegions[name].rgb[0], rgbRegions[name].rgb[1], rgbRegions[name].rgb[2] };
+		}
+
+		public string GetFactoinCreator(string name)
+		{
+			return rgbRegions[name].faction_creator;
+		}
+
 		public string Description
 		{
 			get { return DESCRIPTION; }
@@ -195,6 +209,10 @@ namespace RTWLib.Functions
 			get { return FILEPATH_DR; }
 		}
 
+		public string FilePathRegions
+		{
+			get { return FILEPATH_REGIONS; }
+		}
 	}
 
 }

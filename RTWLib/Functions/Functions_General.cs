@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -128,5 +129,15 @@ namespace RTWLib.Functions
 			return dis;
 		}
 
+		public static void ExecuteCommand(string wd, string filename)
+		{
+			ProcessStartInfo ps = new ProcessStartInfo();
+
+			ps.WorkingDirectory = @wd;
+			ps.FileName = @filename;
+			ps.CreateNoWindow = false;
+
+			Process.Start(ps);
+		}
 	}
 }
