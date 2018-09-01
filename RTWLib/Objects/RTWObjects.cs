@@ -739,14 +739,14 @@ namespace RTWLib.Objects
 
 	public class Settlement
 	{
-		public List<string> b_types = new List<string>();
+		public List<DSBuilding> b_types = new List<DSBuilding>();
 
 		string plan_set = "default_set";
 		public string s_level, region, faction_creator;
 
-		int yearFounded, population;
+		public int yearFounded, population;
 
-		public Settlement(string level, string reg, string creator, List<string> buildings, int yrFounded, int pop)
+		public Settlement(string level, string reg, string creator, List<DSBuilding> buildings, int yrFounded, int pop)
 		{
 			s_level = level;
 			region = reg;
@@ -786,14 +786,9 @@ namespace RTWLib.Objects
 				"\r\n\t" + "plan_set " + plan_set +
 				"\r\n\t" + "faction_creator " + faction_creator;
 
-			foreach (string b in b_types)
+			foreach (DSBuilding b in b_types)
 			{
-				settlement +=
-					"\r\n\t" + "building" +
-					"\r\n\t" + "{" +
-					"\r\n\t\t" + "type " + b +
-					"\r\n\t" + "}" +
-					"\r\n";
+				settlement += b.Output();
 			}
 
 			settlement += "\r\n}";
@@ -846,7 +841,15 @@ namespace RTWLib.Objects
 		public List<DSUnit> army = new List<DSUnit>();
 		
 		public DSCharacter()
-		{ }
+		{
+		}
+
+		public DSCharacter(string Name, Random rnd)
+		{
+			name = Name;
+			type = "general";
+			age = rnd.Next(20, 50);
+		}
 
 		public DSCharacter(DSCharacter character)
 		{
@@ -885,7 +888,7 @@ namespace RTWLib.Objects
 					output += "army\r\n";
 					foreach (DSUnit str in army)
 					{
-						str.Output();
+						output += str.Output();
 					}
 				}
 
@@ -901,7 +904,7 @@ namespace RTWLib.Objects
 
 			foreach (DSUnit str in army)
 			{
-				str.Output();
+				output += str.Output();
 			}
 
 			return output;
@@ -937,9 +940,69 @@ namespace RTWLib.Objects
 
 		public string Output()
 		{
-			string output = "unit\t\t" + name + " \t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
+			string output = "unit\t\t" + name + "\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
 			return output;
 		}
+	}
+
+	public class DSBuilding
+	{
+		public string type;
+		public string name;
+
+		public DSBuilding()
+		{ }
+
+		public DSBuilding(DSBuilding dS)
+		{
+			type = dS.type;
+			name = dS.name;
+		}
+
+		public string Output()
+		{
+			return "\r\n\t" + "building" +
+					"\r\n\t" + "{" +
+					"\r\n\t\ttype " + type + " " + name + "\r\n" +
+				"\r\n\t" + "}\r\n";
+		}
+	}
+
+	public class CharacterRecord
+	{
+		public string name;
+		public string gender;
+		public int command;
+		public int influence;
+		public int management;
+		public int subterfuge;
+		public int age;
+		public string status;
+		public string leader;
+
+		public CharacterRecord(CharacterRecord cr)
+		{
+			name = cr.name;
+			gender = cr.gender;
+			command = cr.command;
+			influence = cr.influence;
+			management = cr.management;
+			subterfuge = cr.subterfuge;
+			age = cr.age;
+			status = cr.status;
+			leader = cr.leader;
+		}
+
+		public CharacterRecord()
+		{ }
+
+		public string Output()
+		{
+			return "character_record\t\t" + name + ", \t" + gender +  ", command " + command.ToString() +  ", influence " +  influence.ToString() + ", management " + management.ToString() +
+				", subterfuge " + subterfuge.ToString() + ", age " + age.ToString() + ", " + status + ", " + leader + " " + "\r\n";
+
+		}
+
 	}
 
 	public class Faction
@@ -949,7 +1012,7 @@ namespace RTWLib.Objects
 		public string superFaction { get; set; }
 		public List<Settlement> settlements = new List<Settlement>();
 		public List<DSCharacter> characters = new List<DSCharacter>();
-		public List<string> characterRecords = new List<string>();
+		public List<CharacterRecord> characterRecords = new List<CharacterRecord>();
 		public List<string> relatives = new List<string>();
 		public int denari { get; set; }
 
@@ -965,7 +1028,7 @@ namespace RTWLib.Objects
 			superFaction = faction.superFaction;
 			settlements = new List<Settlement>(faction.settlements);
 			characters = new List<DSCharacter>(faction.characters);
-			characterRecords = new List<string>(faction.characterRecords);
+			characterRecords = new List<CharacterRecord>(faction.characterRecords);
 			relatives = new List<string>(faction.relatives);
 			denari = faction.denari;
 
@@ -1009,9 +1072,9 @@ namespace RTWLib.Objects
 				output += "\r\n";
 			}
 
-			foreach (string rec in characterRecords)
+			foreach (CharacterRecord rec in characterRecords)
 			{
-				output += "character_record\t\t" + rec + "\r\n";
+				output += rec.Output();
 			}
 
 			foreach (string rel in relatives)

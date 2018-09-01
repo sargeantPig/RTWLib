@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RTWLib.Functions
 {
@@ -37,6 +38,18 @@ namespace RTWLib.Functions
 			list[i] = list[j];
 			list[j] = temp;
 		}
+
+		public static int CompareNameEnd(CheckBox c1, CheckBox c2)
+		{
+			string[] split1 = c1.Name.Split('_');
+			string[] split2 = c2.Name.Split('_');
+
+			string value1 = split1.Last();
+			string value2 = split2.Last();
+
+			return value1.CompareTo(value2);
+		}
+
 
 		public static string RemoveFirstWord(string String)
 		{
@@ -84,7 +97,7 @@ namespace RTWLib.Functions
 		{
 			string[] Temp = String.Split(' ');
 
-			return Temp[0];
+			return Temp[0].Trim();
 		}
 
 		public static string RemoveLastWord(string String)
@@ -137,6 +150,15 @@ namespace RTWLib.Functions
 			ps.FileName = @filename;
 			ps.CreateNoWindow = false;
 
+			Process.Start(ps);
+		}
+
+		public static void ExecuteCommand(string filename, string[] args)
+		{
+			ProcessStartInfo ps = new ProcessStartInfo();
+			ps.FileName = @filename;
+			ps.CreateNoWindow = false;
+			ps.Arguments = args[0];
 			Process.Start(ps);
 		}
 	}

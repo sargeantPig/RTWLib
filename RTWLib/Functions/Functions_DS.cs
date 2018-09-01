@@ -187,7 +187,7 @@ namespace RTWLib.Functions
 				if (line.StartsWith("settlement"))
 				{
 					Settlement tempSettlement;
-					List<string> b_types = new List<string>();
+					List<DSBuilding> b_types = new List<DSBuilding>();
 
 					string s_level = "", region = "", faction_creator = "";
 
@@ -244,7 +244,13 @@ namespace RTWLib.Functions
 							string trimmed = Functions_General.RemoveFirstWord(line);
 							trimmed = trimmed.Trim();
 
-							b_types.Add(trimmed);
+							DSBuilding dsb = new DSBuilding();
+							string[] split = line.Split(' ');
+
+							dsb.type = split[1].Trim();
+							dsb.name = split[2].Trim();
+
+							b_types.Add(dsb);
 
 						}
 					}
@@ -341,7 +347,7 @@ namespace RTWLib.Functions
 						}
 
 						if (army[i] != "unit" && !nameFetched)
-							name += army[i];
+							name += army[i] + " ";
 					}
 					
 					newCharacter.army.Add(new DSUnit(name, exp, armour, weapon));
@@ -350,7 +356,33 @@ namespace RTWLib.Functions
 				if (line.StartsWith("character_record"))
 				{
 					string record = Functions_General.RemoveFirstWord(line, '\t');//
-					newFaction.characterRecords.Add(record);
+
+					CharacterRecord cr = new CharacterRecord();
+
+					string[] recordSplit = record.Split(',');
+					cr.name = recordSplit[0].Trim();
+					cr.gender = recordSplit[1].Trim();
+
+					string[] command = recordSplit[2].Split(' ');
+
+					cr.command = Convert.ToInt32(command[2].Trim());
+
+					string[] influence = recordSplit[3].Split(' ');
+					cr.influence = Convert.ToInt32(influence[2].Trim());
+
+					string[] management = recordSplit[4].Split(' ');
+					cr.management = Convert.ToInt32(management[2].Trim());
+
+					string[] subterfuge = recordSplit[5].Split(' ');
+					cr.subterfuge = Convert.ToInt32(subterfuge[2].Trim());
+
+					string[] age = recordSplit[6].Split(' ');
+					cr.age = Convert.ToInt32(age[2].Trim());
+
+					cr.status = recordSplit[7].Trim();
+					cr.leader = recordSplit[8].Trim();
+
+					newFaction.characterRecords.Add(new CharacterRecord(cr));
 				}
 
 				if (line.StartsWith("relative"))

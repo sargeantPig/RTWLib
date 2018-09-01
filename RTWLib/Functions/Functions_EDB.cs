@@ -39,6 +39,132 @@ namespace RTWLib.Functions
 		public EDB()
 		{ }
 
+		public string[] GetRandomBuildingFromChain(string type, Random rnd)
+		{
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+					string level = cb.levels[rnd.Next(cb.levels.Count())];
+
+					Building building = cb.buildings.Find(x => x.buildingName == level);
+
+					string settlement_min = building.construction.settlement_min;
+
+					return new string[] { level, settlement_min };
+				}
+			}
+
+			return null;
+		}
+
+		public string[] GetRandomBuildingFromChain(string type, string settlementLevel, Random rnd)
+		{
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+
+					List<Building> availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
+
+					if (availableBuildings.Count() == 0)
+						return null;
+
+					Building building = availableBuildings[rnd.Next(availableBuildings.Count())];
+					
+					return new string[]{ building.buildingName, cb.buildingType};
+				}
+			}
+
+			return null;
+		}
+
+		public string[] GetSpecificBuildingFromChain(string type, string settlementLevel)
+		{
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+					int realLevel = GetRealLevel(settlementLevel);
+
+					if (realLevel > cb.buildings.Count - 1)
+						realLevel = cb.buildings.Count - 1;
+
+					if (type == "core_building")
+						realLevel--;
+
+					Building newb = new Building();
+
+					foreach (Building b in cb.buildings)
+					{
+						if (GetRealLevel(b.construction.settlement_min) <= realLevel)
+							newb = new Building(b);
+					}
+					return new string[] { newb.buildingName, cb.buildingType };
+				}
+			}
+
+			return null;
+		}
+
+		public int GetRealLevel(string settlementLevel)
+		{
+			switch(settlementLevel){
+				case "village":
+					return 0;
+				case "town":
+					return 1;
+				case "large_town":
+					return 2;
+				case "city":
+					return 3;
+				case "large_city":
+					return 4;
+				case "huge_city":
+					return 5;
+				default:
+					return 0;
+			}
+		}
+
+		public List<Building> GetBuildingsAtLevel(string settlementLevel)
+		{
+			int level = GetRealLevel(settlementLevel);
+			List<Building> buildings = new List<Building>();
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				foreach (Building b in cb.buildings)
+				{
+					if (GetRealLevel(b.construction.settlement_min) <= level)
+					{
+						buildings.Add(b);
+					}
+				}
+			}
+
+			return buildings;
+
+		}
+
+		public List<Building> GetBuildingsAtLevel(string settlementLevel, CoreBuilding coreBuilding)
+		{
+			int level = GetRealLevel(settlementLevel);
+			List<Building> buildings = new List<Building>();
+			foreach (Building b in coreBuilding.buildings)
+			{
+				if (GetRealLevel(b.construction.settlement_min) <= level)
+				{
+						buildings.Add(b);
+				}
+			}
+
+			return buildings;
+
+		}
+
+
+
+
 		public string Description
 		{
 			get { return DESCRIPTION; }

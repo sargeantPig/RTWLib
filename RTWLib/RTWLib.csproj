@@ -52,6 +52,7 @@
     <Compile Include="Functions\Functions_EDB.cs" />
     <Compile Include="Functions\Functions_EDU.cs" />
     <Compile Include="Functions\Functions_General.cs" />
+    <Compile Include="Functions\Functions_Names.cs" />
     <Compile Include="Functions\Functions_SelectMaps.cs" />
     <Compile Include="Functions\Functions_SMF.cs" />
     <Compile Include="Functions\Functions_DR.cs" />

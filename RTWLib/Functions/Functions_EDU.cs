@@ -496,8 +496,31 @@ namespace RTWLib.Functions
 
 			try
 			{
+				string[] removaltags = new string[] {
+					"female",
+					"civ"
+				};
+
 				FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
 				List<Unit> unit = units.FindAll(x => x.ownership.HasFlag(f));
+				List<Unit> removeUnit = new List<Unit>();
+				foreach (Unit u in unit)
+				{
+					foreach (string rem in removaltags)
+					{
+						if (u.type.Contains(rem))
+						{
+							removeUnit.Add(u);
+							break;
+						}
+					}
+				}
+
+				foreach (Unit u in removeUnit)
+				{
+					unit.Remove(u);
+				}
+
 				return unit;
 			}
 
