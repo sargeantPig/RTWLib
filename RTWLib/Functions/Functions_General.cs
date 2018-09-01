@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using RTWLib.Memory;
 namespace RTWLib.Functions
 {
 	public interface IFile
@@ -49,7 +50,6 @@ namespace RTWLib.Functions
 
 			return value1.CompareTo(value2);
 		}
-
 
 		public static string RemoveFirstWord(string String)
 		{
@@ -155,11 +155,17 @@ namespace RTWLib.Functions
 
 		public static void ExecuteCommand(string filename, string[] args)
 		{
-			ProcessStartInfo ps = new ProcessStartInfo();
-			ps.FileName = @filename;
-			ps.CreateNoWindow = false;
-			ps.Arguments = args[0];
-			Process.Start(ps);
+
+			Process p = new Process();
+
+			
+			p.StartInfo.FileName = @filename;
+			p.StartInfo.CreateNoWindow = false;
+			p.StartInfo.Arguments = args[0];
+			p.StartInfo.RedirectStandardOutput = true;
+			p.StartInfo.UseShellExecute = false;
+
+			RTWCore.core = new Core(p);
 		}
 	}
 }

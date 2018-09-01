@@ -497,8 +497,8 @@ namespace RTWLib.Functions
 			try
 			{
 				string[] removaltags = new string[] {
-					"female",
-					"civ"
+					"non_combatant",
+					"ship",
 				};
 
 				FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
@@ -508,7 +508,7 @@ namespace RTWLib.Functions
 				{
 					foreach (string rem in removaltags)
 					{
-						if (u.type.Contains(rem))
+						if (u.category == rem)
 						{
 							removeUnit.Add(u);
 							break;
