@@ -153,19 +153,17 @@ namespace RTWLib.Functions
 			Process.Start(ps);
 		}
 
-		public static void ExecuteCommand(string filename, string[] args)
+		public static Process ExecuteCommand(string filename, string[] args)
 		{
 
 			Process p = new Process();
-
-			
 			p.StartInfo.FileName = @filename;
 			p.StartInfo.CreateNoWindow = false;
 			p.StartInfo.Arguments = args[0];
 			p.StartInfo.RedirectStandardOutput = true;
 			p.StartInfo.UseShellExecute = false;
 
-			RTWCore.core = new Core(p);
+			return p;
 		}
 	}
 }

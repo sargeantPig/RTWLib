@@ -103,14 +103,14 @@ namespace RTWLib.Functions
 
 				if (line.StartsWith("start_date"))
 				{
-					string temp = Functions_General.RemoveFirstWord("line");
+					string temp = Functions_General.RemoveFirstWord(line, '\t');
 					startDate = temp.Trim();
 
 				}
 
 				if (line.StartsWith("end_date"))
 				{
-					string temp = Functions_General.RemoveFirstWord(line);
+					string temp = Functions_General.RemoveFirstWord(line, '\t');
 					endDate = temp.Trim();
 
 				}

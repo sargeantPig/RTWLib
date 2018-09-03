@@ -24,7 +24,7 @@ namespace RTWLib.Logger
 		public string PLog(string logtxt)
 		{
 			StreamWriter SW = new StreamWriter(LOGFILE, true);
-			SW.WriteLine(logtxt + " -- " + DateTime.Now);
+			SW.WriteLine(logtxt + " -- " + DateTime.Now + "\r\n");
 			SW.Close();
 
 			OutputToConsole(logtxt);
@@ -74,6 +74,22 @@ namespace RTWLib.Logger
 			MessageBoxIcon.Error);
 
 			Application.Exit();
+		}
+
+		public void CleanLog()
+		{
+			if (File.Exists(LOGFILE))
+			{
+				FileInfo f = new FileInfo(LOGFILE);
+				var size = f.Length;
+
+				if (size > 100000)
+				{
+					File.WriteAllText(LOGFILE, "### RTW LOGGER ###\r\n\r\n");
+				}
+
+			}
+
 		}
 	}
 }

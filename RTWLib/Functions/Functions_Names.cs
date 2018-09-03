@@ -34,12 +34,14 @@ namespace RTWLib.Functions
 					line = sr.ReadLine();
 					while (!line.Contains("women") && !line.Contains("faction") && !line.Contains("surnames"))
 					{
-						if(line.Trim() != "")
+						if (line.Trim() != "" && !line.Trim().Contains(";;")) 
 							names[faction].Add(line.Trim());
 						line = sr.ReadLine();
 					}
 				}
 			}
+
+			
 
 			return Task.CompletedTask;
 		}
