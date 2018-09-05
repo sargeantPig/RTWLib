@@ -97,6 +97,10 @@ namespace RTWLib.Memory
 				while (!memory.IsRunning) ;
 
 			}
+
+			if (memory.IsRunning) //kill if process is still open after tests
+				memory.Native.Kill();
+
 			return Task.CompletedTask;
 		}
 
