@@ -10,6 +10,8 @@ using Binarysharp.MemoryManagement.Helpers;
 using System.IO;
 using RTWLib.Logger;
 using RTWLib.Functions;
+using System.Threading;
+using Binarysharp.MemoryManagement.Native;
 namespace RTWLib.Memory
 {
 	public static class RTWCore
@@ -31,7 +33,7 @@ namespace RTWLib.Memory
 		{
 			process.Start();
 			pName = process.ProcessName;
-			System.Threading.Thread.Sleep(5000);
+			System.Threading.Thread.Sleep(10000);
 			memory = new MemorySharp(ApplicationFinder.FromProcessName(pName).First());
 		}
 
@@ -39,6 +41,8 @@ namespace RTWLib.Memory
 
 		public Task TestLoop(int iter, int target, string name, Func<Task> func)
 		{
+			
+
 			for (int i = 0; i < iter; i++)
 			{
 				int year = 0;
@@ -49,11 +53,18 @@ namespace RTWLib.Memory
 				bool result = false;
 				PLog("\r\n\r\n" + name + " Test Begun\r\n\r\n");
 
+				while (memory == null)
+				{
+					Thread.Sleep(10000);
+					Reload();
+				}
+
+				var window = memory.Windows.MainWindow;
+
 				timer.Start();
 				stopwatch.Start();
 				while (memory.IsRunning)
 				{
-
 					elasped = stopwatch.Elapsed.Minutes;
 					year = memory.Read<int>(RTWCore.address_year);
 
@@ -104,13 +115,18 @@ namespace RTWLib.Memory
 			p.Start();
 			pName = p.ProcessName;
 			arguments = args[0];
-			Reload();
 		}
 
 		public void Reload()
 		{
-			System.Threading.Thread.Sleep(5000);
-			memory = new MemorySharp(ApplicationFinder.FromProcessName(pName).First());
+			try
+			{
+				var a = ApplicationFinder.FromProcessName(pName);
+				memory = new MemorySharp(ApplicationFinder.FromProcessName(pName).First());
+			}
+			catch {
+
+			}
 		}
 
 		public void Output()
