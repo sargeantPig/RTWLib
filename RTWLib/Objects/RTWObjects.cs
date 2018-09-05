@@ -413,21 +413,21 @@ namespace RTWLib.Objects
 			if (ownership.HasFlag(FactionOwnership.armenia)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.armenia));
 			if (ownership.HasFlag(FactionOwnership.britons)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.britons));
 			if (ownership.HasFlag(FactionOwnership.carthage)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.carthage));
-			if (ownership.HasFlag(FactionOwnership.carthaginian)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.carthaginian));
+			if (ownership.HasFlag(FactionOwnership.carthaginian)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.carthaginian));
 			if (ownership.HasFlag(FactionOwnership.dacia)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.dacia));
-			if (ownership.HasFlag(FactionOwnership.eastern)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.eastern));
+			if (ownership.HasFlag(FactionOwnership.eastern)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.eastern));
 			if (ownership.HasFlag(FactionOwnership.egypt)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.egypt));
-			if (ownership.HasFlag(FactionOwnership.egyptian)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.egyptian));
+			if (ownership.HasFlag(FactionOwnership.egyptian)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.egyptian));
 			if (ownership.HasFlag(FactionOwnership.gauls)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.gauls));
 			if (ownership.HasFlag(FactionOwnership.germans)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.germans));
-			if (ownership.HasFlag(FactionOwnership.greek)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.greek));
+			if (ownership.HasFlag(FactionOwnership.greek)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.greek));
 			if (ownership.HasFlag(FactionOwnership.greek_cities)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.greek_cities));
 			if (ownership.HasFlag(FactionOwnership.macedon)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.macedon));
 			if (ownership.HasFlag(FactionOwnership.none)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.none));
 			if (ownership.HasFlag(FactionOwnership.numidia)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.numidia));
 			if (ownership.HasFlag(FactionOwnership.parthia)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.parthia));
 			if (ownership.HasFlag(FactionOwnership.pontus)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.pontus));
-			if (ownership.HasFlag(FactionOwnership.roman)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.roman));
+			if (ownership.HasFlag(FactionOwnership.roman)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.roman));
 			if (ownership.HasFlag(FactionOwnership.romans_brutii)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.romans_brutii));
 			if (ownership.HasFlag(FactionOwnership.romans_julii)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.romans_julii));
 			if (ownership.HasFlag(FactionOwnership.romans_scipii)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.romans_scipii));
@@ -437,7 +437,7 @@ namespace RTWLib.Objects
 			if (ownership.HasFlag(FactionOwnership.slave)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.slave));
 			if (ownership.HasFlag(FactionOwnership.spain)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.spain));
 			if (ownership.HasFlag(FactionOwnership.thrace)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.thrace));
-			if (ownership.HasFlag(FactionOwnership.barbarian)) setAndTagChanged(() => unitString += lookTables.LookUpString(Cultures.barbarian));
+			if (ownership.HasFlag(FactionOwnership.barbarian)) setAndTagChanged(() => unitString += lookTables.LookUpString(FactionOwnership.barbarian));
 
 			unitString += ("\r\n\n");
 

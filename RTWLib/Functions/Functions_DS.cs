@@ -406,6 +406,15 @@ namespace RTWLib.Functions
 				};
 			}
 
+			if (newfactionReady) //catches final faction
+			{ //catch final character
+				newFaction.characters.Add(new DSCharacter(newCharacter));
+				factions.Add(new Faction(newFaction));
+				newfactionReady = false;
+				newCharacter = new DSCharacter();
+				newcharacterReady = false;
+			}
+
 			strat.Close();
 
 			//Descr_Strat ds = new Descr_Strat(settlementOwnership, settlements, ds_data);

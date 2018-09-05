@@ -167,15 +167,15 @@ namespace RTWLib.Data
 		};
 		static public Dictionary<Cultures, string> dic_cultures = new Dictionary<Cultures, string>()
 		{
-			{Cultures.barbarian, "barbarian" },
-			{Cultures.carthaginian, "carthaginian" },
-			{Cultures.eastern, "eastern" },
-			{Cultures.egyptian, "egyptian" },
-			{Cultures.greek, "greek" },
+			{Cultures.barbarian, "barbarian, britons, dacia, gauls, germans, scythia, spain" },
+			{Cultures.carthaginian, "carthaginian, numidia, carthage" },
+			{Cultures.eastern, "eastern, armenia, parthia, pontus" },
+			{Cultures.egyptian, "egyptian, egypt" },
+			{Cultures.greek, "greek, greek_cities, macedon, seleucid, thrace" },
 			{Cultures.none, "none" },
 			{Cultures.numidian, "numidian" },
 			{Cultures.parthian, "parthian" },
-			{Cultures.roman, "roman" }
+			{Cultures.roman, "roman, romans_scipii, romans_brutii, romans_julii, romans_senate" }
 		};
 
 		public string LookUpString<T>(T key)
@@ -216,14 +216,14 @@ namespace RTWLib.Data
 				Type[] kv = typeCheck.GenericTypeArguments;
 				string objName = obj.FieldType.FullName;
 
-				if (typeCheck.FullName == objName)
+				if (typeCheck.FullName == objName && kv[0] == typeof(T))
 				{
 
 					Dictionary<T, string> values = (Dictionary<T, string>)obj.GetValue(new Dictionary<T, string>());
 
 					foreach (KeyValuePair<T, string> keyValues in values)
 					{
-						if (keyValues.Value == value)
+						if (keyValues.Value == value || keyValues.Value.Contains(value))
 							return keyValues.Key;
 					}
 
