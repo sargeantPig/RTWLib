@@ -16,6 +16,8 @@ namespace RTWLib.Functions
 		public const string RADARMAP = @"data\world\maps\campaign\imperial_campaign\radar_map1.tga";
 		public const string DESCRIPTION = "Select Maps";
 
+		MagickImage full_map;
+
 		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf)
 		{
 			LookUpTables lt = new LookUpTables();
@@ -99,8 +101,11 @@ namespace RTWLib.Functions
 
 				Save(factionMap, f.name, SAVELOC);
 			}
-			return fullFactionMap.ToBitmap();
 
+			full_map = fullFactionMap;
+			
+
+			return fullFactionMap.ToBitmap();
 		}
 
 		private void Save(MagickImage map, string name, string filepath)
@@ -108,6 +113,11 @@ namespace RTWLib.Functions
 			string fileType = ".tga";
 			map.Scale(384, 237);
 			map.Write(filepath + "map_" + name + fileType);
+		}
+
+		public void Save(string path)
+		{
+			full_map.Write(@path, MagickFormat.Png);
 		}
 
 		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)

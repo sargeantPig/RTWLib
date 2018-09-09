@@ -191,6 +191,7 @@ namespace RTWLib.Data
 		eastern = 1 << 25,
 		barbarian = 1 << 26,
 		none = 1 << 27
+		
 	}
 
 }

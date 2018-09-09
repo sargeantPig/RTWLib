@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTWLib.Memory;
+using System.Security.Principal;
+
 namespace RTWLib.Functions
 {
 	public interface IFile
@@ -135,6 +137,17 @@ namespace RTWLib.Functions
 			return a;
 		}
 
+		public static bool Contains(this string str, List<string> list)
+		{
+			foreach (string s in list)
+			{
+				if (str.Contains(s))
+					return true;
+			}
+
+			return false;
+		}
+		
 		public static double DistanceTo(int[] a, int[] b)
 		{
 			double dis = Math.Sqrt(Math.Pow((a[0] - b[0]), 2) + Math.Pow((a[1] - b[1]), 2));
@@ -164,6 +177,12 @@ namespace RTWLib.Functions
 			p.StartInfo.UseShellExecute = false;
 
 			return p;
+		}
+
+		public static bool IsAdministrator()
+		{
+			return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
 	}
 }

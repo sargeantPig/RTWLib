@@ -211,23 +211,40 @@ namespace RTWLib.Objects
 				else unitString += ", ";
 				action();
 			};
-			if (attributes.HasFlag(Attributes.sea_faring)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.sea_faring));
-			if (attributes.HasFlag(Attributes.can_run_amok)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.can_run_amok));
-			if (attributes.HasFlag(Attributes.can_sap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.can_sap));
-			if (attributes.HasFlag(Attributes.cantabrian_circle)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.cantabrian_circle));
-			if (attributes.HasFlag(Attributes.command)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.command));
-			if (attributes.HasFlag(Attributes.druid)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.druid));
-			if (attributes.HasFlag(Attributes.frighten_foot)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.frighten_foot));
-			if (attributes.HasFlag(Attributes.frighten_mounted)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.frighten_mounted));
-			if (attributes.HasFlag(Attributes.general_unit)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.general_unit));
-			if (attributes.HasFlag(Attributes.general_unit_upgrade)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.general_unit));
-			if (attributes.HasFlag(Attributes.hide_anywhere)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_anywhere));
-			if (attributes.HasFlag(Attributes.hide_forest)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_forest));
-			if (attributes.HasFlag(Attributes.hide_improved_forest)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_improved_forest));
-			if (attributes.HasFlag(Attributes.hide_long_grass)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_long_grass));
-			if (attributes.HasFlag(Attributes.mercenary_unit)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.mercenary_unit));
-			if (attributes.HasFlag(Attributes.no_custom)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.no_custom));
-			if (attributes.HasFlag(Attributes.warcry)) setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.warcry));
+			if (attributes.HasFlag(Attributes.sea_faring))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.sea_faring));
+			if (attributes.HasFlag(Attributes.can_run_amok))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.can_run_amok));
+			if (attributes.HasFlag(Attributes.can_sap))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.can_sap));
+			if (attributes.HasFlag(Attributes.cantabrian_circle))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.cantabrian_circle));
+			if (attributes.HasFlag(Attributes.command))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.command));
+			if (attributes.HasFlag(Attributes.druid))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.druid));
+			if (attributes.HasFlag(Attributes.frighten_foot))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.frighten_foot));
+			if (attributes.HasFlag(Attributes.frighten_mounted))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.frighten_mounted));
+			if (attributes.HasFlag(Attributes.general_unit))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.general_unit));
+			if (attributes.HasFlag(Attributes.general_unit_upgrade))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.general_unit_upgrade));
+			if (attributes.HasFlag(Attributes.hide_anywhere))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_anywhere));
+			if (attributes.HasFlag(Attributes.hide_forest))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_forest));
+			if (attributes.HasFlag(Attributes.hide_improved_forest))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_improved_forest));
+			if (attributes.HasFlag(Attributes.hide_long_grass))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hide_long_grass));
+			if (attributes.HasFlag(Attributes.mercenary_unit))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.mercenary_unit));
+			if (attributes.HasFlag(Attributes.no_custom))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.no_custom));
+			if (attributes.HasFlag(Attributes.warcry))
+				setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.warcry));
 			
 
 			unitString += ("\r\n");

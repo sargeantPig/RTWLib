@@ -58,14 +58,16 @@ namespace RTWLib.Functions
 			return null;
 		}
 
-		public string[] GetRandomBuildingFromChain(string type, string settlementLevel, Random rnd)
+		public string[] GetRandomBuildingFromChain(string type, string settlementLevel, Random rnd, string faction = null)
 		{
 			foreach (CoreBuilding cb in buildingTrees)
 			{
 				if (cb.buildingType == type)
 				{
-
-					List<Building> availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
+					List<Building> availableBuildings = new List<Building>();
+					if (faction != null)
+						availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
+					else availableBuildings = GetBuildingsAtLevel(settlementLevel, cb, faction);
 
 					if (availableBuildings.Count() == 0)
 						return null;
@@ -127,7 +129,7 @@ namespace RTWLib.Functions
 			}
 		}
 
-		public List<Building> GetBuildingsAtLevel(string settlementLevel)
+		public List<Building> GetBuildingsAtLevel(string settlementLevel, string faction = null)
 		{
 			int level = GetRealLevel(settlementLevel);
 			List<Building> buildings = new List<Building>();
@@ -135,7 +137,12 @@ namespace RTWLib.Functions
 			{
 				foreach (Building b in cb.buildings)
 				{
-					if (GetRealLevel(b.construction.settlement_min) <= level)
+					if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
+					{
+						buildings.Add(b);
+					}
+
+					else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
 					{
 						buildings.Add(b);
 					}
@@ -146,15 +153,20 @@ namespace RTWLib.Functions
 
 		}
 
-		public List<Building> GetBuildingsAtLevel(string settlementLevel, CoreBuilding coreBuilding)
+		public List<Building> GetBuildingsAtLevel(string settlementLevel, CoreBuilding coreBuilding, string faction = null)
 		{
 			int level = GetRealLevel(settlementLevel);
 			List<Building> buildings = new List<Building>();
 			foreach (Building b in coreBuilding.buildings)
 			{
-				if (GetRealLevel(b.construction.settlement_min) <= level)
+				if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
 				{
-						buildings.Add(b);
+					buildings.Add(b);
+				}
+
+				else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
+				{
+					buildings.Add(b);
 				}
 			}
 
