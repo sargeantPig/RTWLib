@@ -53,7 +53,7 @@ namespace RTWLib.Functions
 		public Task Parse()
 		{
 			if (!FileCheck(FILEPATH))
-				DisplayLog();
+				DisplayLogExit();
 
 			LookUpTables tb = new LookUpTables();
 

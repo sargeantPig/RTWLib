@@ -28,10 +28,10 @@ namespace RTWLib.Functions
 		public Task Parse()
 		{
 			if (!FileCheck(FILEPATH_DR))
-				DisplayLog();
+				DisplayLogExit();
 
 			if (!FileCheck(FILEPATH_REGIONS))
-				DisplayLog();
+				DisplayLogExit();
 
 			//add an output for this in the tool section
 			string line;

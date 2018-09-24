@@ -64,6 +64,7 @@ namespace RTWLib.Functions
 			{
 				if (cb.buildingType == type)
 				{
+
 					List<Building> availableBuildings = new List<Building>();
 					if (faction != null)
 						availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
@@ -92,7 +93,7 @@ namespace RTWLib.Functions
 					if (realLevel > cb.buildings.Count - 1)
 						realLevel = cb.buildings.Count - 1;
 
-					if (type == "core_building")
+					if ((type == "core_building" || type == "defenses") && settlementLevel != "huge_city")
 						realLevel--;
 
 					Building newb = new Building();
@@ -185,7 +186,7 @@ namespace RTWLib.Functions
 		public Task Parse()
 		{
 			if (!FileCheck(FILEPATH))
-				DisplayLog();
+				DisplayLogExit();
 
 			string line;
 			int counter = -1;

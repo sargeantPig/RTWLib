@@ -34,7 +34,7 @@ namespace RTWLib.Functions
 					line = sr.ReadLine();
 					while (!line.Contains("women") && !line.Contains("faction") && !line.Contains("surnames"))
 					{
-						if (line.Trim() != "" && !line.Trim().Contains(";;")) 
+						if (line.Trim() != "" && !line.Trim().Contains(";;") && !line.Trim().Contains(";") && CheckForNonASCII(line.Trim())) 
 							names[faction].Add(line.Trim());
 						line = sr.ReadLine();
 					}
@@ -69,6 +69,20 @@ namespace RTWLib.Functions
 			}
 
 			return unusedNames[rnd.Next(unusedNames.Count())];
+		}
+
+		private bool CheckForNonASCII(string str)
+		{
+			foreach (char c in str)
+			{
+				if (c < byte.MaxValue)
+					continue;
+				else return false;
+					
+			}
+
+			return true;
+
 		}
 
 		public string Output()

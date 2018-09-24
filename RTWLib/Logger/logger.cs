@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using RTWLib.Functions;
 namespace RTWLib.Logger
 {
 	public class Logger
@@ -15,6 +16,8 @@ namespace RTWLib.Logger
 
 		string dirFound = "Directory Found: ";
 		string dirNotFound = "Directory Not Found: ";
+		string isAdmin = "Running as administrator";
+		string isNotAdmin = "Not running as administrator";
 
 		private void OutputToConsole(string logtxt)
 		{
@@ -59,11 +62,36 @@ namespace RTWLib.Logger
 			return false;
 		}
 
+		public bool AdminCheck()
+		{
+			bool admin = Functions_General.IsAdministrator();
+
+			if (admin) {
+				current = PLog(isAdmin);
+				return true;
+			}
+			else
+				current = PLog(isNotAdmin + ": unit info fix will be disabled.");
+
+			return false;
+		}
+
 		public void Output(string logtxt)
 		{
 			current += logtxt;
 			OutputToConsole(logtxt);
 
+		}
+
+		public void DisplayLogExit()
+		{
+			DialogResult result2 = MessageBox.Show(current,
+			"Error",
+			MessageBoxButtons.OK,
+			MessageBoxIcon.Error);
+
+			Application.Exit();
+			Environment.Exit(0);
 		}
 
 		public void DisplayLog()
@@ -72,8 +100,6 @@ namespace RTWLib.Logger
 			"Error",
 			MessageBoxButtons.OK,
 			MessageBoxIcon.Error);
-
-			Application.Exit();
 		}
 
 		public void CleanLog()
