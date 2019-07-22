@@ -12,31 +12,34 @@ namespace RTWLib.Functions
 {
 	public class Descr_Region : Logger.Logger,  IFile
 	{
+        FileNames name = FileNames.descr_regions;
 		const string DESCRIPTION = "Regions";
-		public const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
-		public const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
+		public const string FILEPATH_REGIONS = @"randomiser\data\world\maps\base\map_regions.tga";
+		public const string FILEPATH_DR = @"randomiser\data\world\maps\base\descr_regions.txt";
 		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
 
-		public Descr_Region()
-		{ }
+		public Descr_Region(bool log_on)
+		{
+            is_on = log_on;
+        }
 
 		public Descr_Region(Descr_Region _Region)
 		{
 			rgbRegions = new Dictionary<string, Objects.Region>(_Region.rgbRegions);
 		}
 
-		public Task Parse()
+		public void Parse(string[] paths)
 		{
-			if (!FileCheck(FILEPATH_DR))
+			if (!FileCheck(paths[0]))
 				DisplayLogExit();
 
-			if (!FileCheck(FILEPATH_REGIONS))
+			if (!FileCheck(paths[1]))
 				DisplayLogExit();
 
 			//add an output for this in the tool section
 			string line;
 
-			StreamReader reg = new StreamReader(FILEPATH_DR);
+			StreamReader reg = new StreamReader(paths[0]);
 
 			int counter = -1;
 			string name = "";
@@ -46,6 +49,11 @@ namespace RTWLib.Functions
 			{
 				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
 				{
+                    if (counter >= 0)
+                    {
+                        PLog("Loaded -- " + name + ", " + cityName);
+                    }
+
 					counter++;
 					name = line.Trim();
 					rgbRegions.Add(name, new Objects.Region());
@@ -80,9 +88,7 @@ namespace RTWLib.Functions
 
 			reg.Close();
 
-			GetCityCoordinates(FILEPATH_REGIONS);
-
-			return Task.CompletedTask;
+			GetCityCoordinates(paths[1]);
 		}
 
 		private string FindRegionByColour(int[] colour)
@@ -204,7 +210,12 @@ namespace RTWLib.Functions
 			return null;
 		}
 
-		public string FilePath
+        public FileNames Name
+        {
+            get { return name; }
+        }
+
+        public string FilePath
 		{
 			get { return FILEPATH_DR; }
 		}

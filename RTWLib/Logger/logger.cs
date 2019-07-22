@@ -19,6 +19,7 @@ namespace RTWLib.Logger
 		string isAdmin = "Running as administrator";
 		string isNotAdmin = "Not running as administrator";
 
+        public bool is_on = true;
 		private void OutputToConsole(string logtxt)
 		{
 			Console.WriteLine("\r\n" + logtxt);
@@ -26,6 +27,9 @@ namespace RTWLib.Logger
 
 		public string PLog(string logtxt)
 		{
+            if (!is_on)
+                return logtxt;
+            
 			StreamWriter SW = new StreamWriter(LOGFILE, true);
 			SW.WriteLine(logtxt + " -- " + DateTime.Now + "\r\n");
 			SW.Close();

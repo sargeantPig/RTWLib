@@ -53,9 +53,10 @@ namespace RTWLib.Data
 	{
 		//folder paths
 		readonly public static string RTWEXE = @"RomeTW.exe";
-		readonly public static string ROOT = @"data";
-		readonly public static string IMPERIAL_CAMPAIGN = @"data\world\maps\campaign\imperial_campaign";
-		readonly public static string MAPS_BASE = @"data\world\maps\base";
+		readonly public static string ROOT = @"randomiser\van_data";
+		readonly public static string IMPERIAL_CAMPAIGN = ROOT + @"\world\maps\campaign\imperial_campaign";
+		readonly public static string MAPS_BASE = ROOT + @"\world\maps\base";
+        readonly public static string MOD_FOLDER = @"randomiser";
 		//file names
 		readonly public static string EXPORT_DESCR_UNIT = @"\export_descr_unit.txt";
 		readonly public static string EXPORT_DESCR_BUILDINGS = @"\export_descr_buildings.txt";
@@ -65,6 +66,18 @@ namespace RTWLib.Data
 		readonly public static string RADAR_MAP1 = @"\radar_map1.tga";
 		readonly public static string DESCR_SM_FACTION = @"\descr_sm_factions.txt";
 
+
+
 	}
+
+    public enum FileNames
+    {
+        export_descr_buildings,
+        export_descr_unit,
+        descr_strat,
+        descr_regions,
+        descr_sm_faction,
+        names,
+    }
 
 }

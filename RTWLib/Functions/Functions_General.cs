@@ -8,14 +8,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RTWLib.Memory;
 using System.Security.Principal;
-
+using RTWLib.Data;
 namespace RTWLib.Functions
 {
 	public interface IFile
 	{
-		Task Parse();
+		void Parse(string[] path);
 		string Log(string txt);
 		string Output();
+        FileNames Name
+        {
+            get;
+        }
 		string FilePath
 		{
 			get;

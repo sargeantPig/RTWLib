@@ -9,15 +9,21 @@ namespace RTWLib.Functions
 {
 	public class NamesFile : Logger.Logger, IFile
 	{
+        FileNames name = FileNames.names;
 		const string DESCRIPTION = "Name file";
-		const string FILEPATH = @"data\descr_names.txt";
+		const string FILEPATH = @"randomiser\data\descr_names.txt";
 
 		Dictionary<FactionOwnership, List<string>> names = new Dictionary<FactionOwnership, List<string>>();
 
-		public Task Parse()
+        public NamesFile(bool log_on)
+        {
+            is_on = log_on;
+        }
+
+		public void Parse(string[] path)
 		{
 			LookUpTables lt = new LookUpTables();
-			StreamReader sr = new StreamReader(FILEPATH);
+			StreamReader sr = new StreamReader(path[0]);
 			string line = "";
 			FactionOwnership faction = FactionOwnership.none ;
 			while ((line = sr.ReadLine()) != null)
@@ -34,16 +40,15 @@ namespace RTWLib.Functions
 					line = sr.ReadLine();
 					while (!line.Contains("women") && !line.Contains("faction") && !line.Contains("surnames"))
 					{
-						if (line.Trim() != "" && !line.Trim().Contains(";;") && !line.Trim().Contains(";") && CheckForNonASCII(line.Trim())) 
-							names[faction].Add(line.Trim());
-						line = sr.ReadLine();
+                        if (line.Trim() != "" && !line.Trim().Contains(";;") && !line.Trim().Contains(";") && CheckForNonASCII(line.Trim()))
+                        {
+                            names[faction].Add(line.Trim());
+                            PLog("Loaded: " + names[faction].Last());
+                        }
+                            line = sr.ReadLine();
 					}
 				}
 			}
-
-			
-
-			return Task.CompletedTask;
 		}
 
 		public string GetRandomName(Random rnd, string faction)
@@ -101,7 +106,12 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 
-		public string FilePath
+        public FileNames Name
+        {
+            get { return name; }
+        }
+
+        public string FilePath
 		{
 			get { return FILEPATH; }
 		}

@@ -14,18 +14,20 @@ namespace RTWLib.Functions
 {
 	public class EDU : Logger.Logger, IFile, ICloneable
 	{
-		public const string FILEPATH = @"data\export_descr_unit.txt";
+        FileNames name = FileNames.export_descr_unit;
+		public const string FILEPATH = @"randomiser\data\export_descr_unit.txt";
 		const string DESCRIPTION = "Units";
 		public List<Unit> units = new List<Unit>();
 
-		public EDU()
+		public EDU(bool log_on)
 		{
-		}
+            is_on = log_on;
+        }
 
 		public EDU(EDU edu)
 		{
 			units = new List<Unit>(edu.units);
-
+            
 		}
 
 		public string Description
@@ -33,9 +35,9 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 
-		public Task Parse()
+		public void Parse(string[] paths)
 		{
-			if (!FileCheck(FILEPATH))
+			if (!FileCheck(paths[0]))
 				DisplayLogExit();
 
 			LookUpTables lookUp = new LookUpTables();
@@ -59,7 +61,12 @@ namespace RTWLib.Functions
 			{
 				if (line.StartsWith("type"))
 				{
-					counter++;
+                    if (counter >= 0)
+                    {
+                        PLog("Loaded -- " + units[counter].dictionary);
+                    }
+
+                    counter++;
 					units.Add(new Unit());
 					trimApply(() => units[counter].type = trimmed);
 				}
@@ -475,7 +482,6 @@ namespace RTWLib.Functions
 
 			edu.Close();
 
-			return Task.CompletedTask;
 		}
 
 		public Unit FindUnit(string name)
@@ -552,8 +558,11 @@ namespace RTWLib.Functions
 
 			return output;
 		}
-
-		public string FilePath
+        public FileNames Name
+        {
+            get { return name; }
+        }
+        public string FilePath
 		{
 			get { return FILEPATH; }
 		}

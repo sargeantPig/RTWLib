@@ -941,7 +941,7 @@ namespace RTWLib.Objects
 
 		public DSUnit(string alias, int Exp, int Armour, int Weapon)
 		{
-			name = alias;
+			name = alias.TrimEnd(' ');
 			exp = Exp;
 			armour = Armour;
 			weapon = Weapon;
@@ -949,7 +949,7 @@ namespace RTWLib.Objects
 
 		public DSUnit(DSUnit dsu)
 		{
-			name = dsu.name;
+            name = dsu.name;
 			exp = dsu.exp;
 			armour = dsu.armour;
 			weapon = dsu.weapon;
@@ -957,7 +957,7 @@ namespace RTWLib.Objects
 
 		public string Output()
 		{
-			string output = "unit\t\t" + name + "\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
+            string output = "unit\t\t" + name + "\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
 			return output;
 		}
 	}

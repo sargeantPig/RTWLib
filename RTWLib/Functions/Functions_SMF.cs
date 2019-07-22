@@ -11,7 +11,8 @@ namespace RTWLib.Functions
 {	
 	public class SM_Factions : Logger.Logger, IFile
 	{
-		public const string FILEPATH = @"data\descr_sm_factions.txt";
+        FileNames name = FileNames.descr_sm_faction;
+		public const string FILEPATH = @"randomiser\data\descr_sm_factions.txt";
 		const string DESCRIPTION = "faction colours";
 		public Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
 
@@ -29,12 +30,12 @@ namespace RTWLib.Functions
 			return base.PLog(txt);
 		}
 
-		public Task Parse()
+		public void Parse(string[] path)
 		{
-			if (!FileCheck(FILEPATH))
+			if (!FileCheck(path[0]))
 				DisplayLogExit();
 
-			StreamReader edu = new StreamReader(FILEPATH);
+			StreamReader edu = new StreamReader(path[0]);
 
 			string line, faction = "";
 
@@ -67,8 +68,6 @@ namespace RTWLib.Functions
 					factionColours[f][1] = col;
 				}
 			}
-
-			return Task.CompletedTask;
 		}
 
 		private Color SMFGetColour(string line)
@@ -100,8 +99,12 @@ namespace RTWLib.Functions
 		{
 			return null;
 		}
+        public FileNames Name
+        {
+            get { return name; }
+        }
 
-		public string FilePath
+        public string FilePath
 		{
 			get { return FILEPATH; }
 		}

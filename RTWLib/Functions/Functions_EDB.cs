@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RTWLib.Logger;
 using RTWLib.Objects;
 using System.IO;
-
+using RTWLib.Data;
 namespace RTWLib.Functions
 {
 	static class Helpers_EDB
@@ -18,10 +18,11 @@ namespace RTWLib.Functions
 
 	public class EDB : Logger.Logger, IFile, ICloneable
 	{
+        FileNames name = FileNames.export_descr_buildings;
 		public List<string> hiddenResources = new List<string>();
 		public List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
 
-		public const string FILEPATH = @"data\export_descr_buildings.txt";
+		public const string FILEPATH = @"randomiser\data\export_descr_buildings.txt";
 		const string DESCRIPTION = "Buildings";
 
 		public EDB(List<string> hiddenRes, List<CoreBuilding> buildings)
@@ -36,8 +37,10 @@ namespace RTWLib.Functions
 			buildingTrees = new List<CoreBuilding>(edb.buildingTrees);
 		}
 
-		public EDB()
-		{ }
+		public EDB(bool log_on)
+		{
+            is_on = log_on;
+        }
 
 		public string[] GetRandomBuildingFromChain(string type, Random rnd)
 		{
@@ -183,9 +186,9 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 
-		public Task Parse()
+		public void Parse(string[] paths)
 		{
-			if (!FileCheck(FILEPATH))
+			if (!FileCheck(paths[0]))
 				DisplayLogExit();
 
 			string line;
@@ -206,6 +209,7 @@ namespace RTWLib.Functions
 					foreach (string str in splitStr)
 					{
 						hiddenResources.Add(str);
+                        PLog("Loaded: " + str);
 
 					}
 
@@ -476,6 +480,9 @@ namespace RTWLib.Functions
 																	buildingTrees[counter].buildings.Add(new Building(newBuilding));
 																	buildingNext = true;
 																	whileFive = true; //break out of loop
+
+                                                                    PLog("Loaded -- " + buildingTrees[counter].buildings.Last().buildingName);
+
 																	break;
 																}
 
@@ -520,8 +527,6 @@ namespace RTWLib.Functions
 				}
 			}
 			strat.Close();
-
-			return Task.CompletedTask;
 		}
 
 		public string Output()
@@ -550,8 +555,12 @@ namespace RTWLib.Functions
 		{
 			return base.PLog(txt);
 		}
+        public FileNames Name
+        {
+            get { return name; }
+        }
 
-		public string FilePath
+        public string FilePath
 		{
 			get { return FILEPATH; }
 		}

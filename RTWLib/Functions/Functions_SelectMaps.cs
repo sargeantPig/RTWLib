@@ -13,7 +13,7 @@ namespace RTWLib.Functions
 	public class SelectMaps
 	{
 		public const string SAVELOC = @"randomiser\data\world\maps\campaign\imperial_campaign\";
-		public const string RADARMAP = @"data\world\maps\campaign\imperial_campaign\radar_map1.tga";
+		public const string RADARMAP = @"randomiser\van_data\world\maps\campaign\imperial_campaign\radar_map1.tga";
 		public const string DESCRIPTION = "Select Maps";
 
 		MagickImage full_map;
