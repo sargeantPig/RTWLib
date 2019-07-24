@@ -7,6 +7,7 @@ using RTWLib.Logger;
 using RTWLib.Objects;
 using System.IO;
 using RTWLib.Data;
+using RTWLib.Objects.Buildings;
 namespace RTWLib.Functions
 {
 	static class Helpers_EDB

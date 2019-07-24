@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using RTWLib.Objects;
 using RTWLib.Data;
-
+using RTWLib.Objects.Descr_strat;
 namespace RTWLib.Functions
 {
     public class Descr_Strat : Logger.Logger, IFile, ICloneable
@@ -24,8 +24,8 @@ namespace RTWLib.Functions
         public List<Landmark> landmarks = new List<Landmark>();
         public List<Resource> resources = new List<Resource>();
         public List<Faction> factions = new List<Faction>();
-        public List<string> core_attributes = new List<string>();
-        public List<string> faction_relationships = new List<string>();
+        public CoreAttitudes coreAttitudes = new CoreAttitudes("core_attitudes");
+        public CoreAttitudes factionRelationships = new CoreAttitudes("faction_relationships");
 
         public const string FILEPATH = @"randomiser\van_data\world\maps\campaign\imperial_campaign\descr_strat.txt";
         public const string DESCRIPTION = "Campaign Info";
@@ -47,8 +47,8 @@ namespace RTWLib.Functions
             landmarks = new List<Landmark>(ds.landmarks);
             resources = new List<Resource>(ds.resources);
             factions = new List<Faction>(ds.factions);
-            core_attributes = new List<string>(ds.core_attributes);
-            faction_relationships = new List<string>(ds.faction_relationships);
+            coreAttitudes = new CoreAttitudes(ds.coreAttitudes);
+            factionRelationships = new CoreAttitudes(ds.factionRelationships);
         }
 
         public void Parse(string[] filepath)
@@ -394,16 +394,89 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("core_attitudes"))
                 {
-                    string attitudes = Functions_General.RemoveFirstWord(line, '\t');
-                    core_attributes.Add(attitudes);
+                    string[] split = line.Split('\t', ',');
 
+                    split = Misc_Data.CleanStringArray(split);
+                    
+                    int count = split.Count();
+                    count -= 3; //amount of faction entries required
+
+                    FactionOwnership fo = tb.LookUpKey<FactionOwnership>(split[1]);
+
+                    Dictionary<int, List<FactionOwnership>> f_a = new Dictionary<int, List<FactionOwnership>>(); 
+                    for (int i = 0; i < count; i++)
+                    {
+                        int temp = Convert.ToInt32(split[2]);
+                        FactionOwnership f = tb.LookUpKey<FactionOwnership>(split[i + 3]);
+                        if (!f_a.ContainsKey(temp))
+                            f_a.Add(temp, new List<FactionOwnership> { f });
+                        else f_a[temp].Add(f);
+                    }
+
+                    if (!coreAttitudes.attitudes.ContainsKey(fo))
+                    {
+                        coreAttitudes.attitudes.Add(fo, new Dictionary<int, List<FactionOwnership>>(f_a));
+                    }
+                    
+                    else
+                    {
+                        foreach (var cf in f_a)
+                        {
+                            foreach (var toAdd in cf.Value)
+                            {
+                                if (!coreAttitudes.attitudes[fo].ContainsKey(cf.Key))
+                                {
+                                    coreAttitudes.attitudes[fo].Add(cf.Key, new List<FactionOwnership> { toAdd });
+                                }
+
+                                else coreAttitudes.attitudes[fo][cf.Key].Add(toAdd);
+                            }
+                        }
+                    }
                 }
 
                 if (line.StartsWith("faction_relationships"))
                 {
-                    string relationship = Functions_General.RemoveFirstWord(line, '\t');
-                    faction_relationships.Add(relationship);
+                    string[] split = line.Split('\t', ',');
 
+                    split = Misc_Data.CleanStringArray(split);
+
+                    int count = split.Count();
+                    count -= 3; //amount of faction entries required
+
+                    FactionOwnership fo = tb.LookUpKey<FactionOwnership>(split[1]);
+
+                    Dictionary<int, List<FactionOwnership>> f_a = new Dictionary<int, List<FactionOwnership>>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        int temp = Convert.ToInt32(split[2]);
+                        FactionOwnership f = tb.LookUpKey<FactionOwnership>(split[i + 3]);
+                        if (!f_a.ContainsKey(temp))
+                            f_a.Add(temp, new List<FactionOwnership> { f });
+                        else f_a[temp].Add(f);
+                    }
+
+                    if (!factionRelationships.attitudes.ContainsKey(fo))
+                    {
+                        factionRelationships.attitudes.Add(fo, new Dictionary<int, List<FactionOwnership>>(f_a));
+                    }
+
+                    else
+                    {
+                        foreach (var cf in f_a)
+                        {
+                            foreach (var toAdd in cf.Value)
+                            {
+                                if (!factionRelationships.attitudes[fo].ContainsKey(cf.Key))
+                                {
+                                    factionRelationships.attitudes[fo].Add(cf.Key, new List<FactionOwnership> { toAdd });
+                                }
+
+                                else factionRelationships.attitudes[fo][cf.Key].Add(toAdd);
+
+                            }
+                        }
+                    }
                 };
             }
 
@@ -480,21 +553,9 @@ namespace RTWLib.Functions
                 output += fac.Output();
             }
 
-            output += "\r\n\r\n";
-
-            foreach (string str in core_attributes)
-            {
-                output += "core_attributes\t" + str + "\r\n";
-            }
-
             output += "\r\n";
-
-            foreach (string str in faction_relationships)
-            {
-                output += "faction_relationships\t" + str + "\r\n";
-            }
-
-
+            output += coreAttitudes.OutputMulti();
+            output += factionRelationships.OutputSingle();
             return output;
         }
 
@@ -534,11 +595,35 @@ namespace RTWLib.Functions
 
             spqrIndex = campaignNonPlayable.FindIndex(x => x == LookUpTables.dic_factions[FactionOwnership.romans_senate]);
             campaignNonPlayable.RemoveAt(spqrIndex);
+
+            RemoveSenateRelations(ref coreAttitudes);
+            RemoveSenateRelations(ref factionRelationships);
         }
 
         public void ShuffleFactions(Random rnd)
         {
             factions.Shuffle(rnd);
+        }
+
+        void RemoveSenateRelations(ref CoreAttitudes coreA)
+        {
+            coreA.attitudes.Remove(FactionOwnership.romans_senate);
+
+            foreach (var attitude in coreA.attitudes)
+            {
+                int index = -1;
+
+                foreach (var temp in attitude.Value)
+                {
+                    index = temp.Value.FindIndex(x => x == FactionOwnership.romans_senate);
+
+
+                    if (index > -1)
+                    {
+                        attitude.Value[temp.Key].RemoveAt(index);
+                    }
+                }
+            }
         }
 
         public string FilePath

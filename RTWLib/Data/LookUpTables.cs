@@ -178,7 +178,7 @@ namespace RTWLib.Data
 			{Cultures.roman, "roman, romans_scipii, romans_brutii, romans_julii, romans_senate" }
 		};
 
-		public string LookUpString<T>(T key)
+	    public string LookUpString<T>(T key)
 		{
 			MemberInfo[] members = this.GetType().GetMembers();
 			FieldInfo[] fi = this.GetType().GetFields();

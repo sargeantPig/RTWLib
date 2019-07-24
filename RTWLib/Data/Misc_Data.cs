@@ -47,6 +47,19 @@ namespace RTWLib.Data
 
 		}
 
+        public static string[] CleanStringArray(string[] data)
+        {
+            List<string> newArray = new List<string>(); 
+            foreach (string str in data)
+            {
+                if (str != "" && str != " ")
+                {
+                    newArray.Add(str.Trim());
+                }
+            }
+            return newArray.ToArray();
+        }
+
 	}
 
 	public static class FilePaths

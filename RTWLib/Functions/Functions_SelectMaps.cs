@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ImageMagick;
 using RTWLib.Objects;
 using RTWLib.Data;
-
+using RTWLib.Objects.Descr_strat;
 namespace RTWLib.Functions
 {
 	public class SelectMaps
