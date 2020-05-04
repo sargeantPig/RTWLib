@@ -195,7 +195,7 @@ namespace RTWLib.Functions
 			string line;
 			int counter = -1;
 
-			StreamReader strat = new StreamReader(FILEPATH);
+			StreamReader strat = new StreamReader(paths[0]);
 
 			//get factions
 			while ((line = strat.ReadLine()) != null)

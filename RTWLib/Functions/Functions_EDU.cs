@@ -47,7 +47,7 @@ namespace RTWLib.Functions
 			string trimmed = "";
 			int counter = -1;
 
-			StreamReader edu = new StreamReader(FILEPATH);
+			StreamReader edu = new StreamReader(paths[0]);
 
 			Action<Action> trimApply = (action) =>
 			{

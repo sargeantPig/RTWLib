@@ -221,9 +221,21 @@ namespace RTWLib.Data
 
 					Dictionary<T, string> values = (Dictionary<T, string>)obj.GetValue(new Dictionary<T, string>());
 
+					
+
 					foreach (KeyValuePair<T, string> keyValues in values)
 					{
-						if (keyValues.Value == value || keyValues.Value.Contains(value))
+						string[] split;
+						if (keyValues.Value.Contains(","))
+						{
+							split = keyValues.Value.Split(',');
+							foreach (string str in split)
+							{
+								if (str.Trim() == value)
+									return keyValues.Key;
+							}
+						}
+						else if (keyValues.Value == value)
 							return keyValues.Key;
 					}
 

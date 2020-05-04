@@ -142,7 +142,9 @@ namespace RTWLib.Functions
                 {
                     string[] split = line.Split('\t');
                     string name = split[1].Trim();
+					name = name.Replace(",", "");
                     string x = split[2].Replace(",", "").Trim();
+
                     int[] coords = new int[] { Convert.ToInt32(x), Convert.ToInt32(split[3].Trim()) };
                     Resource res = new Resource(name, coords);
                     resources.Add(res);
