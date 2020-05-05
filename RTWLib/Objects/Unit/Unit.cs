@@ -386,22 +386,22 @@ namespace RTWLib.Objects
             firstAttr = false;
             unitString += ("stat_sec_attr\t\t ");
 
-            if (priAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (priAttri.HasFlag(Stat_pri_attr.bp)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.bp));
-            if (priAttri.HasFlag(Stat_pri_attr.pa_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_spear));
-            if (priAttri.HasFlag(Stat_pri_attr.long_pike)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.long_pike));
-            if (priAttri.HasFlag(Stat_pri_attr.short_pike)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.short_pike));
-            if (priAttri.HasFlag(Stat_pri_attr.prec)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.prec));
-            if (priAttri.HasFlag(Stat_pri_attr.pa_thrown)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_thrown));
-            if (priAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
-            if (priAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
-            if (priAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
-            if (priAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
-            if (priAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
-            if (priAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
-            if (priAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
+            if (secAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
+            if (secAttri.HasFlag(Stat_pri_attr.bp)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.bp));
+            if (secAttri.HasFlag(Stat_pri_attr.pa_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_spear));
+            if (secAttri.HasFlag(Stat_pri_attr.long_pike)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.long_pike));
+            if (secAttri.HasFlag(Stat_pri_attr.short_pike)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.short_pike));
+            if (secAttri.HasFlag(Stat_pri_attr.prec)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.prec));
+            if (secAttri.HasFlag(Stat_pri_attr.pa_thrown)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_thrown));
+            if (secAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
+            if (secAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
+            if (secAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
+            if (secAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
+            if (secAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
+            if (secAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
+            if (secAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
 
             unitString += ("\r\n");
 
