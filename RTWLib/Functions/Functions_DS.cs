@@ -618,8 +618,6 @@ namespace RTWLib.Functions
                 foreach (var temp in attitude.Value)
                 {
                     index = temp.Value.FindIndex(x => x == FactionOwnership.romans_senate);
-
-
                     if (index > -1)
                     {
                         attitude.Value[temp.Key].RemoveAt(index);

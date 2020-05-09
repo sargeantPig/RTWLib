@@ -11,13 +11,13 @@ namespace RTWLib.Logger
 	public class Logger
 	{
 		//Will handle logging any errors, outputs to RTWLlog.txt after every method completion
-		const string LOGFILE = "RTWLlog.txt";
-		string current = "";
+		static string LOGFILE = "RTWLlog.txt";
+		static string current = "";
 
-		string dirFound = "Directory Found: ";
-		string dirNotFound = "Directory Not Found: ";
-		string isAdmin = "Running as administrator";
-		string isNotAdmin = "Not running as administrator";
+		static string dirFound = "Directory Found: ";
+		static string dirNotFound = "Directory Not Found: ";
+		static string isAdmin = "Running as administrator";
+		static string isNotAdmin = "Not running as administrator";
 
         public bool is_on = true;
 		private void OutputToConsole(string logtxt)

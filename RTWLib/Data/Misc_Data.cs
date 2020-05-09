@@ -78,6 +78,7 @@ namespace RTWLib.Data
 		readonly public static string MAP_REGIONS = @"\map_regions.tga";
 		readonly public static string RADAR_MAP1 = @"\radar_map1.tga";
 		readonly public static string DESCR_SM_FACTION = @"\descr_sm_factions.txt";
+		readonly public static string ASSETS = @"randomiser\data\ui\units\assets\";
 
 
 

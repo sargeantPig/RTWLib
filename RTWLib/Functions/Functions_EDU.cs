@@ -508,7 +508,10 @@ namespace RTWLib.Functions
 				};
 
 				FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
-				List<Unit> unit = units.FindAll(x => x.ownership.HasFlag(f));
+				Cultures fa = lut.LookUpKey<Cultures>(faction);
+				FactionOwnership fb = lut.LookUpKey<FactionOwnership>(fa.ToString());
+
+				List<Unit> unit = units.FindAll(x => x.ownership.HasFlag(f) || x.ownership.HasFlag(fb));
 				List<Unit> removeUnit = new List<Unit>();
 				foreach (Unit u in unit)
 				{
@@ -542,6 +545,17 @@ namespace RTWLib.Functions
 
 		}
 
+		public string[] GetUnitNameList()
+		{
+			string[] lstUnit = new string[units.Count];
+			int ind = 0;
+			foreach (Unit unit in units)
+			{
+				lstUnit[ind] = unit.dictionary;
+				ind++;
+			}
+			return lstUnit;
+		}
 		public string Log(string txt)
 		{
 			return base.PLog(txt);
