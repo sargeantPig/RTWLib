@@ -19,10 +19,63 @@ namespace RTWLib.Functions
 		const string DESCRIPTION = "Units";
 		public List<Unit> units = new List<Unit>();
 
+		public static FileScheme edu_scheme = new FileScheme();
+
+
 		public EDU(bool log_on)
 		{
             is_on = log_on;
-        }
+			edu_scheme.Add("soldier", "name", 0);
+			edu_scheme.Add("soldier", "number", 1);
+			edu_scheme.Add("soldier", "extras", 2);
+			edu_scheme.Add("soldier", "collisionMass", 3);
+			edu_scheme.Add("formation", "tight_side", 0);
+			edu_scheme.Add("formation", "tight_back", 1);
+			edu_scheme.Add("formation", "sparse_side", 0);
+			edu_scheme.Add("formation", "sparse_back", 1);
+			edu_scheme.Add("stat_pri_armour", "armour", 0);
+			edu_scheme.Add("stat_pri_armour", "defence", 1);
+			edu_scheme.Add("stat_pri_armour", "shield", 2);
+			edu_scheme.Add("stat_pri_armour", "sound", 3);
+			edu_scheme.Add("stat_pri", "attack", 0);
+			edu_scheme.Add("stat_pri", "chargeBonus", 1);
+			edu_scheme.Add("stat_pri", "missileType", 2);
+			edu_scheme.Add("stat_pri", "missileRange", 3);
+			edu_scheme.Add("stat_pri", "missileAmmo", 4);
+			edu_scheme.Add("stat_pri", "weaponFlag", 5);
+			edu_scheme.Add("stat_pri", "techFlag", 6);
+			edu_scheme.Add("stat_pri", "damageType", 7);
+			edu_scheme.Add("stat_pri", "soundType", 8);
+			edu_scheme.Add("stat_pri", "attkDelay1", 9);
+			edu_scheme.Add("stat_pri", "attkDelay2", 10);
+			edu_scheme.Add("stat_sec", "attack", 0);
+			edu_scheme.Add("stat_sec", "chargeBonus", 1);
+			edu_scheme.Add("stat_sec", "missileType", 2);
+			edu_scheme.Add("stat_sec", "missileRange", 3);
+			edu_scheme.Add("stat_sec", "missileAmmo", 4);
+			edu_scheme.Add("stat_sec", "weaponFlag", 5);
+			edu_scheme.Add("stat_sec", "techFlag", 6);
+			edu_scheme.Add("stat_sec", "damageType", 7);
+			edu_scheme.Add("stat_sec", "soundType", 8);
+			edu_scheme.Add("stat_sec", "attkDelay1", 9);
+			edu_scheme.Add("stat_sec", "attkDelay2", 10);
+			edu_scheme.Add("stat_sec_armour", "armour", 0);
+			edu_scheme.Add("stat_sec_armour", "defence", 1);
+			edu_scheme.Add("stat_sec_armour", "sound", 2);
+			edu_scheme.Add("stat_ground", "scrub", 0);
+			edu_scheme.Add("stat_ground", "sand", 1);
+			edu_scheme.Add("stat_ground", "forest", 2);
+			edu_scheme.Add("stat_ground", "snow", 3);
+			edu_scheme.Add("stat_mental", "morale", 0);
+			edu_scheme.Add("stat_mental", "discipline", 1);
+			edu_scheme.Add("stat_mental", "training", 2);
+			edu_scheme.Add("stat_cost", "turns", 0);
+			edu_scheme.Add("stat_cost", "construct", 1);
+			edu_scheme.Add("stat_cost", "upkeep", 2);
+			edu_scheme.Add("stat_cost", "weaponUpgrade", 3);
+			edu_scheme.Add("stat_cost", "armourUpgrade", 4);
+			edu_scheme.Add("stat_cost", "custom", 5);
+		}
 
 		public EDU(EDU edu)
 		{
@@ -120,6 +173,7 @@ namespace RTWLib.Functions
 						units[counter].soldier.number = Convert.ToInt16(splitted[1].Trim());
 						units[counter].soldier.extras = Convert.ToInt16(splitted[2].Trim());
 						units[counter].soldier.collisionMass = (float)Convert.ToDouble(splitted[3].Trim());
+
 					});
 				}
 
@@ -231,7 +285,9 @@ namespace RTWLib.Functions
 						foreach (string STRING in splitted)
 						{
 							if (i < 2)
+							{
 								units[counter].formation.FormationTight[i] = (float)Convert.ToDouble(STRING.Trim());
+							}
 							else if (a < 2)
 							{
 								units[counter].formation.FormationSparse[a] = (float)Convert.ToDouble(STRING.Trim());
@@ -240,6 +296,7 @@ namespace RTWLib.Functions
 							else if (b < 1)
 							{
 								units[counter].formation.FormationRanks = Convert.ToInt16(STRING.Trim());
+								edu_scheme.Add("formation", "ranks", 0);
 								b++;
 							}
 
@@ -260,6 +317,8 @@ namespace RTWLib.Functions
 						string[] splitted = trimmed.Split(',');
 						units[counter].heatlh[0] = Convert.ToInt16(splitted[0]);
 						units[counter].heatlh[1] = Convert.ToInt16(splitted[1]);
+						edu_scheme.Add("health", "soldier", 0);
+						edu_scheme.Add("formation", "companion", 1);
 					});
 				}
 
@@ -285,7 +344,6 @@ namespace RTWLib.Functions
 						units[counter].primaryArmour.stat_pri_armour[0] = Convert.ToInt16(splitted[0]);
 						units[counter].primaryArmour.stat_pri_armour[1] = Convert.ToInt16(splitted[1]);
 						units[counter].primaryArmour.stat_pri_armour[2] = Convert.ToInt16(splitted[2]);
-
 						units[counter].primaryArmour.armour_sound = lookUp.LookUpKey<ArmourSound>(splitted[3].Trim());
 					});
 				}
@@ -398,7 +456,6 @@ namespace RTWLib.Functions
 						units[counter].mental.morale = Convert.ToInt16(splitted[0]);
 						units[counter].mental.discipline = lookUp.LookUpKey<Statmental_discipline>(splitted[1].Trim());
 						units[counter].mental.training = lookUp.LookUpKey<Statmental_training>(splitted[2].Trim());
-
 					});
 				}
 
@@ -524,7 +581,6 @@ namespace RTWLib.Functions
 						}
 					}
 				}
-
 				foreach (Unit u in removeUnit)
 				{
 					unit.Remove(u);
@@ -532,18 +588,118 @@ namespace RTWLib.Functions
 
 				return unit;
 			}
-
 			catch(Exception ex)
 			{
 				Output(ex.ToString());
 				Output("\r\nFaction is likely wrong");
 			}
-
-
 			return new List<Unit>();
-			
+		}
+
+		public List<Unit> FindUnitsByArgAndFaction(string[] args, string faction = null, bool useFaction = false)
+		{
+			List<Unit> selection = new List<Unit>();
+			bool added = false;
+			bool isFaction = false;
+			foreach (Unit unit in units)
+			{
+				if (useFaction)
+				{
+					isFaction = CheckUnitBelongsToFactionAndCulture(faction, unit);
+					if (!isFaction)
+						continue;
+
+				}
+
+				foreach (string arg in args)
+				{
+
+					if (arg == "All")
+					{
+						selection.Add(unit);
+						added = true;
+					}
+					if (unit.category == arg && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "light infantry" && unit.category == "infantry" && unit.unitClass == "light" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "heavy infantry" && unit.category == "infantry" && unit.unitClass == "heavy" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "light cavalry" && unit.category == "cavalry" && unit.unitClass == "light" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "heavy cavalry" && unit.category == "cavalry" && unit.unitClass == "heavy" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "missile cavalry" && unit.category == "cavalry" && unit.unitClass == "missile" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "missile infantry" && unit.category == "infantry" && unit.unitClass == "missile" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "spearmen" && unit.unitClass == "spearmen" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "missile" && unit.unitClass == "missile" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "general" && (unit.attributes.HasFlag(Attributes.general_unit) || unit.attributes.HasFlag(Attributes.general_unit_upgrade)) && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+				}
+
+				added = false;
+				
+			}
+
+			return selection;
+		}
+
+		public bool CheckUnitBelongsToFactionAndCulture(string faction, Unit unit)
+		{
+			LookUpTables lut = new LookUpTables();
+			FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
+			Cultures fa = lut.LookUpKey<Cultures>(faction);
+			FactionOwnership fb = lut.LookUpKey<FactionOwnership>(fa.ToString());
+
+			if (unit.ownership.HasFlag(f) || unit.ownership.HasFlag(fb))
+				return true;
+			else return false;
 
 		}
+
 
 		public string[] GetUnitNameList()
 		{
@@ -586,4 +742,51 @@ namespace RTWLib.Functions
 			return new EDU(this);
 		}
 	}
+
+
+	public class FileScheme //helps find the locations of specific values like attack within a file
+	{
+		Dictionary<string, Dictionary<string, int>> scheme;
+
+		public FileScheme()
+		{
+			scheme = new Dictionary<string, Dictionary<string, int>>();
+		}
+
+		public void Add(string identifier, string component, int index)
+		{
+			if (!scheme.ContainsKey(identifier))
+				scheme.Add(identifier, new Dictionary<string, int>() { { component, index } });
+			else
+			{
+				if (!scheme[identifier].ContainsKey(component))
+					scheme[identifier].Add(component, index);
+			}
+		}
+
+		public int GetComponentIndex(string component)
+		{
+			foreach (KeyValuePair<string, Dictionary<string, int>> comp in scheme)
+			{
+				if (comp.Value.ContainsKey(component))
+				{
+					return comp.Value[component];
+				}
+			}
+			return -1;
+		}
+
+		public Dictionary<string, int> GetComponents(string identifier)
+		{
+			if (scheme.ContainsKey(identifier))
+				return scheme[identifier];
+			else return null;
+		}
+
+		public Dictionary<string, Dictionary<string, int>> Scheme
+		{
+			get { return scheme; }
+		}
+	}
+
 }

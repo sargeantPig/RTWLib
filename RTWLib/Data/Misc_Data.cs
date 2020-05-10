@@ -47,7 +47,7 @@ namespace RTWLib.Data
 
 		}
 
-        public static string[] CleanStringArray(string[] data)
+        public static string[] CleanStringArray(this string[] data)
         {
             List<string> newArray = new List<string>(); 
             foreach (string str in data)

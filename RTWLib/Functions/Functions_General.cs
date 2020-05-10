@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using RTWLib.Memory;
 using System.Security.Principal;
 using RTWLib.Data;
+using System.Drawing;
+
 namespace RTWLib.Functions
 {
 	public interface IFile
@@ -33,6 +35,16 @@ namespace RTWLib.Functions
 
 	static public class Functions_General
 	{
+		public static void AppendText(this RichTextBox box, string text, Color color)
+		{
+			box.SelectionStart = box.TextLength;
+			box.SelectionLength = 0;
+
+			box.SelectionColor = color;
+			box.AppendText(text);
+			box.SelectionColor = box.ForeColor;
+		}
+
 		public static void Shuffle<T>(this IList<T> list, Random rnd)
 		{
 			for (var i = 0; i < list.Count; i++)
