@@ -45,6 +45,25 @@ namespace RTWLib.Functions
 			box.SelectionColor = box.ForeColor;
 		}
 
+		public static void CleanStrings(this string[] a)
+		{
+			for (int i = 0; i < a.Count(); i++)
+				a[i] = a[i].Trim();
+		}
+
+		public static string ReplaceSpaces(this string a, string replacer)
+		{
+			string[] split = a.Split(' ');
+			string output = "";
+			for(int i = 0; i < split.Count(); i++)
+			{
+				if (i == split.Count() - 1)
+					output += split[i];
+				else output += split[i] + replacer;
+			}
+			return output;
+		}
+
 		public static void Shuffle<T>(this IList<T> list, Random rnd)
 		{
 			for (var i = 0; i < list.Count; i++)

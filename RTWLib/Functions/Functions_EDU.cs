@@ -544,6 +544,12 @@ namespace RTWLib.Functions
 		public Unit FindUnit(string name)
 		{
 			Unit unit = units.Find(x => x.dictionary.Contains(name));
+
+			if (unit == null)
+			{
+				unit = units.Find(x => x.type.Contains(name));
+			}
+
 			return unit;
 		}
 

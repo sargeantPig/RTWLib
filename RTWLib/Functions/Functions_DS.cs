@@ -626,6 +626,63 @@ namespace RTWLib.Functions
             }
         }
 
+        public int GetArmyCount(int facIndex)
+        {
+            int count = 0;
+
+            if (facIndex > -1 && facIndex < factions.Count())
+            {
+                foreach (DSCharacter character in factions[facIndex].characters)
+                {
+                    if (character.type == "named character" || character.type == "general")
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+
+        }
+
+        public int GetAgentCount(int facIndex)
+        {
+            int count = 0;
+
+            if (facIndex > -1 && facIndex < factions.Count())
+            {
+                foreach (DSCharacter character in factions[facIndex].characters)
+                {
+                    if (character.type == "spy" || character.type == "diplomat")
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+
+        }
+
+        public int GetNavyCount(int facIndex)
+        {
+            int count = 0;
+
+            if (facIndex > -1 && facIndex < factions.Count())
+            {
+                foreach (DSCharacter character in factions[facIndex].characters)
+                {
+                    if (character.type == "admiral")
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+
+        }
+
         public string FilePath
         {
             get { return FILEPATH; }

@@ -12,6 +12,7 @@ namespace RTWLib.Objects
 		public string name = "";
 		public string cityName = "";
 		public string faction_creator = "";
+		public string[] resources;
 		public int[] rgb = { 0, 0, 0 };
 		public int x = 0, y = 0;
 

@@ -34,5 +34,10 @@ namespace RTWLib.Objects.Descr_strat
             string output = "unit\t\t" + name + "\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
             return output;
         }
+
+        public string Name
+        { 
+            get { return name; }
+        }
     }
 }

@@ -49,10 +49,10 @@ namespace RTWLib.Functions
 			{
 				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
 				{
-                    if (counter >= 0)
-                    {
-                        PLog("Loaded -- " + name + ", " + cityName);
-                    }
+					if (counter >= 0)
+					{
+						PLog("Loaded -- " + name + ", " + cityName);
+					}
 
 					counter++;
 					name = line.Trim();
@@ -80,8 +80,18 @@ namespace RTWLib.Functions
 						rgbRegions[name].rgb[0] = Convert.ToInt32(split[0].Trim());
 						rgbRegions[name].rgb[1] = Convert.ToInt32(split[1].Trim());
 						rgbRegions[name].rgb[2] = Convert.ToInt32(split[2].Trim());
+
+						line = reg.ReadLine();
+						string res = line.Trim();
+						string[] resArr = res.Split(',');
+
+						resArr.CleanStrings();
+
+						rgbRegions[name].resources = resArr;
+
 					}
 
+					
 
 				}
 			}
