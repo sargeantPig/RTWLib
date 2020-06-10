@@ -110,8 +110,12 @@ namespace RTWLib.Functions
 				action();
 			};
 
+			int lineCounter = 0;
+
 			while ((line = edu.ReadLine()) != null)
 			{
+				lineCounter++;
+				PLog(" -- Line: " + lineCounter );
 				if (line.StartsWith("type"))
 				{
                     if (counter >= 0)
@@ -172,7 +176,10 @@ namespace RTWLib.Functions
 						units[counter].soldier.name = splitted[0].Trim();
 						units[counter].soldier.number = Convert.ToInt16(splitted[1].Trim());
 						units[counter].soldier.extras = Convert.ToInt16(splitted[2].Trim());
-						units[counter].soldier.collisionMass = (float)Convert.ToDouble(splitted[3].Trim());
+						float cm = splitted[3].UniversalParse();
+						units[counter].soldier.collisionMass = (float)cm;
+						// PLog("Error - unable to parse " + splitted[3].ToString());
+							
 
 					});
 				}
@@ -286,11 +293,11 @@ namespace RTWLib.Functions
 						{
 							if (i < 2)
 							{
-								units[counter].formation.FormationTight[i] = (float)Convert.ToDouble(STRING.Trim());
+								units[counter].formation.FormationTight[i] = STRING.Trim().UniversalParse();
 							}
 							else if (a < 2)
 							{
-								units[counter].formation.FormationSparse[a] = (float)Convert.ToDouble(STRING.Trim());
+								units[counter].formation.FormationSparse[a] = STRING.Trim().UniversalParse();
 								a++;
 							}
 							else if (b < 1)
@@ -360,8 +367,8 @@ namespace RTWLib.Functions
 						units[counter].primaryWeapon.attack[1] = Convert.ToInt16(splitted[1]);
 						units[counter].primaryWeapon.Missleattri[0] = Convert.ToInt16(splitted[3]);
 						units[counter].primaryWeapon.Missleattri[1] = Convert.ToInt16(splitted[4]);
-						units[counter].primaryWeapon.attackdelay[0] = (float)Convert.ToDouble(splitted[9]);
-						units[counter].primaryWeapon.attackdelay[1] = (float)Convert.ToDouble(splitted[10]);
+						units[counter].primaryWeapon.attackdelay[0] = splitted[9].UniversalParse();
+						units[counter].primaryWeapon.attackdelay[1] = splitted[10].UniversalParse();
 
 						units[counter].primaryWeapon.missletypeFlags = lookUp.LookUpKey<MissileType>(splitted[2].Trim());
 						units[counter].primaryWeapon.WeaponFlags = lookUp.LookUpKey<WeaponType>(splitted[5].Trim());
@@ -409,8 +416,8 @@ namespace RTWLib.Functions
 						units[counter].secondaryWeapon.Missleattri[0] = Convert.ToInt16(splitted[3]);
 						units[counter].secondaryWeapon.Missleattri[1] = Convert.ToInt16(splitted[4]);
 
-						units[counter].secondaryWeapon.attackdelay[0] = (float)Convert.ToDouble(splitted[9]);
-						units[counter].secondaryWeapon.attackdelay[1] = (float)Convert.ToDouble(splitted[10]);
+						units[counter].secondaryWeapon.attackdelay[0] = splitted[9].UniversalParse();
+						units[counter].secondaryWeapon.attackdelay[1] = splitted[10].UniversalParse();
 						units[counter].secondaryWeapon.missletypeFlags = lookUp.LookUpKey<MissileType>(splitted[2].Trim());
 						units[counter].secondaryWeapon.WeaponFlags = lookUp.LookUpKey<WeaponType>(splitted[5].Trim());
 						units[counter].secondaryWeapon.TechFlags = lookUp.LookUpKey<TechType>(splitted[6].Trim());

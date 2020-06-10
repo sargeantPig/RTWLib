@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Data;
+using RTWLib.Functions;
+
 namespace RTWLib.Objects
 {
     public class Unit
@@ -197,7 +199,7 @@ namespace RTWLib.Objects
                 "class\t\t\t\t " + unitClass + "\r\n" +
                 "voice_type\t\t\t " + voiceType + "\r\n");
 
-            unitString += "soldier\t\t\t\t " + soldier.name + ", " + soldier.number.ToString() + ", " + soldier.extras.ToString() + ", " + soldier.collisionMass.ToString();
+            unitString += "soldier\t\t\t\t " + soldier.name + ", " + soldier.number.ToString() + ", " + soldier.extras.ToString() + ", " + soldier.collisionMass.UniversalOutput();
 
             //unitString +=("\r\n");
 
@@ -287,9 +289,9 @@ namespace RTWLib.Objects
 
             unitString += ("formation\t\t\t "); // write formation
             foreach (float num in formation.FormationTight)
-                unitString += (num.ToString() + ", ");
+                unitString += (num.UniversalOutput() + ", ");
             foreach (float num in formation.FormationSparse)
-                unitString += (num.ToString() + ", ");
+                unitString += (num.UniversalOutput() + ", ");
             unitString += (formation.FormationRanks + ", ");
 
             firstAttr = false;

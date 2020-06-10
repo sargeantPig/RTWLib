@@ -10,6 +10,8 @@ using RTWLib.Memory;
 using System.Security.Principal;
 using RTWLib.Data;
 using System.Drawing;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace RTWLib.Functions
 {
@@ -35,6 +37,39 @@ namespace RTWLib.Functions
 
 	static public class Functions_General
 	{
+		public static string UniversalOutput(this float input)
+		{
+			return input.ToString().GetSafeRTWDoubleStr();	
+		}
+
+		public static string GetSafeRTWDoubleStr(this string input)
+		{
+			//trim excess
+			input.Trim();
+
+			//check for the correct seperator '.'
+			string[] split = input.Split(',');
+			string safe = "";
+			if (split.Count() == 2) //is double
+			{
+				//contains invalid seperator
+				//reconstruct
+				safe = split[0] + "." + split[1];
+				return safe;
+			}
+			else return input;
+
+		}
+
+
+
+		public static float UniversalParse(this string input)
+		{
+			float output = float.Parse(input, System.Globalization.CultureInfo.InvariantCulture);
+			return output;
+		}
+
+
 		public static void AppendText(this RichTextBox box, string text, Color color)
 		{
 			box.SelectionStart = box.TextLength;
