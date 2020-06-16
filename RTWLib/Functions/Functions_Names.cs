@@ -20,14 +20,18 @@ namespace RTWLib.Functions
             is_on = log_on;
         }
 
-		public void Parse(string[] path)
+		public void Parse(string[] path, out int lineNumber, out string currentLine)
 		{
 			LookUpTables lt = new LookUpTables();
 			StreamReader sr = new StreamReader(path[0]);
 			string line = "";
 			FactionOwnership faction = FactionOwnership.none ;
+			lineNumber = 0;
+			currentLine = "";
 			while ((line = sr.ReadLine()) != null)
 			{
+				lineNumber++;
+				currentLine = line;
 				if (line.StartsWith("faction"))
 				{
 					string[] split = line.Split(' ');

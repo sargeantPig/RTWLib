@@ -51,7 +51,7 @@ namespace RTWLib.Functions
             factionRelationships = new CoreAttitudes(ds.factionRelationships);
         }
 
-        public void Parse(string[] filepath)
+        public void Parse(string[] filepath, out int lineNumber, out string currentLine)
         {
             if (!FileCheck(filepath[0]))
                 DisplayLogExit();
@@ -68,8 +68,12 @@ namespace RTWLib.Functions
             bool newfactionReady = false;
             bool newcharacterReady = false;
             //get factions
+            lineNumber = 0;
+            currentLine = "";
             while ((line = strat.ReadLine()) != null)
             {
+                lineNumber++;
+                currentLine = line;
                 if (line.StartsWith("campaign"))
                 {
                     string[] split = line.Split('\t');

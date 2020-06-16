@@ -88,7 +88,7 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 
-		public void Parse(string[] paths)
+		public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -110,12 +110,12 @@ namespace RTWLib.Functions
 				action();
 			};
 
-			int lineCounter = 0;
-
+			lineNumber = 0;
+			currentLine = "";
 			while ((line = edu.ReadLine()) != null)
 			{
-				lineCounter++;
-				PLog(" -- Line: " + lineCounter );
+				lineNumber++;
+				currentLine = line;
 				if (line.StartsWith("type"))
 				{
                     if (counter >= 0)

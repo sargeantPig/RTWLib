@@ -8,6 +8,8 @@ using RTWLib.Objects;
 using ImageMagick;
 using System.Drawing;
 using RTWLib.Data;
+using System.Runtime.CompilerServices;
+
 namespace RTWLib.Functions
 {
 	public class Descr_Region : Logger.Logger,  IFile
@@ -28,7 +30,7 @@ namespace RTWLib.Functions
 			rgbRegions = new Dictionary<string, Objects.Region>(_Region.rgbRegions);
 		}
 
-		public void Parse(string[] paths)
+		public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -45,8 +47,12 @@ namespace RTWLib.Functions
 			string name = "";
 			string cityName = "";
 			string faction_creator = "";
+			currentLine = "";
+			lineNumber = 0;
 			while ((line = reg.ReadLine()) != null)
 			{
+				lineNumber++;
+				currentLine = line;
 				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
 				{
 					if (counter >= 0)

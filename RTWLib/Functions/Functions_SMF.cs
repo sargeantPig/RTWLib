@@ -30,7 +30,7 @@ namespace RTWLib.Functions
 			return base.PLog(txt);
 		}
 
-		public void Parse(string[] path)
+		public void Parse(string[] path, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(path[0]))
 				DisplayLogExit();
@@ -43,8 +43,13 @@ namespace RTWLib.Functions
 
 			Output("Retrieving Faction Colours" + "\r\n");
 			FactionOwnership f = FactionOwnership.none;
+
+			lineNumber = 0; ;
+			currentLine = "";
 			while ((line = edu.ReadLine()) != null)
 			{
+				lineNumber++;
+				currentLine = line;
 				string trim = line.Trim();
 
 				if (trim.StartsWith("faction"))

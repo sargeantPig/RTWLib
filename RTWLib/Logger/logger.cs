@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using RTWLib.Functions;
+using System.Net.Http.Headers;
+
 namespace RTWLib.Logger
 {
 	public class Logger
@@ -20,6 +22,9 @@ namespace RTWLib.Logger
 		static string isNotAdmin = "Not running as administrator";
 
         public bool is_on = true;
+		public string fileName = "";
+		public string lineText = "";
+		public int lineNumber = 0;
 		private void OutputToConsole(string logtxt)
 		{
 			Console.WriteLine("\r\n" + logtxt);
@@ -38,6 +43,16 @@ namespace RTWLib.Logger
 			current = logtxt;
 
 			return logtxt;
+		}
+
+		public string ExceptionLog(Exception ex)
+		{
+			string newLine = "\r\n";
+			return this.PLog(ex.Message + newLine +
+				"Error in: " + this.fileName + newLine +
+				"At Line: " + this.lineNumber.ToString() + newLine +
+				"'" + this.lineText + "'" + newLine +
+				ex.InnerException);
 		}
 
 		public bool DirectoryCheck(string directory)
@@ -121,5 +136,6 @@ namespace RTWLib.Logger
 			}
 
 		}
+
 	}
 }

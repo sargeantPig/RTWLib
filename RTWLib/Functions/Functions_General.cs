@@ -17,7 +17,7 @@ namespace RTWLib.Functions
 {
 	public interface IFile
 	{
-		void Parse(string[] path);
+		void Parse(string[] path, out int lineNumber, out string currentLine);
 		string Log(string txt);
 		string Output();
         FileNames Name

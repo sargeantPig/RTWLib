@@ -187,7 +187,7 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 
-		public void Parse(string[] paths)
+		public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -196,10 +196,13 @@ namespace RTWLib.Functions
 			int counter = -1;
 
 			StreamReader strat = new StreamReader(paths[0]);
-
+			lineNumber = 0;
+			currentLine = "";
 			//get factions
 			while ((line = strat.ReadLine()) != null)
 			{
+				lineNumber++;
+				currentLine = line;
 				string trimmedLine = line.Trim();
 
 				if (trimmedLine.StartsWith("hidden_resources"))

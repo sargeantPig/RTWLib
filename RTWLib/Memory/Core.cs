@@ -22,15 +22,26 @@ namespace RTWLib.Memory
 	{
 		string pName;
 		string arguments;
+		StreamReader output;
 
+
+		Process p;
 		public Core() { }
 
 		public void StartProcess(string[] args)
 		{
-			Process p = Functions_General.ExecuteCommand("RomeTW.exe", args);
+			p = Functions_General.ExecuteCommand("RomeTW.exe", args);
 			p.Start();
+			
 			pName = p.ProcessName;
 			arguments = args[0];
+			
+		}
+
+		public void Watch()
+		{
+	
+			//Console.WriteLine(p.ExitCode);
 		}
 
 	}
