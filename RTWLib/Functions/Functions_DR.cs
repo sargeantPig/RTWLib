@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace RTWLib.Functions
 {
-	public class Descr_Region : Logger.Logger,  IFile
+	public class Descr_Region : FileBase,  IFile
 	{
         FileNames name = FileNames.descr_regions;
 		const string DESCRIPTION = "Regions";
@@ -20,17 +20,13 @@ namespace RTWLib.Functions
 		public const string FILEPATH_DR = @"randomiser\data\world\maps\base\descr_regions.txt";
 		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
 
-		public Descr_Region(bool log_on)
+		public Descr_Region(bool log_on) 
+			: base(FileNames.descr_regions, "handles region colours and locations", @"randomiser\data\world\maps\base\descr_regions.txt")
 		{
             is_on = log_on;
         }
 
-		public Descr_Region(Descr_Region _Region)
-		{
-			rgbRegions = new Dictionary<string, Objects.Region>(_Region.rgbRegions);
-		}
-
-		public void Parse(string[] paths, out int lineNumber, out string currentLine)
+		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -106,7 +102,6 @@ namespace RTWLib.Functions
 
 			GetCityCoordinates(paths[1]);
 		}
-
 		private string FindRegionByColour(int[] colour)
 		{
 			foreach (KeyValuePair<string, Objects.Region> kv in rgbRegions)
@@ -195,47 +190,18 @@ namespace RTWLib.Functions
 			else return false;
 
 		}
-
 		public int[] GetCityCoords(string name)
 		{
 			return new int[] {rgbRegions[name].x, rgbRegions[name].y };
 		}
-
 		public int[] GetRGBValue(string name)
 		{
 			return new int[] { rgbRegions[name].rgb[0], rgbRegions[name].rgb[1], rgbRegions[name].rgb[2] };
 		}
-
 		public string GetFactoinCreator(string name)
 		{
 			return rgbRegions[name].faction_creator;
 		}
-
-		public string Description
-		{
-			get { return DESCRIPTION; }
-		}
-
-		public string Log(string txt)
-		{
-			return base.PLog(txt);
-		}
-
-		public string Output()
-		{
-			return null;
-		}
-
-        public FileNames Name
-        {
-            get { return name; }
-        }
-
-        public string FilePath
-		{
-			get { return FILEPATH_DR; }
-		}
-
 		public string FilePathRegions
 		{
 			get { return FILEPATH_REGIONS; }

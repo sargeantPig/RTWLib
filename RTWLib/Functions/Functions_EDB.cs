@@ -16,8 +16,7 @@ namespace RTWLib.Functions
 
 	}
 
-
-	public class EDB : Logger.Logger, IFile, ICloneable
+	public class EDB : FileBase, IFile
 	{
         FileNames name = FileNames.export_descr_buildings;
 		public List<string> hiddenResources = new List<string>();
@@ -26,168 +25,13 @@ namespace RTWLib.Functions
 		public const string FILEPATH = @"randomiser\data\export_descr_buildings.txt";
 		const string DESCRIPTION = "Buildings";
 
-		public EDB(List<string> hiddenRes, List<CoreBuilding> buildings)
-		{
-			hiddenResources = new List<string>(hiddenRes);
-			buildingTrees = new List<CoreBuilding>(buildings);
-		}
-
-		protected EDB(EDB edb)
-		{
-			hiddenResources = new List<string>(edb.hiddenResources);
-			buildingTrees = new List<CoreBuilding>(edb.buildingTrees);
-		}
-
-		public EDB(bool log_on)
+		public EDB(bool log_on) 
+			: base(FileNames.export_descr_buildings, @"randomiser\data\export_descr_buildings.txt", "Building desscriptions and order")
 		{
             is_on = log_on;
         }
 
-		public string[] GetRandomBuildingFromChain(string type, Random rnd)
-		{
-			foreach (CoreBuilding cb in buildingTrees)
-			{
-				if (cb.buildingType == type)
-				{
-					string level = cb.levels[rnd.Next(cb.levels.Count())];
-
-					Building building = cb.buildings.Find(x => x.buildingName == level);
-
-					string settlement_min = building.construction.settlement_min;
-
-					return new string[] { level, settlement_min };
-				}
-			}
-
-			return null;
-		}
-
-		public string[] GetRandomBuildingFromChain(string type, string settlementLevel, Random rnd, string faction = null)
-		{
-			foreach (CoreBuilding cb in buildingTrees)
-			{
-				if (cb.buildingType == type)
-				{
-
-					List<Building> availableBuildings = new List<Building>();
-					if (faction != null)
-						availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
-					else availableBuildings = GetBuildingsAtLevel(settlementLevel, cb, faction);
-
-					if (availableBuildings.Count() == 0)
-						return null;
-
-					Building building = availableBuildings[rnd.Next(availableBuildings.Count())];
-					
-					return new string[]{ building.buildingName, cb.buildingType};
-				}
-			}
-
-			return null;
-		}
-
-		public string[] GetSpecificBuildingFromChain(string type, string settlementLevel)
-		{
-			foreach (CoreBuilding cb in buildingTrees)
-			{
-				if (cb.buildingType == type)
-				{
-					int realLevel = GetRealLevel(settlementLevel);
-
-					if (realLevel > cb.buildings.Count - 1)
-						realLevel = cb.buildings.Count - 1;
-
-					if ((type == "core_building" || type == "defenses") && settlementLevel != "huge_city")
-						realLevel--;
-
-					Building newb = new Building();
-
-					foreach (Building b in cb.buildings)
-					{
-						if (GetRealLevel(b.construction.settlement_min) <= realLevel)
-							newb = new Building(b);
-					}
-					return new string[] { newb.buildingName, cb.buildingType };
-				}
-			}
-
-			return null;
-		}
-
-		public int GetRealLevel(string settlementLevel)
-		{
-			switch(settlementLevel){
-				case "village":
-					return 0;
-				case "town":
-					return 1;
-				case "large_town":
-					return 2;
-				case "city":
-					return 3;
-				case "large_city":
-					return 4;
-				case "huge_city":
-					return 5;
-				default:
-					return 0;
-			}
-		}
-
-		public List<Building> GetBuildingsAtLevel(string settlementLevel, string faction = null)
-		{
-			int level = GetRealLevel(settlementLevel);
-			List<Building> buildings = new List<Building>();
-			foreach (CoreBuilding cb in buildingTrees)
-			{
-				foreach (Building b in cb.buildings)
-				{
-					if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
-					{
-						buildings.Add(b);
-					}
-
-					else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
-					{
-						buildings.Add(b);
-					}
-				}
-			}
-
-			return buildings;
-
-		}
-
-		public List<Building> GetBuildingsAtLevel(string settlementLevel, CoreBuilding coreBuilding, string faction = null)
-		{
-			int level = GetRealLevel(settlementLevel);
-			List<Building> buildings = new List<Building>();
-			foreach (Building b in coreBuilding.buildings)
-			{
-				if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
-				{
-					buildings.Add(b);
-				}
-
-				else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
-				{
-					buildings.Add(b);
-				}
-			}
-
-			return buildings;
-
-		}
-
-
-
-
-		public string Description
-		{
-			get { return DESCRIPTION; }
-		}
-
-		public void Parse(string[] paths, out int lineNumber, out string currentLine)
+		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -213,7 +57,7 @@ namespace RTWLib.Functions
 					foreach (string str in splitStr)
 					{
 						hiddenResources.Add(str);
-                        PLog("Loaded: " + str);
+						PLog("Loaded: " + str);
 
 					}
 
@@ -485,7 +329,7 @@ namespace RTWLib.Functions
 																	buildingNext = true;
 																	whileFive = true; //break out of loop
 
-                                                                    PLog("Loaded -- " + buildingTrees[counter].buildings.Last().buildingName);
+																	PLog("Loaded -- " + buildingTrees[counter].buildings.Last().buildingName);
 
 																	break;
 																}
@@ -532,8 +376,7 @@ namespace RTWLib.Functions
 			}
 			strat.Close();
 		}
-
-		public string Output()
+		override public string Output()
 		{
 			string a = "";
 
@@ -554,24 +397,135 @@ namespace RTWLib.Functions
 
 			return a;
 		}
-
-		public string Log(string txt)
+		public string[] GetRandomBuildingFromChain(string type, Random rnd)
 		{
-			return base.PLog(txt);
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+					string level = cb.levels[rnd.Next(cb.levels.Count())];
+
+					Building building = cb.buildings.Find(x => x.buildingName == level);
+
+					string settlement_min = building.construction.settlement_min;
+
+					return new string[] { level, settlement_min };
+				}
+			}
+
+			return null;
 		}
-        public FileNames Name
-        {
-            get { return name; }
-        }
-
-        public string FilePath
+		public string[] GetRandomBuildingFromChain(string type, string settlementLevel, Random rnd, string faction = null)
 		{
-			get { return FILEPATH; }
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+
+					List<Building> availableBuildings = new List<Building>();
+					if (faction != null)
+						availableBuildings = GetBuildingsAtLevel(settlementLevel, cb);
+					else availableBuildings = GetBuildingsAtLevel(settlementLevel, cb, faction);
+
+					if (availableBuildings.Count() == 0)
+						return null;
+
+					Building building = availableBuildings[rnd.Next(availableBuildings.Count())];
+					
+					return new string[]{ building.buildingName, cb.buildingType};
+				}
+			}
+
+			return null;
 		}
-
-		public Object Clone()
+		public string[] GetSpecificBuildingFromChain(string type, string settlementLevel)
 		{
-			return new EDB(this);
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				if (cb.buildingType == type)
+				{
+					int realLevel = GetRealLevel(settlementLevel);
+
+					if (realLevel > cb.buildings.Count - 1)
+						realLevel = cb.buildings.Count - 1;
+
+					if ((type == "core_building" || type == "defenses") && settlementLevel != "huge_city")
+						realLevel--;
+
+					Building newb = new Building();
+
+					foreach (Building b in cb.buildings)
+					{
+						if (GetRealLevel(b.construction.settlement_min) <= realLevel)
+							newb = new Building(b);
+					}
+					return new string[] { newb.buildingName, cb.buildingType };
+				}
+			}
+
+			return null;
+		}
+		public int GetRealLevel(string settlementLevel)
+		{
+			switch(settlementLevel){
+				case "village":
+					return 0;
+				case "town":
+					return 1;
+				case "large_town":
+					return 2;
+				case "city":
+					return 3;
+				case "large_city":
+					return 4;
+				case "huge_city":
+					return 5;
+				default:
+					return 0;
+			}
+		}
+		public List<Building> GetBuildingsAtLevel(string settlementLevel, string faction = null)
+		{
+			int level = GetRealLevel(settlementLevel);
+			List<Building> buildings = new List<Building>();
+			foreach (CoreBuilding cb in buildingTrees)
+			{
+				foreach (Building b in cb.buildings)
+				{
+					if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
+					{
+						buildings.Add(b);
+					}
+
+					else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
+					{
+						buildings.Add(b);
+					}
+				}
+			}
+
+			return buildings;
+
+		}
+		public List<Building> GetBuildingsAtLevel(string settlementLevel, CoreBuilding coreBuilding, string faction = null)
+		{
+			int level = GetRealLevel(settlementLevel);
+			List<Building> buildings = new List<Building>();
+			foreach (Building b in coreBuilding.buildings)
+			{
+				if (GetRealLevel(b.construction.settlement_min) <= level && faction == null)
+				{
+					buildings.Add(b);
+				}
+
+				else if (GetRealLevel(b.construction.settlement_min) <= level && b.factionsRequired.Contains(faction))
+				{
+					buildings.Add(b);
+				}
+			}
+
+			return buildings;
+
 		}
 	}
 }

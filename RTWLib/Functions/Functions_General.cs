@@ -12,6 +12,7 @@ using RTWLib.Data;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Authentication.ExtendedProtection.Configuration;
 
 namespace RTWLib.Functions
 {
@@ -28,11 +29,59 @@ namespace RTWLib.Functions
 		{
 			get;
 		}
-
 		string Description
 		{
 			get;
 		}
+	}
+
+	public class FileBase : Logger.Logger, IFile
+	{
+		FileNames name;
+		string FILEPATH;
+		string DESCRIPTION;
+
+		public FileBase(FileNames name, string filePath, string description)
+		{
+			this.name = name;
+			this.FILEPATH = filePath;
+			this.DESCRIPTION = description;
+		
+		}
+
+		virtual public void Parse(string[] paths, out int lineNumber, out string currentLine)
+		{
+			lineNumber = 0;
+			currentLine = "base not implemented";
+		}
+
+		virtual public string Output()
+		{
+			string output = "base not implemented";
+
+			return output;
+		}
+
+		public FileNames Name
+		{
+			get { return name; }
+		}
+		public string FilePath
+		{
+			get { return FILEPATH; }
+		}
+
+		public string Log(string txt)
+		{
+			return base.PLog(txt);
+		}
+
+		public string Description
+		{
+			get { return DESCRIPTION; }
+		}
+
+
 	}
 
 	static public class Functions_General

@@ -92,6 +92,7 @@ namespace RTWLib.Data
         descr_regions,
         descr_sm_faction,
         names,
+		preferences
     }
 
 }

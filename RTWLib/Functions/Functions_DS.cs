@@ -9,9 +9,8 @@ using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
 namespace RTWLib.Functions
 {
-    public class Descr_Strat : Logger.Logger, IFile, ICloneable
+    public class Descr_Strat : FileBase, IFile
     {
-        FileNames name = FileNames.descr_strat;
         public List<string> ds_data = new List<string>();
         public string campaign = "";
         public List<string> playableFactions = new List<string>();
@@ -27,31 +26,11 @@ namespace RTWLib.Functions
         public CoreAttitudes coreAttitudes = new CoreAttitudes("core_attitudes");
         public CoreAttitudes factionRelationships = new CoreAttitudes("faction_relationships");
 
-        public const string FILEPATH = @"randomiser\van_data\world\maps\campaign\imperial_campaign\descr_strat.txt";
-        public const string DESCRIPTION = "Campaign Info";
-
-        public Descr_Strat()
+        public Descr_Strat() 
+            : base(FileNames.descr_strat, "Campaign Info and Setup", @"randomiser\van_data\world\maps\campaign\imperial_campaign\descr_strat.txt")
         { }
 
-        protected Descr_Strat(Descr_Strat ds)
-        {
-            ds_data = new List<string>(ds.ds_data);
-            campaign = ds.campaign;
-            playableFactions = new List<string>(ds.playableFactions);
-            campaignNonPlayable = new List<string>(ds.campaignNonPlayable);
-            unlockableFactions = new List<string>(ds.unlockableFactions);
-            startDate = ds.startDate;
-            endDate = ds.endDate;
-            brigand_spawn_value = ds.brigand_spawn_value;
-            pirate_spawn_value = ds.pirate_spawn_value;
-            landmarks = new List<Landmark>(ds.landmarks);
-            resources = new List<Resource>(ds.resources);
-            factions = new List<Faction>(ds.factions);
-            coreAttitudes = new CoreAttitudes(ds.coreAttitudes);
-            factionRelationships = new CoreAttitudes(ds.factionRelationships);
-        }
-
-        public void Parse(string[] filepath, out int lineNumber, out string currentLine)
+        override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
         {
             if (!FileCheck(filepath[0]))
                 DisplayLogExit();
@@ -499,8 +478,7 @@ namespace RTWLib.Functions
 
             //Descr_Strat ds = new Descr_Strat(settlementOwnership, settlements, ds_data);
         }
-
-        public string Output()
+        override public string Output()
         {
             string output = "";
 
@@ -564,25 +542,11 @@ namespace RTWLib.Functions
             output += factionRelationships.OutputSingle();
             return output;
         }
-
         public void ToFile(string filepath)
         {
             StreamWriter sw = new StreamWriter(filepath);
-
             sw.Write(Output());
-
             sw.Close();
-
-        }
-
-        public string Log(string txt)
-        {
-            return base.PLog(txt);
-        }
-
-        public string Description
-        {
-            get { return DESCRIPTION; }
         }
 
         //remove spqr from factions
@@ -605,12 +569,10 @@ namespace RTWLib.Functions
             RemoveSenateRelations(ref coreAttitudes);
             RemoveSenateRelations(ref factionRelationships);
         }
-
         public void ShuffleFactions(Random rnd)
         {
             factions.Shuffle(rnd);
         }
-
         void RemoveSenateRelations(ref CoreAttitudes coreA)
         {
             coreA.attitudes.Remove(FactionOwnership.romans_senate);
@@ -629,7 +591,6 @@ namespace RTWLib.Functions
                 }
             }
         }
-
         public int GetArmyCount(int facIndex)
         {
             int count = 0;
@@ -648,7 +609,6 @@ namespace RTWLib.Functions
             return count;
 
         }
-
         public int GetAgentCount(int facIndex)
         {
             int count = 0;
@@ -667,7 +627,6 @@ namespace RTWLib.Functions
             return count;
 
         }
-
         public int GetNavyCount(int facIndex)
         {
             int count = 0;
@@ -686,22 +645,6 @@ namespace RTWLib.Functions
             return count;
 
         }
-
-        public string FilePath
-        {
-            get { return FILEPATH; }
-        }
-
-        public FileNames Name
-        {
-            get { return name; }
-        }
-
-		public Object Clone()
-		{
-			return new Descr_Strat(this);
-		}
-
 	}
 }
  

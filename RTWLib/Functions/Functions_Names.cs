@@ -7,7 +7,7 @@ using System.IO;
 using RTWLib.Data;
 namespace RTWLib.Functions
 {
-	public class NamesFile : Logger.Logger, IFile
+	public class NamesFile : FileBase, IFile
 	{
         FileNames name = FileNames.names;
 		const string DESCRIPTION = "Name file";
@@ -15,12 +15,12 @@ namespace RTWLib.Functions
 
 		Dictionary<FactionOwnership, List<string>> names = new Dictionary<FactionOwnership, List<string>>();
 
-        public NamesFile(bool log_on)
+        public NamesFile(bool log_on) 
+			: base(FileNames.names, @"randomiser\data\descr_names.txt", "Lists character names")
         {
             is_on = log_on;
         }
-
-		public void Parse(string[] path, out int lineNumber, out string currentLine)
+		override public void Parse(string[] path, out int lineNumber, out string currentLine)
 		{
 			LookUpTables lt = new LookUpTables();
 			StreamReader sr = new StreamReader(path[0]);
@@ -54,7 +54,6 @@ namespace RTWLib.Functions
 				}
 			}
 		}
-
 		public string GetRandomName(Random rnd, string faction)
 		{
 			LookUpTables lt = new LookUpTables();
@@ -63,7 +62,6 @@ namespace RTWLib.Functions
 
 			return names[fo][rnd.Next(names[fo].Count())];
 		}
-
 		public string GetRandomUniqueName(Random rnd, string faction, List<string> usedNames)
 		{
 			LookUpTables lt = new LookUpTables();
@@ -79,7 +77,6 @@ namespace RTWLib.Functions
 
 			return unusedNames[rnd.Next(unusedNames.Count())];
 		}
-
 		private bool CheckForNonASCII(string str)
 		{
 			foreach (char c in str)
@@ -89,36 +86,7 @@ namespace RTWLib.Functions
 				else return false;
 					
 			}
-
 			return true;
-
 		}
-
-		public string Output()
-		{
-			string output = "";
-			return output;
-		}
-
-		public string Log(string txt)
-		{
-			return base.PLog(txt);
-		}
-
-		public string Description
-		{
-			get { return DESCRIPTION; }
-		}
-
-        public FileNames Name
-        {
-            get { return name; }
-        }
-
-        public string FilePath
-		{
-			get { return FILEPATH; }
-		}
-
 	}
 }

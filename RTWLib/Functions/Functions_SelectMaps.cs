@@ -15,7 +15,6 @@ namespace RTWLib.Functions
 		public const string SAVELOC = @"randomiser\data\world\maps\campaign\imperial_campaign\";
 		public const string RADARMAP = @"randomiser\van_data\world\maps\campaign\imperial_campaign\radar_map1.tga";
 		public const string DESCRIPTION = "Select Maps";
-
 		MagickImage full_map;
 
 		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf)
@@ -103,7 +102,6 @@ namespace RTWLib.Functions
 
 			return fullFactionMap.ToBitmap();
 		}
-
 		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf, string fac_name, string savepath)
 		{
 			LookUpTables lt = new LookUpTables();
@@ -213,19 +211,16 @@ namespace RTWLib.Functions
 
 			return factionMap;
 		}
-
 		private void Save(MagickImage map, string name, string filepath)
 		{
 			string fileType = ".tga";
 			map.Scale(384, 237);
 			map.Write(filepath + "map_" + name + fileType);
 		}
-
 		public void Save(string path)
 		{
 			full_map.Write(@path, MagickFormat.Png);
 		}
-
 		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)
 		{
 			int bcount = 0;
@@ -246,7 +241,6 @@ namespace RTWLib.Functions
 			return bcount;
 
 		}
-
 		private int BorderCheck(int x, int i, List<ushort[]> vp, MagickColor mc)
 		{
 			int bcount = 0;
@@ -281,7 +275,6 @@ namespace RTWLib.Functions
 			return bcount;
 
 		}
-
 		private static ushort[] Blend(MagickColor color, MagickColor backColor, double amount)
 		{
 			ushort R = (ushort)((color.R * amount) + backColor.R * (1 - amount));
@@ -290,8 +283,5 @@ namespace RTWLib.Functions
 
 			return new ushort[] { R, G, B };
 		}
-
 	}
-
-
 }

@@ -12,17 +12,13 @@ using RTWLib.Data;
 
 namespace RTWLib.Functions
 {
-	public class EDU : Logger.Logger, IFile, ICloneable
+	public class EDU : FileBase, IFile
 	{
-        FileNames name = FileNames.export_descr_unit;
-		public const string FILEPATH = @"randomiser\data\export_descr_unit.txt";
-		const string DESCRIPTION = "Units";
 		public List<Unit> units = new List<Unit>();
-
 		public static FileScheme edu_scheme = new FileScheme();
 
-
-		public EDU(bool log_on)
+		public EDU(bool log_on) 
+			: base(FileNames.export_descr_unit, @"randomiser\data\export_descr_unit.txt", "Unit details and stats")
 		{
             is_on = log_on;
 			edu_scheme.Add("soldier", "name", 0);
@@ -77,18 +73,7 @@ namespace RTWLib.Functions
 			edu_scheme.Add("stat_cost", "custom", 5);
 		}
 
-		public EDU(EDU edu)
-		{
-			units = new List<Unit>(edu.units);
-            
-		}
-
-		public string Description
-		{
-			get { return DESCRIPTION; }
-		}
-
-		public void Parse(string[] paths, out int lineNumber, out string currentLine)
+		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
 			if (!FileCheck(paths[0]))
 				DisplayLogExit();
@@ -547,7 +532,17 @@ namespace RTWLib.Functions
 			edu.Close();
 
 		}
+		override public string Output()
+		{
+			string output = "";
 
+			foreach (Unit unit in units)
+			{
+				output += unit.unitOutput();
+			}
+
+			return output;
+		}
 		public Unit FindUnit(string name)
 		{
 			Unit unit = units.Find(x => x.dictionary.Contains(name));
@@ -559,13 +554,11 @@ namespace RTWLib.Functions
 
 			return unit;
 		}
-
 		public List<Unit> FindUnits(string name)
 		{
 			List<Unit> unit = units.FindAll(x => x.dictionary.Contains(name));
 			return unit;
 		}
-
 		public List<Unit> FindUnitsByFaction(string faction)
 		{
 			LookUpTables lut = new LookUpTables();
@@ -608,7 +601,6 @@ namespace RTWLib.Functions
 			}
 			return new List<Unit>();
 		}
-
 		public List<Unit> FindUnitsByArgAndFaction(string[] args, string faction = null, bool useFaction = false)
 		{
 			List<Unit> selection = new List<Unit>();
@@ -699,7 +691,6 @@ namespace RTWLib.Functions
 
 			return selection;
 		}
-
 		public bool CheckUnitBelongsToFactionAndCulture(string faction, Unit unit)
 		{
 			LookUpTables lut = new LookUpTables();
@@ -712,8 +703,6 @@ namespace RTWLib.Functions
 			else return false;
 
 		}
-
-
 		public string[] GetUnitNameList()
 		{
 			string[] lstUnit = new string[units.Count];
@@ -724,35 +713,6 @@ namespace RTWLib.Functions
 				ind++;
 			}
 			return lstUnit;
-		}
-		public string Log(string txt)
-		{
-			return base.PLog(txt);
-		}
-
-		public string Output()
-		{
-			string output = "";
-
-			foreach (Unit unit in units)
-			{
-				output += unit.unitOutput();
-			}
-
-			return output;
-		}
-        public FileNames Name
-        {
-            get { return name; }
-        }
-        public string FilePath
-		{
-			get { return FILEPATH; }
-		}
-
-		public Object Clone()
-		{
-			return new EDU(this);
 		}
 	}
 
