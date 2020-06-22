@@ -1,4 +1,4 @@
-# RTWLIB
+# RTWLib
 
 This library contains features to parse/output RTW files.
 
