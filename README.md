@@ -4,7 +4,7 @@ This library contains features to parse/output RTW files.
 
 It's extensively in my randomiser, so check that out for more examples of usage.
 
-This library makes use of the fantastic (https://github.com/dlemstra/Magick.NET)[MAGICK.NET] library.
+This library makes use of the fantastic [MAGICK.NET](https://github.com/dlemstra/Magick.NET) library.
 
 ## Features
 
