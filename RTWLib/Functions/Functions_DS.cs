@@ -27,7 +27,7 @@ namespace RTWLib.Functions
         public CoreAttitudes factionRelationships = new CoreAttitudes("faction_relationships");
 
         public Descr_Strat() 
-            : base(FileNames.descr_strat, "Campaign Info and Setup", @"randomiser\van_data\world\maps\campaign\imperial_campaign\descr_strat.txt")
+            : base(FileNames.descr_strat, @"data\world\maps\campaign\imperial_campaign\descr_strat.txt", "Campaign Info and Setup")
         { }
 
         override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
@@ -542,7 +542,7 @@ namespace RTWLib.Functions
             output += factionRelationships.OutputSingle();
             return output;
         }
-        public void ToFile(string filepath)
+        override public void ToFile(string filepath)
         {
             StreamWriter sw = new StreamWriter(filepath);
             sw.Write(Output());

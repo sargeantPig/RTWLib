@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection.Configuration;
+using System.IO;
 
 namespace RTWLib.Functions
 {
@@ -33,6 +34,8 @@ namespace RTWLib.Functions
 		{
 			get;
 		}
+		void ToFile(string filepath);
+
 	}
 
 	public class FileBase : Logger.Logger, IFile
@@ -62,6 +65,13 @@ namespace RTWLib.Functions
 			return output;
 		}
 
+		virtual public void ToFile(string filepath)
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(Output());
+			sw.Close();
+		}
+
 		public FileNames Name
 		{
 			get { return name; }
@@ -80,8 +90,6 @@ namespace RTWLib.Functions
 		{
 			get { return DESCRIPTION; }
 		}
-
-
 	}
 
 	static public class Functions_General

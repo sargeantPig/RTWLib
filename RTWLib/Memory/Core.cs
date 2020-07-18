@@ -24,7 +24,6 @@ namespace RTWLib.Memory
 		string arguments;
 		StreamReader output;
 
-
 		Process p;
 		public Core() { }
 
@@ -35,13 +34,28 @@ namespace RTWLib.Memory
 			
 			pName = p.ProcessName;
 			arguments = args[0];
-			
+			p.ErrorDataReceived += DataRecieved;
+			output = p.StandardOutput;
+			p.EnableRaisingEvents = true;
+			p.Exited += RomeExited;
 		}
 
 		public void Watch()
 		{
-	
-			//Console.WriteLine(p.ExitCode);
+		}
+
+		public void DataRecieved(object sender, EventArgs e)
+		{
+			Console.WriteLine(((Process)sender).StandardError.ReadToEnd());
+			Console.WriteLine(e.ToString());
+		
+		}
+
+		public void RomeExited(object sender, EventArgs e)
+		{
+			Console.WriteLine(((Process)sender).ExitCode.ToString());
+			Console.WriteLine(e.ToString());
+
 		}
 
 	}

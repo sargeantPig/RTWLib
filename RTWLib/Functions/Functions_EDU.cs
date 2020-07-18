@@ -18,7 +18,7 @@ namespace RTWLib.Functions
 		public static FileScheme edu_scheme = new FileScheme();
 
 		public EDU(bool log_on) 
-			: base(FileNames.export_descr_unit, @"randomiser\data\export_descr_unit.txt", "Unit details and stats")
+			: base(FileNames.export_descr_unit, @"data\export_descr_unit.txt", "Unit details and stats")
 		{
             is_on = log_on;
 			edu_scheme.Add("soldier", "name", 0);
@@ -713,6 +713,13 @@ namespace RTWLib.Functions
 				ind++;
 			}
 			return lstUnit;
+		}
+
+		override public void ToFile(string filepath)
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(Output());
+			sw.Close();
 		}
 	}
 

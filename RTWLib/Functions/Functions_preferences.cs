@@ -11,13 +11,18 @@ using System.Runtime.CompilerServices;
 
 namespace RTWLib.Functions
 {
-    class PreferencesFile : FileBase, IFile
+    public class PreferencesFile : FileBase, IFile
     {
 
         public PreferencesFile() 
-            : base(FileNames.preferences, @"randomiser\preferences\preferences.txt", "User Preferences")
-        { } 
+            : base(FileNames.preferences, @"preferences\preferences.txt", "User Preferences")
+        { }
 
+
+        public void ImportPreferences(string dest)
+        {
+            File.Copy(@"preferences\preferences.txt", dest, overwrite: true);
+        }
 
 
     }

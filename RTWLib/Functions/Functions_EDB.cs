@@ -18,15 +18,11 @@ namespace RTWLib.Functions
 
 	public class EDB : FileBase, IFile
 	{
-        FileNames name = FileNames.export_descr_buildings;
 		public List<string> hiddenResources = new List<string>();
 		public List<CoreBuilding> buildingTrees = new List<CoreBuilding>();
 
-		public const string FILEPATH = @"randomiser\data\export_descr_buildings.txt";
-		const string DESCRIPTION = "Buildings";
-
 		public EDB(bool log_on) 
-			: base(FileNames.export_descr_buildings, @"randomiser\data\export_descr_buildings.txt", "Building desscriptions and order")
+			: base(FileNames.export_descr_buildings, @"data\export_descr_buildings.txt", "Building desscriptions and order")
 		{
             is_on = log_on;
         }
@@ -438,6 +434,14 @@ namespace RTWLib.Functions
 
 			return null;
 		}
+
+		override public void ToFile(string filepath)
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(Output());
+			sw.Close();
+		}
+
 		public string[] GetSpecificBuildingFromChain(string type, string settlementLevel)
 		{
 			foreach (CoreBuilding cb in buildingTrees)

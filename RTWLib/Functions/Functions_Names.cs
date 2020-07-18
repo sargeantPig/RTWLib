@@ -9,14 +9,10 @@ namespace RTWLib.Functions
 {
 	public class NamesFile : FileBase, IFile
 	{
-        FileNames name = FileNames.names;
-		const string DESCRIPTION = "Name file";
-		const string FILEPATH = @"randomiser\data\descr_names.txt";
-
 		Dictionary<FactionOwnership, List<string>> names = new Dictionary<FactionOwnership, List<string>>();
 
         public NamesFile(bool log_on) 
-			: base(FileNames.names, @"randomiser\data\descr_names.txt", "Lists character names")
+			: base(FileNames.names, @"data\descr_names.txt", "Lists character names")
         {
             is_on = log_on;
         }

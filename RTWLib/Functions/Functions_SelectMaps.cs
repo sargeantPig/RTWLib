@@ -12,23 +12,30 @@ namespace RTWLib.Functions
 {
 	public class SelectMaps
 	{
-		public const string SAVELOC = @"randomiser\data\world\maps\campaign\imperial_campaign\";
-		public const string RADARMAP = @"randomiser\van_data\world\maps\campaign\imperial_campaign\radar_map1.tga";
+		public string saveLocation;
+		public string radarMapLocation;
 		public const string DESCRIPTION = "Select Maps";
 		MagickImage full_map;
+
+		public SelectMaps(string saveLocation, string radarMapLocation)
+		{
+			this.saveLocation = saveLocation;
+			this.radarMapLocation = radarMapLocation;
+		}
+
 
 		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf)
 		{
 			LookUpTables lt = new LookUpTables();
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
-			MagickImage fullFactionMap = new MagickImage(RADARMAP); // use radar map as a base
+			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
 
 			var rpixels = regionMap.GetPixels();
 
 			foreach (Faction f in ds.factions) // loop through faction
 			{
 				var fpixels = fullFactionMap.GetPixels(); //set up both maps
-				MagickImage factionMap = new MagickImage(RADARMAP);
+				MagickImage factionMap = new MagickImage(radarMapLocation);
 				using (IPixelCollection fmPixels = factionMap.GetPixels())
 				{
 					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
@@ -94,7 +101,7 @@ namespace RTWLib.Functions
 					}
 				}
 
-				Save(factionMap, f.name, SAVELOC);
+				Save(factionMap, f.name, saveLocation);
 			}
 
 			full_map = fullFactionMap;
@@ -121,7 +128,7 @@ namespace RTWLib.Functions
 			MagickColor war = new MagickColor(Color.DarkRed);
 			MagickColor currentColour1 = fac1;
 			MagickColor currentColour2 = facCol2;
-			MagickImage factionMap = new MagickImage(RADARMAP);
+			MagickImage factionMap = new MagickImage(radarMapLocation);
 			foreach (Faction f in ds.factions) // loop through faction
 			{
 				

@@ -14,14 +14,12 @@ namespace RTWLib.Functions
 {
 	public class Descr_Region : FileBase,  IFile
 	{
-        FileNames name = FileNames.descr_regions;
-		const string DESCRIPTION = "Regions";
-		public const string FILEPATH_REGIONS = @"randomiser\data\world\maps\base\map_regions.tga";
-		public const string FILEPATH_DR = @"randomiser\data\world\maps\base\descr_regions.txt";
+		public const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
+		public const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
 		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
 
 		public Descr_Region(bool log_on) 
-			: base(FileNames.descr_regions, "handles region colours and locations", @"randomiser\data\world\maps\base\descr_regions.txt")
+			: base(FileNames.descr_regions, @"data\world\maps\base\descr_regions.txt", "handles region colours and locations" )
 		{
             is_on = log_on;
         }

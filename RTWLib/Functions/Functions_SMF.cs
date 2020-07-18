@@ -11,13 +11,10 @@ namespace RTWLib.Functions
 {	
 	public class SM_Factions : FileBase, IFile
 	{
-        FileNames name = FileNames.descr_sm_faction;
-		public const string FILEPATH = @"randomiser\data\descr_sm_factions.txt";
-		const string DESCRIPTION = "faction colours";
 		public Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
 
 		public SM_Factions() 
-			: base(FileNames.descr_sm_faction, @"randomiser\data\descr_sm_factions.txt", "Describes the faction colours")
+			: base(FileNames.descr_sm_faction, @"data\descr_sm_factions.txt", "Describes the faction colours")
 		{
 		}
 		override public void Parse(string[] path, out int lineNumber, out string currentLine)
