@@ -159,8 +159,8 @@ namespace RTWLib.Functions
 					{
 						string[] splitted = trimmed.Split(',');
 						units[counter].soldier.name = splitted[0].Trim();
-						units[counter].soldier.number = Convert.ToInt16(splitted[1].Trim());
-						units[counter].soldier.extras = Convert.ToInt16(splitted[2].Trim());
+						units[counter].soldier.number = Convert.ToInt32(splitted[1].Trim());
+						units[counter].soldier.extras = Convert.ToInt32(splitted[2].Trim());
 						float cm = splitted[3].UniversalParse();
 						units[counter].soldier.collisionMass = (float)cm;
 						// PLog("Error - unable to parse " + splitted[3].ToString());
@@ -219,7 +219,7 @@ namespace RTWLib.Functions
 
 							units[counter].mountEffect.mountType.Add(reSplit[i]);
 							i++;
-							units[counter].mountEffect.modifier.Add(Convert.ToInt16(reSplit[i]));
+							units[counter].mountEffect.modifier.Add(Convert.ToInt32(reSplit[i]));
 							i++;
 
 							if (i > splitted.Count())
@@ -254,11 +254,16 @@ namespace RTWLib.Functions
 				{
 					trimApply(() => {
 						string[] splitted = trimmed.Split(',');
-
+						
 						foreach (string STRING in splitted)
 						{
-							trimmed = STRING.Trim();
-							units[counter].attributes |= lookUp.LookUpKey<Attributes>(trimmed);
+							if (STRING != " ")
+							{ 
+								trimmed = STRING.Trim();
+								object obj;
+								if((obj = lookUp.LookUpKey<Attributes>(trimmed)) != null)
+									units[counter].attributes |= lookUp.LookUpKey<Attributes>(trimmed);
+							}
 						}
 					});
 				}
@@ -287,7 +292,7 @@ namespace RTWLib.Functions
 							}
 							else if (b < 1)
 							{
-								units[counter].formation.FormationRanks = Convert.ToInt16(STRING.Trim());
+								units[counter].formation.FormationRanks = Convert.ToInt32(STRING.Trim());
 								edu_scheme.Add("formation", "ranks", 0);
 								b++;
 							}
@@ -307,8 +312,8 @@ namespace RTWLib.Functions
 				{
 					trimApply(() => {
 						string[] splitted = trimmed.Split(',');
-						units[counter].heatlh[0] = Convert.ToInt16(splitted[0]);
-						units[counter].heatlh[1] = Convert.ToInt16(splitted[1]);
+						units[counter].heatlh[0] = Convert.ToInt32(splitted[0]);
+						units[counter].heatlh[1] = Convert.ToInt32(splitted[1]);
 						edu_scheme.Add("health", "soldier", 0);
 						edu_scheme.Add("formation", "companion", 1);
 					});
@@ -321,7 +326,8 @@ namespace RTWLib.Functions
 
 						foreach (string STRING in splitted)
 						{
-							units[counter].priAttri |= lookUp.LookUpKey<Stat_pri_attr>(STRING.Trim());
+							if(STRING.ToCharArray().Count() >0)
+								units[counter].priAttri |= lookUp.LookUpKey<Stat_pri_attr>(STRING.Trim());
 						}
 					});
 				}
@@ -333,9 +339,9 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].primaryArmour.stat_pri_armour[0] = Convert.ToInt16(splitted[0]);
-						units[counter].primaryArmour.stat_pri_armour[1] = Convert.ToInt16(splitted[1]);
-						units[counter].primaryArmour.stat_pri_armour[2] = Convert.ToInt16(splitted[2]);
+						units[counter].primaryArmour.stat_pri_armour[0] = Convert.ToInt32(splitted[0]);
+						units[counter].primaryArmour.stat_pri_armour[1] = Convert.ToInt32(splitted[1]);
+						units[counter].primaryArmour.stat_pri_armour[2] = Convert.ToInt32(splitted[2]);
 						units[counter].primaryArmour.armour_sound = lookUp.LookUpKey<ArmourSound>(splitted[3].Trim());
 					});
 				}
@@ -344,14 +350,14 @@ namespace RTWLib.Functions
 				{
 					trimApply(() => {
 
-						string[] splitted = trimmed.Split(',');
+						string[] splitted = trimmed.Split(',', ';');
 
-						trimmed = splitted[0].TrimEnd();
+						trimmed = splitted[0].Trim();
 
-						units[counter].primaryWeapon.attack[0] = Convert.ToInt16(splitted[0]);
-						units[counter].primaryWeapon.attack[1] = Convert.ToInt16(splitted[1]);
-						units[counter].primaryWeapon.Missleattri[0] = Convert.ToInt16(splitted[3]);
-						units[counter].primaryWeapon.Missleattri[1] = Convert.ToInt16(splitted[4]);
+						units[counter].primaryWeapon.attack[0] = Convert.ToInt32(splitted[0]);
+						units[counter].primaryWeapon.attack[1] = Convert.ToInt32(splitted[1]);
+						units[counter].primaryWeapon.Missleattri[0] = Convert.ToInt32(splitted[3]);
+						units[counter].primaryWeapon.Missleattri[1] = Convert.ToInt32(splitted[4]);
 						units[counter].primaryWeapon.attackdelay[0] = splitted[9].UniversalParse();
 						units[counter].primaryWeapon.attackdelay[1] = splitted[10].UniversalParse();
 
@@ -382,8 +388,8 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].secondaryArmour.stat_sec_armour[0] = Convert.ToInt16(splitted[0]);
-						units[counter].secondaryArmour.stat_sec_armour[1] = Convert.ToInt16(splitted[1]);
+						units[counter].secondaryArmour.stat_sec_armour[0] = Convert.ToInt32(splitted[0]);
+						units[counter].secondaryArmour.stat_sec_armour[1] = Convert.ToInt32(splitted[1]);
 						units[counter].secondaryArmour.sec_armour_sound = lookUp.LookUpKey<ArmourSound>(splitted[2].Trim());
 					});
 				}
@@ -395,11 +401,11 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].secondaryWeapon.attack[0] = Convert.ToInt16(splitted[0]);
-						units[counter].secondaryWeapon.attack[1] = Convert.ToInt16(splitted[1]);
+						units[counter].secondaryWeapon.attack[0] = Convert.ToInt32(splitted[0]);
+						units[counter].secondaryWeapon.attack[1] = Convert.ToInt32(splitted[1]);
 
-						units[counter].secondaryWeapon.Missleattri[0] = Convert.ToInt16(splitted[3]);
-						units[counter].secondaryWeapon.Missleattri[1] = Convert.ToInt16(splitted[4]);
+						units[counter].secondaryWeapon.Missleattri[0] = Convert.ToInt32(splitted[3]);
+						units[counter].secondaryWeapon.Missleattri[1] = Convert.ToInt32(splitted[4]);
 
 						units[counter].secondaryWeapon.attackdelay[0] = splitted[9].UniversalParse();
 						units[counter].secondaryWeapon.attackdelay[1] = splitted[10].UniversalParse();
@@ -419,7 +425,7 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].heat = Convert.ToInt16(trimmed);
+						units[counter].heat = Convert.ToInt32(trimmed);
 					});
 				}
 
@@ -427,14 +433,14 @@ namespace RTWLib.Functions
 				{
 					trimApply(() => {
 
-						string[] splitted = trimmed.Split(',');
+						string[] splitted = trimmed.Split(',', ';');
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].ground[0] = Convert.ToInt16(splitted[0]);
-						units[counter].ground[1] = Convert.ToInt16(splitted[1]);
-						units[counter].ground[2] = Convert.ToInt16(splitted[2]);
-						units[counter].ground[3] = Convert.ToInt16(splitted[3]);
+						units[counter].ground[0] = Convert.ToInt32(splitted[0]);
+						units[counter].ground[1] = Convert.ToInt32(splitted[1]);
+						units[counter].ground[2] = Convert.ToInt32(splitted[2]);
+						units[counter].ground[3] = Convert.ToInt32(splitted[3]);
 					});
 				}
 
@@ -445,7 +451,7 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].mental.morale = Convert.ToInt16(splitted[0]);
+						units[counter].mental.morale = Convert.ToInt32(splitted[0]);
 						units[counter].mental.discipline = lookUp.LookUpKey<Statmental_discipline>(splitted[1].Trim());
 						units[counter].mental.training = lookUp.LookUpKey<Statmental_training>(splitted[2].Trim());
 					});
@@ -458,7 +464,7 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].chargeDistance = Convert.ToInt16(trimmed);
+						units[counter].chargeDistance = Convert.ToInt32(trimmed);
 					});
 				}
 
@@ -469,7 +475,7 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].fireDelay = Convert.ToInt16(trimmed);
+						units[counter].fireDelay = Convert.ToInt32(trimmed);
 
 
 					});
@@ -483,8 +489,8 @@ namespace RTWLib.Functions
 
 						trimmed = splitted[0].TrimEnd();
 
-						units[counter].food[0] = Convert.ToInt16(splitted[0]);
-						units[counter].food[1] = Convert.ToInt16(splitted[1]);
+						units[counter].food[0] = Convert.ToInt32(splitted[0]);
+						units[counter].food[1] = Convert.ToInt32(splitted[1]);
 					});
 				}
 
@@ -498,9 +504,17 @@ namespace RTWLib.Functions
 						int i = 0;
 						foreach (string STRING in splitted)
 						{
-
-							units[counter].cost[i] = Convert.ToInt16(STRING);
-							i++;
+							string trim = STRING.TrimStart();
+							if (trim.Contains(" "))
+							{
+								string[] split = STRING.Trim().Split(' ');
+								units[counter].cost[i] = Convert.ToInt32(split[0].Trim());
+							}
+							else
+							{
+								units[counter].cost[i] = Convert.ToInt32(STRING);
+								i++;
+							}
 						}
 					});
 				}

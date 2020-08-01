@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-
+using RTWLib.Objects.Descr_strat;
 
 namespace RTWLib.Data
 {
@@ -39,7 +39,8 @@ namespace RTWLib.Data
 			{FactionOwnership.egyptian, "egyptian" },
 			{FactionOwnership.greek, "greek" },
 			{FactionOwnership.none, "none" },
-			{FactionOwnership.roman, "roman" }
+			{FactionOwnership.roman, "roman" },
+			{FactionOwnership.nomad, "nomad" }//Ahowls vanilla enhancement addition
 
 
 		};
@@ -79,6 +80,8 @@ namespace RTWLib.Data
 		static public Dictionary<MissileType, string> dic_missleTypes = new Dictionary<MissileType, string>()
 		{
 			{MissileType.arrow, "arrow" },
+			{MissileType.arrow2, "arrow2"}, //Ahowls vanilla enhancement addition
+			{MissileType.francisca, "francisca"},//Ahowls vanilla enhancement addition
 			{MissileType.ballista, "ballista" },
 			{MissileType.bullet, "bullet" },
 			{MissileType.heavy_onager, "heavy_onager" },
@@ -91,7 +94,8 @@ namespace RTWLib.Data
 			{MissileType.stone, "stone" },
 			{MissileType.head, "head" },
 			{MissileType.boulder, "boulder" },
-			{MissileType.big_boulder, "big_boulder" }
+			{MissileType.big_boulder, "big_boulder" },
+			{MissileType.harpoon, "harpoon" }//Ahowls vanilla enhancement addition
 		};
 		static public Dictionary<WeaponType, string> dic_weapons = new Dictionary<WeaponType, string>()
 		{
@@ -161,7 +165,17 @@ namespace RTWLib.Data
 			{Stat_pri_attr.prec, "prec" },
 			{Stat_pri_attr.short_pike, "short_pike" },
 			{Stat_pri_attr.spear_bonus_4, "spear_bonus_4" },
+			{Stat_pri_attr.spear_bonus_6, "spear_bonus_6" }, //Ahowls vanilla enhancement addition
 			{Stat_pri_attr.spear_bonus_8, "spear_bonus_8" },
+			{Stat_pri_attr.spear_bonus_1, "spear_bonus_1" },
+			{Stat_pri_attr.spear_bonus_2, "spear_bonus_2" },
+			{Stat_pri_attr.spear_bonus_3, "spear_bonus_3" },
+			{Stat_pri_attr.spear_bonus_5, "spear_bonus_5" },
+			{Stat_pri_attr.spear_bonus_7, "spear_bonus_7" },
+			{Stat_pri_attr.spear_bonus_9, "spear_bonus_9" },
+			{Stat_pri_attr.spear_bonus_10, "spear_bonus_10" },
+			{Stat_pri_attr.spear_bonus_11, "spear_bonus_11" },
+			{Stat_pri_attr.spear_bonus_12, "spear_bonus_12" },
 			{Stat_pri_attr.thrown_ap, "thrown ap" },
 			{Stat_pri_attr.light_spear, "light_spear" }
 		};

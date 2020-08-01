@@ -48,6 +48,8 @@ namespace RTWLib.Data
 		stone,
 		pilum,
 		arrow,
+		arrow2,
+		francisca,
 		ballista,
 		onager,
 		heavy_onager,
@@ -57,6 +59,7 @@ namespace RTWLib.Data
 		bullet,
 		boulder,
 		big_boulder,
+		harpoon,
 		MT_no
 	};
 
@@ -141,10 +144,20 @@ namespace RTWLib.Data
 		area = 1 << 8,
 		fire = 1 << 9,
 		spear_bonus_4 = 1 << 10,
-		spear_bonus_8 = 1 << 11,
-		thrown_ap = 1 << 12,
-		PA_no = 1 << 13,
-		light_spear = 1 << 14
+		spear_bonus_6 = 1 << 11,
+		spear_bonus_8 = 1 << 12,
+		thrown_ap = 1 << 13,
+		PA_no = 1 << 14,
+		light_spear = 1 << 15,
+		spear_bonus_1 = 1 << 16,
+		spear_bonus_2 = 1 << 17,
+		spear_bonus_3 = 1 << 18,
+		spear_bonus_5 = 1 << 19,
+		spear_bonus_7 = 1 << 20,
+		spear_bonus_9 = 1 << 21,
+		spear_bonus_10 = 1 << 22,
+		spear_bonus_11 = 1 << 23,
+		spear_bonus_12 = 1 << 24
 	};
 
 	public enum Cultures
@@ -190,7 +203,8 @@ namespace RTWLib.Data
 		egyptian = 1 << 24,
 		eastern = 1 << 25,
 		barbarian = 1 << 26,
-		none = 1 << 27
+		nomad = 1 << 27, //Ahowls vanilla enhancement addition
+		none = 1 << 28
 		
 	}
 

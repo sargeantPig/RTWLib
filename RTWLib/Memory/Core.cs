@@ -11,6 +11,8 @@ using RTWLib.Functions;
 using System.Threading;
 namespace RTWLib.Memory
 {
+
+	//EXPERIMENTAL 
 	public static class RTWCore
 	{
 		public static Core core = new Core();
@@ -34,10 +36,10 @@ namespace RTWLib.Memory
 			
 			pName = p.ProcessName;
 			arguments = args[0];
-			p.ErrorDataReceived += DataRecieved;
+			//p.ErrorDataReceived += DataRecieved;
 			output = p.StandardOutput;
-			p.EnableRaisingEvents = true;
-			p.Exited += RomeExited;
+			//p.EnableRaisingEvents = true;
+			//p.Exited += RomeExited;
 		}
 
 		public void Watch()
