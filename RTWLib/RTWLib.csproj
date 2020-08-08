@@ -94,9 +94,11 @@
     <Compile Include="Data\enums.cs" />
     <Compile Include="Data\LookUpTables.cs" />
     <Compile Include="Data\Misc_Data.cs" />
+    <Compile Include="Functions\EDU\EDULineEnums.cs" />
+    <Compile Include="Functions\EDU\ParseEduLine.cs" />
     <Compile Include="Functions\Functions_DS.cs" />
     <Compile Include="Functions\Functions_EDB.cs" />
-    <Compile Include="Functions\Functions_EDU.cs" />
+    <Compile Include="Functions\EDU\Functions_EDU.cs" />
     <Compile Include="Functions\Functions_General.cs" />
     <Compile Include="Functions\Functions_Names.cs" />
     <Compile Include="Functions\Functions_Preferences.cs" />

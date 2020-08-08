@@ -229,6 +229,22 @@ namespace RTWLib.Functions
 			return Temp[0].Trim();
 		}
 
+		public static string Capitalise(this string input)
+		{
+			char[] characters = input.ToCharArray();
+
+
+			if (characters.Count() == 0)
+				return "";
+			
+			
+
+			characters[0] = char.ToUpper(characters[0]);
+
+			return new string(characters);
+
+		}
+
 		public static string RemoveLastWord(string String)
 		{
 			string newString = "";
