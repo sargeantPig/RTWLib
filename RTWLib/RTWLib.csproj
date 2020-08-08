@@ -96,6 +96,7 @@
     <Compile Include="Data\Misc_Data.cs" />
     <Compile Include="Functions\EDU\EDULineEnums.cs" />
     <Compile Include="Functions\EDU\ParseEduLine.cs" />
+    <Compile Include="Functions\EDU\StaticEDU.cs" />
     <Compile Include="Functions\Functions_DS.cs" />
     <Compile Include="Functions\Functions_EDB.cs" />
     <Compile Include="Functions\EDU\Functions_EDU.cs" />

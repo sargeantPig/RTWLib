@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RTWLib.Functions
+namespace RTWLib.Functions.EDU
 {
     public partial class EDU
     {
@@ -212,9 +212,6 @@ namespace RTWLib.Functions
 
             string[] reSplit = newCombined.Split(' ');
 
-            int i = 0;
-
-
             for (int index = 0; index < reSplit.Count(); index += 2)
             {
                 mountEffect.mountType.Add(reSplit[index]);
@@ -245,7 +242,6 @@ namespace RTWLib.Functions
                 else if (b < 1)
                 {
                     formation.FormationRanks = Convert.ToInt32(STRING.Trim());
-                    edu_scheme.Add("formation", "ranks", 0);
                     b++;
                 }
 

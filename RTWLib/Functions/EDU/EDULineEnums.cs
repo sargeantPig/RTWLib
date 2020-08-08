@@ -6,7 +6,61 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Functions
 {
-    enum EDULineEnums
+
+
+
+	public class FileScheme //helps find the locations of specific values like attack within a file
+	{
+		Dictionary<string, Dictionary<string, int>> scheme;
+
+		public FileScheme()
+		{
+			this.scheme = new Dictionary<string, Dictionary<string, int>>();
+		}
+
+		public FileScheme(Dictionary<string, Dictionary<string, int>> scheme)
+		{
+			this.scheme = scheme;
+		}
+
+		public void Add(string identifier, string component, int index)
+		{
+			if (!scheme.ContainsKey(identifier))
+				scheme.Add(identifier, new Dictionary<string, int>() { { component, index } });
+			else
+			{
+				if (!scheme[identifier].ContainsKey(component))
+					scheme[identifier].Add(component, index);
+			}
+		}
+
+		public int GetComponentIndex(string component)
+		{
+			foreach (KeyValuePair<string, Dictionary<string, int>> comp in scheme)
+			{
+				if (comp.Value.ContainsKey(component))
+				{
+					return comp.Value[component];
+				}
+			}
+			return -1;
+		}
+
+		public Dictionary<string, int> GetComponents(string identifier)
+		{
+			if (scheme.ContainsKey(identifier))
+				return scheme[identifier];
+			else return null;
+		}
+
+		public Dictionary<string, Dictionary<string, int>> Scheme
+		{
+			get { return scheme; }
+		}
+	}
+
+
+	public enum EDULineEnums
     {
         Type,
         Dictionary,
@@ -37,7 +91,5 @@ namespace RTWLib.Functions
         Stat_food,
         Stat_cost,
         Ownership
-
-
     }
 }

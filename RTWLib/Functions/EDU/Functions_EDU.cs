@@ -10,67 +10,17 @@ using RTWLib.Logger;
 using RTWLib.Functions;
 using RTWLib.Data;
 
-namespace RTWLib.Functions
+namespace RTWLib.Functions.EDU
 {
 	public partial class EDU : FileBase, IFile
 	{
 		public List<Unit> units = new List<Unit>();
-		public static FileScheme edu_scheme = new FileScheme();
+
 
 		public EDU(bool log_on) 
 			: base(FileNames.export_descr_unit, @"data\export_descr_unit.txt", "Unit details and stats")
 		{
             is_on = log_on;
-			edu_scheme.Add("soldier", "name", 0);
-			edu_scheme.Add("soldier", "number", 1);
-			edu_scheme.Add("soldier", "extras", 2);
-			edu_scheme.Add("soldier", "collisionMass", 3);
-			edu_scheme.Add("formation", "tight_side", 0);
-			edu_scheme.Add("formation", "tight_back", 1);
-			edu_scheme.Add("formation", "sparse_side", 0);
-			edu_scheme.Add("formation", "sparse_back", 1);
-			edu_scheme.Add("stat_pri_armour", "armour", 0);
-			edu_scheme.Add("stat_pri_armour", "defence", 1);
-			edu_scheme.Add("stat_pri_armour", "shield", 2);
-			edu_scheme.Add("stat_pri_armour", "sound", 3);
-			edu_scheme.Add("stat_pri", "attack", 0);
-			edu_scheme.Add("stat_pri", "chargeBonus", 1);
-			edu_scheme.Add("stat_pri", "missileType", 2);
-			edu_scheme.Add("stat_pri", "missileRange", 3);
-			edu_scheme.Add("stat_pri", "missileAmmo", 4);
-			edu_scheme.Add("stat_pri", "weaponFlag", 5);
-			edu_scheme.Add("stat_pri", "techFlag", 6);
-			edu_scheme.Add("stat_pri", "damageType", 7);
-			edu_scheme.Add("stat_pri", "soundType", 8);
-			edu_scheme.Add("stat_pri", "attkDelay1", 9);
-			edu_scheme.Add("stat_pri", "attkDelay2", 10);
-			edu_scheme.Add("stat_sec", "attack", 0);
-			edu_scheme.Add("stat_sec", "chargeBonus", 1);
-			edu_scheme.Add("stat_sec", "missileType", 2);
-			edu_scheme.Add("stat_sec", "missileRange", 3);
-			edu_scheme.Add("stat_sec", "missileAmmo", 4);
-			edu_scheme.Add("stat_sec", "weaponFlag", 5);
-			edu_scheme.Add("stat_sec", "techFlag", 6);
-			edu_scheme.Add("stat_sec", "damageType", 7);
-			edu_scheme.Add("stat_sec", "soundType", 8);
-			edu_scheme.Add("stat_sec", "attkDelay1", 9);
-			edu_scheme.Add("stat_sec", "attkDelay2", 10);
-			edu_scheme.Add("stat_sec_armour", "armour", 0);
-			edu_scheme.Add("stat_sec_armour", "defence", 1);
-			edu_scheme.Add("stat_sec_armour", "sound", 2);
-			edu_scheme.Add("stat_ground", "scrub", 0);
-			edu_scheme.Add("stat_ground", "sand", 1);
-			edu_scheme.Add("stat_ground", "forest", 2);
-			edu_scheme.Add("stat_ground", "snow", 3);
-			edu_scheme.Add("stat_mental", "morale", 0);
-			edu_scheme.Add("stat_mental", "discipline", 1);
-			edu_scheme.Add("stat_mental", "training", 2);
-			edu_scheme.Add("stat_cost", "turns", 0);
-			edu_scheme.Add("stat_cost", "construct", 1);
-			edu_scheme.Add("stat_cost", "upkeep", 2);
-			edu_scheme.Add("stat_cost", "weaponUpgrade", 3);
-			edu_scheme.Add("stat_cost", "armourUpgrade", 4);
-			edu_scheme.Add("stat_cost", "custom", 5);
 		}
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
@@ -288,52 +238,6 @@ namespace RTWLib.Functions
 			StreamWriter sw = new StreamWriter(filepath);
 			sw.Write(Output());
 			sw.Close();
-		}
-	}
-
-
-	public class FileScheme //helps find the locations of specific values like attack within a file
-	{
-		Dictionary<string, Dictionary<string, int>> scheme;
-
-		public FileScheme()
-		{
-			scheme = new Dictionary<string, Dictionary<string, int>>();
-		}
-
-		public void Add(string identifier, string component, int index)
-		{
-			if (!scheme.ContainsKey(identifier))
-				scheme.Add(identifier, new Dictionary<string, int>() { { component, index } });
-			else
-			{
-				if (!scheme[identifier].ContainsKey(component))
-					scheme[identifier].Add(component, index);
-			}
-		}
-
-		public int GetComponentIndex(string component)
-		{
-			foreach (KeyValuePair<string, Dictionary<string, int>> comp in scheme)
-			{
-				if (comp.Value.ContainsKey(component))
-				{
-					return comp.Value[component];
-				}
-			}
-			return -1;
-		}
-
-		public Dictionary<string, int> GetComponents(string identifier)
-		{
-			if (scheme.ContainsKey(identifier))
-				return scheme[identifier];
-			else return null;
-		}
-
-		public Dictionary<string, Dictionary<string, int>> Scheme
-		{
-			get { return scheme; }
 		}
 	}
 

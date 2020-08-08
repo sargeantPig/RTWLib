@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.IO;
+using System.CodeDom;
 
 namespace RTWLib.Functions
 {
@@ -91,6 +92,30 @@ namespace RTWLib.Functions
 			get { return DESCRIPTION; }
 		}
 	}
+
+	public class FileData<T>
+	{
+		Dictionary<T, int> expectedSizes;
+
+		public FileData(Dictionary<T, int> data)
+		{
+			this.expectedSizes = data;
+		}
+
+		public void Add(T key, int value)
+		{
+			if (!expectedSizes.ContainsKey(key))
+				expectedSizes.Add(key, value);
+		}
+
+		public int this[T i]
+		{
+			get { return expectedSizes[i]; }
+			set { expectedSizes[i] = value; }
+		}
+			
+	}
+
 
 	static public class Functions_General
 	{
