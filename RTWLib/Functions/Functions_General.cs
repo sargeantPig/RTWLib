@@ -352,5 +352,39 @@ namespace RTWLib.Functions
 			return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
 					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
+
+		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false)
+		{
+			string value = "";
+			int i = 0;
+			foreach (string str in array)
+			{
+				if (idx)
+					value += i.ToString() + ": ";
+				value += str;
+
+				if (insertNewlines)
+					value += "\r\n";
+				else value += ", ";
+				
+
+				i++;
+			}
+
+			return value;
+		}
+
+		public static string DropComments(this string line)
+		{
+			string s = "";
+			foreach (char c in line.ToCharArray())
+			{
+				if (c != ';')
+					s += c;
+				else return s;
+			}
+
+			return s;
+		}
 	}
 }

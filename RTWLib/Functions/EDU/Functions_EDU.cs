@@ -42,7 +42,7 @@ namespace RTWLib.Functions.EDU
 			{
 				currentLine = line;
 				lineNumber++;
-				ParseLine(line, ref counter);
+				ParseLine(line, ref counter, lineNumber);
 			}
 
 			txt_Output += ("\n" + units.Count + "Units loaded from EDU");

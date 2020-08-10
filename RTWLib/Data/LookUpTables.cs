@@ -40,7 +40,7 @@ namespace RTWLib.Data
 			{FactionOwnership.greek, "greek" },
 			{FactionOwnership.none, "none" },
 			{FactionOwnership.roman, "roman" },
-			{FactionOwnership.nomad, "nomad" }//Ahowls vanilla enhancement addition
+			//{FactionOwnership.nomad, "nomad" }//Ahowls vanilla enhancement addition
 
 
 		};

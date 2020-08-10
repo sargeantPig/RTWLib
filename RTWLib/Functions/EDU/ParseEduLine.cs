@@ -14,107 +14,116 @@ namespace RTWLib.Functions.EDU
 {
     public partial class EDU
     {
-        private bool ParseLine(string line, ref int counter)
+        private bool ParseLine(string line, ref int counter, int lineNumber)
         {
             EDULineEnums identifier;
-            string[] data = Functions_General.RemoveFirstWord(line).Trim().Split(';', ',');
+            string[] data = Functions_General.RemoveFirstWord(line).Trim().DropComments().TrimEnd(',').Split(';', ',');
             bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(line).Capitalise(), out identifier);
 
             if (!isIdentifier)
                 return false;
 
-            switch(identifier)
+            try
             {
-                case EDULineEnums.Type:
-                    units.Add(new Unit());
-                    counter++;
-                    HandleGenericLine(ref units[counter].type, data);
-                    break;
-                case EDULineEnums.Dictionary:
-                    HandleGenericLine(ref units[counter].dictionary, data);
-                    break;
-                case EDULineEnums.Category:
-                    HandleGenericLine(ref units[counter].category, data);
-                    break;
-                case EDULineEnums.Class:
-                    HandleGenericLine(ref units[counter].unitClass, data);
-                    break;
-                case EDULineEnums.Voice_type:
-                    HandleGenericLine(ref units[counter].voiceType, data);
-                    break;
-                case EDULineEnums.Ship:
-                    HandleGenericLine(ref units[counter].naval, data);
-                    break;
-                case EDULineEnums.Soldier:
-                    HandleSoldier(ref units[counter].soldier, data);
-                    break;
-                case EDULineEnums.Officer:
-                    HandleGenericLine(ref units[counter].officer, data);
-                    break;
-                case EDULineEnums.Mount:
-                    HandleGenericLine(ref units[counter].mount, data);
-                    break;
-                case EDULineEnums.Animal:
-                    HandleGenericLine(ref units[counter].animal, data);
-                    break;
-                case EDULineEnums.Engine:
-                    HandleGenericLine(ref units[counter].engine, data);
-                    break;
-                case EDULineEnums.Mount_effect:
-                    HandleMountEffect(ref units[counter].mountEffect, data);
-                    break;
-                case EDULineEnums.Attributes:
-                    HandleAttributes(ref units[counter].attributes, data);
-                    break;
-                case EDULineEnums.Formation:
-                    HandleFormation(ref units[counter].formation, data);
-                    break;
-                case EDULineEnums.Stat_health:
-                    HandleGenericInts(ref units[counter].heatlh, data);
-                    break;
-                case EDULineEnums.Stat_pri:
-                    HandleStatPri(ref units[counter].primaryWeapon, data);
-                    break;
-                case EDULineEnums.Stat_pri_attr:
-                    HandleStatPriAttr(ref units[counter].priAttri, data);
-                    break;
-                case EDULineEnums.Stat_sec:
-                    HandleStatPri(ref units[counter].secondaryWeapon, data);
-                    break;
-                case EDULineEnums.Stat_sec_attr:
-                    HandleStatPriAttr(ref units[counter].secAttri, data);
-                    break;
-                case EDULineEnums.Stat_pri_armour:
-                    HandleStatPriArmour(ref units[counter].primaryArmour, data);
-                    break;
-                case EDULineEnums.Stat_sec_armour:
-                    HandleStatPriArmour(ref units[counter].secondaryArmour, data);
-                    break;
-                case EDULineEnums.Stat_heat:
-                    HandleGenericLine(ref units[counter].heat, data);
-                    break;
-                case EDULineEnums.Stat_ground:
-                    HandleGenericInts(ref units[counter].ground, data);
-                    break;
-                case EDULineEnums.Stat_mental:
-                    HandleMental(ref units[counter].mental, data);
-                    break;
-                case EDULineEnums.Stat_charge_dist:
-                    HandleGenericLine(ref units[counter].chargeDistance, data);
-                    break;
-                case EDULineEnums.Stat_fire_delay:
-                    HandleGenericLine(ref units[counter].fireDelay, data);
-                    break;
-                case EDULineEnums.Stat_food:
-                    HandleGenericInts(ref units[counter].food, data);
-                    break;
-                case EDULineEnums.Ownership:
-                    HandleOwnership(ref units[counter].ownership, data);
-                    break;
-                case EDULineEnums.Stat_cost:
-                    HandleGenericInts(ref units[counter].cost, data);
-                    break;
-                default: return false;
+                switch (identifier)
+                {
+                    case EDULineEnums.Type:
+                        units.Add(new Unit());
+                        counter++;
+                        HandleGenericLine(ref units[counter].type, data);
+                        break;
+                    case EDULineEnums.Dictionary:
+                        HandleGenericLine(ref units[counter].dictionary, data);
+                        break;
+                    case EDULineEnums.Category:
+                        HandleGenericLine(ref units[counter].category, data);
+                        break;
+                    case EDULineEnums.Class:
+                        HandleGenericLine(ref units[counter].unitClass, data);
+                        break;
+                    case EDULineEnums.Voice_type:
+                        HandleGenericLine(ref units[counter].voiceType, data);
+                        break;
+                    case EDULineEnums.Ship:
+                        HandleGenericLine(ref units[counter].naval, data);
+                        break;
+                    case EDULineEnums.Soldier:
+                        HandleSoldier(ref units[counter].soldier, data);
+                        break;
+                    case EDULineEnums.Officer:
+                        HandleGenericLine(ref units[counter].officer, data);
+                        break;
+                    case EDULineEnums.Mount:
+                        HandleGenericLine(ref units[counter].mount, data);
+                        break;
+                    case EDULineEnums.Animal:
+                        HandleGenericLine(ref units[counter].animal, data);
+                        break;
+                    case EDULineEnums.Engine:
+                        HandleGenericLine(ref units[counter].engine, data);
+                        break;
+                    case EDULineEnums.Mount_effect:
+                        HandleMountEffect(ref units[counter].mountEffect, data);
+                        break;
+                    case EDULineEnums.Attributes:
+                        HandleAttributes(ref units[counter].attributes, data);
+                        break;
+                    case EDULineEnums.Formation:
+                        HandleFormation(ref units[counter].formation, data);
+                        break;
+                    case EDULineEnums.Stat_health:
+                        HandleGenericInts(ref units[counter].heatlh, data);
+                        break;
+                    case EDULineEnums.Stat_pri:
+                        HandleStatPri(ref units[counter].primaryWeapon, data);
+                        break;
+                    case EDULineEnums.Stat_pri_attr:
+                        HandleStatPriAttr(ref units[counter].priAttri, data);
+                        break;
+                    case EDULineEnums.Stat_sec:
+                        HandleStatPri(ref units[counter].secondaryWeapon, data);
+                        break;
+                    case EDULineEnums.Stat_sec_attr:
+                        HandleStatPriAttr(ref units[counter].secAttri, data);
+                        break;
+                    case EDULineEnums.Stat_pri_armour:
+                        HandleStatPriArmour(ref units[counter].primaryArmour, data);
+                        break;
+                    case EDULineEnums.Stat_sec_armour:
+                        HandleStatPriArmour(ref units[counter].secondaryArmour, data);
+                        break;
+                    case EDULineEnums.Stat_heat:
+                        HandleGenericLine(ref units[counter].heat, data);
+                        break;
+                    case EDULineEnums.Stat_ground:
+                        HandleGenericInts(ref units[counter].ground, data);
+                        break;
+                    case EDULineEnums.Stat_mental:
+                        HandleMental(ref units[counter].mental, data);
+                        break;
+                    case EDULineEnums.Stat_charge_dist:
+                        HandleGenericLine(ref units[counter].chargeDistance, data);
+                        break;
+                    case EDULineEnums.Stat_fire_delay:
+                        HandleGenericLine(ref units[counter].fireDelay, data);
+                        break;
+                    case EDULineEnums.Stat_food:
+                        HandleGenericInts(ref units[counter].food, data);
+                        break;
+                    case EDULineEnums.Ownership:
+                        HandleOwnership(ref units[counter].ownership, data);
+                        break;
+                    case EDULineEnums.Stat_cost:
+                        HandleGenericInts(ref units[counter].cost, data);
+                        break;
+                    default: return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                PLog(ex.Message + "\r\n" +
+                    "Error at Line: " + lineNumber.ToString() + "\r\n" +
+                    line + "\r\n");
             }
 
             return true;
@@ -194,10 +203,9 @@ namespace RTWLib.Functions.EDU
 
         private void HandleGenericInts(ref int[] values, string[] data)
         {
-
             for(int i = 0; i < data.Count(); i++)
             {
-                values[i] = Convert.ToInt32(data[i]);
+                 values[i] = Convert.ToInt32(data[i]);
             }
         }
 
