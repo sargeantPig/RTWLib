@@ -386,21 +386,21 @@ namespace RTWLib.Functions
                     int count = split.Count();
                     count -= 3; //amount of faction entries required
 
-                    FactionOwnership fo = tb.LookUpKey<FactionOwnership>(split[1]);
+                    string fo = split[1];
 
-                    Dictionary<int, List<FactionOwnership>> f_a = new Dictionary<int, List<FactionOwnership>>(); 
+                    Dictionary<int, List<string>> f_a = new Dictionary<int, List<string>>(); 
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
-                        FactionOwnership f = tb.LookUpKey<FactionOwnership>(split[i + 3]);
+                        string f =split[i + 3];
                         if (!f_a.ContainsKey(temp))
-                            f_a.Add(temp, new List<FactionOwnership> { f });
+                            f_a.Add(temp, new List<string> { f });
                         else f_a[temp].Add(f);
                     }
 
                     if (!coreAttitudes.attitudes.ContainsKey(fo))
                     {
-                        coreAttitudes.attitudes.Add(fo, new Dictionary<int, List<FactionOwnership>>(f_a));
+                        coreAttitudes.attitudes.Add(fo, new Dictionary<int, List<string>>(f_a));
                     }
                     
                     else
@@ -411,7 +411,7 @@ namespace RTWLib.Functions
                             {
                                 if (!coreAttitudes.attitudes[fo].ContainsKey(cf.Key))
                                 {
-                                    coreAttitudes.attitudes[fo].Add(cf.Key, new List<FactionOwnership> { toAdd });
+                                    coreAttitudes.attitudes[fo].Add(cf.Key, new List<string> { toAdd });
                                 }
 
                                 else coreAttitudes.attitudes[fo][cf.Key].Add(toAdd);
@@ -429,21 +429,21 @@ namespace RTWLib.Functions
                     int count = split.Count();
                     count -= 3; //amount of faction entries required
 
-                    FactionOwnership fo = tb.LookUpKey<FactionOwnership>(split[1]);
+                    string fo = split[1];
 
-                    Dictionary<int, List<FactionOwnership>> f_a = new Dictionary<int, List<FactionOwnership>>();
+                    Dictionary<int, List<string>> f_a = new Dictionary<int, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
-                        FactionOwnership f = tb.LookUpKey<FactionOwnership>(split[i + 3]);
+                        string f =split[i + 3];
                         if (!f_a.ContainsKey(temp))
-                            f_a.Add(temp, new List<FactionOwnership> { f });
+                            f_a.Add(temp, new List<string> { f });
                         else f_a[temp].Add(f);
                     }
 
                     if (!factionRelationships.attitudes.ContainsKey(fo))
                     {
-                        factionRelationships.attitudes.Add(fo, new Dictionary<int, List<FactionOwnership>>(f_a));
+                        factionRelationships.attitudes.Add(fo, new Dictionary<int, List<string>>(f_a));
                     }
 
                     else
@@ -454,7 +454,7 @@ namespace RTWLib.Functions
                             {
                                 if (!factionRelationships.attitudes[fo].ContainsKey(cf.Key))
                                 {
-                                    factionRelationships.attitudes[fo].Add(cf.Key, new List<FactionOwnership> { toAdd });
+                                    factionRelationships.attitudes[fo].Add(cf.Key, new List<string> { toAdd });
                                 }
 
                                 else factionRelationships.attitudes[fo][cf.Key].Add(toAdd);
@@ -575,7 +575,7 @@ namespace RTWLib.Functions
         }
         void RemoveSenateRelations(ref CoreAttitudes coreA)
         {
-            coreA.attitudes.Remove(FactionOwnership.romans_senate);
+            coreA.attitudes.Remove("romans_senate");
 
             foreach (var attitude in coreA.attitudes)
             {
@@ -583,7 +583,7 @@ namespace RTWLib.Functions
 
                 foreach (var temp in attitude.Value)
                 {
-                    index = temp.Value.FindIndex(x => x == FactionOwnership.romans_senate);
+                    index = temp.Value.FindIndex(x => x == "romans_senate");
                     if (index > -1)
                     {
                         attitude.Value[temp.Key].RemoveAt(index);

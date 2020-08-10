@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.IO;
 using System.CodeDom;
+using System.Collections;
 
 namespace RTWLib.Functions
 {
@@ -374,6 +375,41 @@ namespace RTWLib.Functions
 			return value;
 		}
 
+		public static object GetRandomItemFromArray(this object[] array, Random rng)
+		{
+			object[] shuffled = array.Shuffle(rng);
+
+			return shuffled[rng.Next(shuffled.Count())];
+		}
+
+		public static object GetRandomItemFromList(this List<object> array, Random rng)
+		{ 
+			object[] shuffled = array.ToArray().Shuffle(rng);
+
+			return shuffled[rng.Next(shuffled.Count())];
+		}
+
+		public static object[] Shuffle(this object[] a, Random rng, int iterationMax = 100)
+		{
+			object[] b = a;
+
+			int iterations = rng.Next(100, iterationMax);
+
+			for (int i = iterations; iterations > 0; iterations--)
+			{
+				object temp;
+				int moveFrom = rng.Next(0, 4);
+				int moveTo = rng.Next(0, 4);
+
+
+				temp = b[moveTo];  //{2, 0, 3, 1}
+				b[moveTo] = b[moveFrom];
+				b[moveFrom] = temp;
+			}
+
+			return b;
+		}
+
 		public static string DropComments(this string line)
 		{
 			string s = "";
@@ -385,6 +421,21 @@ namespace RTWLib.Functions
 			}
 
 			return s;
+		}
+
+		public static bool ContainsMatch(this List<string> a, List<string> b, out string match)
+		{
+			foreach (string str in b)
+			{
+				if (a.Contains(str))
+				{
+					match = str;
+					return true;
+				}
+				
+			}
+			match = "";
+			return false;
 		}
 	}
 }
