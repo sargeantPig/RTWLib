@@ -153,7 +153,7 @@ namespace RTWLib.Functions.EDU
             stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
             stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
             stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
-            stat_pri.missletypeFlags = lu.LookUpKey<MissileType>(data[2].Trim());
+            stat_pri.missileType = data[2].Trim();
             stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
             stat_pri.TechFlags = lu.LookUpKey<TechType>(data[6].Trim());
             stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
@@ -270,17 +270,14 @@ namespace RTWLib.Functions.EDU
             mental.training = lookUp.LookUpKey<Statmental_training>(data[2].Trim());
         }
 
-        private void HandleOwnership(ref FactionOwnership ownership, string[] data)
+        private void HandleOwnership(ref List<string> ownership, string[] data)
         {
             LookUpTables lookUp = new LookUpTables();
-            foreach (string STRING in data)
+            
+            foreach (string str in data)
             {
-                var a = lookUp.LookUpKey<FactionOwnership>(STRING.Trim());
-
-                if (a != null)
-                    ownership |= a;
-                else ownership |= lookUp.LookUpKey<FactionOwnership>(STRING.Trim());
-
+                //TODO add optional verification against smf file here
+                ownership.Add(str.Trim());
             }
         }
     }

@@ -80,8 +80,6 @@ namespace RTWLib.Data
 		static public Dictionary<MissileType, string> dic_missleTypes = new Dictionary<MissileType, string>()
 		{
 			{MissileType.arrow, "arrow" },
-			{MissileType.arrow2, "arrow2"}, //Ahowls vanilla enhancement addition
-			{MissileType.francisca, "francisca"},//Ahowls vanilla enhancement addition
 			{MissileType.ballista, "ballista" },
 			{MissileType.bullet, "bullet" },
 			{MissileType.heavy_onager, "heavy_onager" },
@@ -95,7 +93,7 @@ namespace RTWLib.Data
 			{MissileType.head, "head" },
 			{MissileType.boulder, "boulder" },
 			{MissileType.big_boulder, "big_boulder" },
-			{MissileType.harpoon, "harpoon" }//Ahowls vanilla enhancement addition
+			//{MissileType.harpoon, "harpoon" }//Ahowls vanilla enhancement addition
 		};
 		static public Dictionary<WeaponType, string> dic_weapons = new Dictionary<WeaponType, string>()
 		{

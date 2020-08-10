@@ -16,7 +16,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// missile type fired (no if not a missile weapon type)
         /// </summary>
-		public MissileType missletypeFlags;
+		public string missileType;
         /// <summary>
         /// [0] range of missile
         /// [1] amount of missle ammunition per man

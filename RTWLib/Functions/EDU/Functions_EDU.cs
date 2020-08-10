@@ -88,11 +88,9 @@ namespace RTWLib.Functions.EDU
 					"ship",
 				};
 
-				FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
-				Cultures fa = lut.LookUpKey<Cultures>(faction);
-				FactionOwnership fb = lut.LookUpKey<FactionOwnership>(fa.ToString());
+				//TODO add culture check
 
-				List<Unit> unit = units.FindAll(x => x.ownership.HasFlag(f) || x.ownership.HasFlag(fb));
+				List<Unit> unit = units.FindAll(x => x.ownership.Contains(faction));
 				List<Unit> removeUnit = new List<Unit>();
 				foreach (Unit u in unit)
 				{
@@ -212,11 +210,10 @@ namespace RTWLib.Functions.EDU
 		public bool CheckUnitBelongsToFactionAndCulture(string faction, Unit unit)
 		{
 			LookUpTables lut = new LookUpTables();
-			FactionOwnership f = lut.LookUpKey<FactionOwnership>(faction);
-			Cultures fa = lut.LookUpKey<Cultures>(faction);
-			FactionOwnership fb = lut.LookUpKey<FactionOwnership>(fa.ToString());
 
-			if (unit.ownership.HasFlag(f) || unit.ownership.HasFlag(fb))
+			//TODO Add check against culture
+
+			if (unit.ownership.Contains(faction))
 				return true;
 			else return false;
 
