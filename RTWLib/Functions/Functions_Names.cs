@@ -9,7 +9,7 @@ namespace RTWLib.Functions
 {
 	public class NamesFile : FileBase, IFile
 	{
-		Dictionary<FactionOwnership, List<string>> names = new Dictionary<FactionOwnership, List<string>>();
+		Dictionary<string, List<string>> names = new Dictionary<string, List<string>>();
 
         public NamesFile(bool log_on) 
 			: base(FileNames.names, @"data\descr_names.txt", "Lists character names")
@@ -21,7 +21,7 @@ namespace RTWLib.Functions
 			LookUpTables lt = new LookUpTables();
 			StreamReader sr = new StreamReader(path[0]);
 			string line = "";
-			FactionOwnership faction = FactionOwnership.none ;
+			string faction ="";
 			lineNumber = 0;
 			currentLine = "";
 			while ((line = sr.ReadLine()) != null)
@@ -31,7 +31,7 @@ namespace RTWLib.Functions
 				if (line.StartsWith("faction"))
 				{
 					string[] split = line.Split(' ');
-					faction = lt.LookUpKey<FactionOwnership>(split[1].Trim());
+					faction = split[1].Trim();
 					names.Add(faction, new List<string>());
 				}
 
@@ -52,20 +52,13 @@ namespace RTWLib.Functions
 		}
 		public string GetRandomName(Random rnd, string faction)
 		{
-			LookUpTables lt = new LookUpTables();
-
-			FactionOwnership fo = lt.LookUpKey<FactionOwnership>(faction);
-
-			return names[fo][rnd.Next(names[fo].Count())];
+			return names[faction][rnd.Next(names[faction].Count())];
 		}
 		public string GetRandomUniqueName(Random rnd, string faction, List<string> usedNames)
 		{
-			LookUpTables lt = new LookUpTables();
-			FactionOwnership fo = lt.LookUpKey<FactionOwnership>(faction);
-
 			List<string> unusedNames = new List<string>();
 
-			foreach (string name in names[fo])
+			foreach (string name in names[faction])
 			{
 				if (!usedNames.Contains(name))
 					unusedNames.Add(name);

@@ -22,16 +22,16 @@ namespace RTWLib.Objects.Descr_strat
     public class CoreAttitudes
     {
         string text;
-        public Dictionary<FactionOwnership, Dictionary<int, List<FactionOwnership>>> attitudes;
+        public Dictionary<string, Dictionary<int, List<string>>> attitudes;
         public CoreAttitudes(string text)
         {
-            attitudes = new Dictionary<FactionOwnership, Dictionary<int, List<FactionOwnership>>>();
+            attitudes = new Dictionary<string, Dictionary<int, List<string>>>();
             this.text = text;
         }
 
         public CoreAttitudes(CoreAttitudes ca)
         {
-            attitudes = new Dictionary<FactionOwnership, Dictionary<int, List<FactionOwnership>>>(ca.attitudes);
+            attitudes = new Dictionary<string, Dictionary<int, List<string>>>(ca.attitudes);
             this.text = ca.text;
         }
 
@@ -46,12 +46,12 @@ namespace RTWLib.Objects.Descr_strat
                 {
                     output +=
                         text + "\t"
-                        + LookUpTables.dic_factions[faction.Key] + ",\t"
+                        + faction.Key + ",\t"
                         + relation.Key.ToString() + "\t";
 
                     for (int i = 0; i < relation.Value.Count; i++)
                     {
-                        output += LookUpTables.dic_factions[relation.Value[i]];
+                        output += relation.Value[i];
 
                         if (i + 1 != relation.Value.Count)
                         {
@@ -79,8 +79,8 @@ namespace RTWLib.Objects.Descr_strat
                     {
                         output +=
                             text + "\t"
-                            + LookUpTables.dic_factions[faction.Key] + ",\t"
-                            + relation.Key.ToString() + "\t" + LookUpTables.dic_factions[rel] + "\r\n";
+                            + faction.Key + ",\t"
+                            + relation.Key.ToString() + "\t" + rel + "\r\n";
                     }
                 }
             }
@@ -89,13 +89,13 @@ namespace RTWLib.Objects.Descr_strat
 
         }
 
-        public int DoesFactionHaveRelations(FactionOwnership target, FactionOwnership relation) //gets value and checks if relation exists, returns -1 if not found
+        public int DoesFactionHaveRelations(string target, string relation) //gets value and checks if relation exists, returns -1 if not found
         {
             if (attitudes.ContainsKey(target))
             {
-                foreach (KeyValuePair<int, List<FactionOwnership>> valFac in attitudes[target])
+                foreach (KeyValuePair<int, List<string>> valFac in attitudes[target])
                 {
-                    foreach (FactionOwnership fo in valFac.Value)
+                    foreach (string fo in valFac.Value)
                     {
                         if (fo == relation)
                             return valFac.Key;
@@ -121,22 +121,20 @@ namespace RTWLib.Objects.Descr_strat
             return 0;
         }
 
-        public string[] GetRelationships(DiplomaticPosition value, FactionOwnership faction)
+        public string[] GetRelationships(DiplomaticPosition value, string faction)
         {
-            LookUpTables lt = new LookUpTables();
             List<string> relations = new List<string>();
             if (attitudes.ContainsKey(faction))
             {
-                foreach (KeyValuePair<int, List<FactionOwnership>> valFac in attitudes[faction])
+                foreach (KeyValuePair<int, List<string>> valFac in attitudes[faction])
                 {
                     if (GetDiplomaticPosition(valFac.Key) == value)
                     {
-                        foreach (FactionOwnership fo in valFac.Value)
+                        foreach (string fo in valFac.Value)
                         {
 
-                            relations.Add(lt.LookUpString(fo));
+                            relations.Add(fo);
                         }
-
                     }
                 }
             }

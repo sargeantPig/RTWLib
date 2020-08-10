@@ -11,7 +11,7 @@ namespace RTWLib.Functions
 {	
 	public class SM_Factions : FileBase, IFile
 	{
-		public Dictionary<FactionOwnership, Color[]> factionColours = new Dictionary<FactionOwnership, Color[]>();
+		public Dictionary<string, Color[]> factionColours = new Dictionary<string, Color[]>();
 
 		public SM_Factions() 
 			: base(FileNames.descr_sm_faction, @"data\descr_sm_factions.txt", "Describes the faction colours")
@@ -29,7 +29,6 @@ namespace RTWLib.Functions
 			LookUpTables lut = new LookUpTables();
 
 			Output("Retrieving Faction Colours" + "\r\n");
-			FactionOwnership f = FactionOwnership.none;
 
 			lineNumber = 0; ;
 			currentLine = "";
@@ -45,19 +44,18 @@ namespace RTWLib.Functions
 					faction = split[6];
 					Output("Getting Colours for: " + faction + "\r\n");
 
-					f = lut.LookUpKey<FactionOwnership>(faction);
 				}
 
 				if (trim.StartsWith("primary_colour"))
 				{
 					Color col = SMFGetColour(trim);
-					factionColours.Add(f, new Color[2] { col, col });
+					factionColours.Add(faction, new Color[2] { col, col });
 				}
 
 				if (trim.StartsWith("secondary_colour"))
 				{
 					Color col = SMFGetColour(trim);
-					factionColours[f][1] = col;
+					factionColours[faction][1] = col;
 				}
 			}
 		}
@@ -76,7 +74,7 @@ namespace RTWLib.Functions
 		{
 			string output = "";
 
-			foreach (KeyValuePair<FactionOwnership, Color[]> kv in factionColours)
+			foreach (KeyValuePair<string, Color[]> kv in factionColours)
 			{
 				output += kv.Key + " ---\r\n\tPrimary Colour " +   kv.Value[0].ToString()
 					+ "\r\n\tSecondary Colour " + kv.Value[1].ToString() + "\r\n\r\n";
