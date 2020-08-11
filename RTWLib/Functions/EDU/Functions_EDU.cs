@@ -16,6 +16,7 @@ namespace RTWLib.Functions.EDU
 	{
 		public List<Unit> units = new List<Unit>();
 
+		Dictionary<int, string> fileComments = new Dictionary<int, string>();
 
 		public EDU(bool log_on) 
 			: base(FileNames.export_descr_unit, @"data\export_descr_unit.txt", "Unit details and stats")
@@ -40,11 +41,27 @@ namespace RTWLib.Functions.EDU
 			currentLine = "";
 			while ((line = edu.ReadLine()) != null)
 			{
+				KeyValuePair<EDULineEnums, object> comment;
 				currentLine = line;
 				lineNumber++;
-				ParseLine(line, ref counter, lineNumber);
+				ParseLine(line, ref counter, lineNumber, out comment);
+				if (counter > -1 && comment.Value != null)
+				{
+					if (units[counter].comments.ContainsKey(comment.Key))
+					{
+						if (units[counter].comments[comment.Key] is List<string>)
+						{
+							((List<string>)units[counter].comments[comment.Key]).Add((string)comment.Value);
+						}
+						else
+						{
+							string temp = (string)units[counter].comments[comment.Key];
+							units[counter].comments[comment.Key] = new List<string>() { temp, (string)comment.Value };
+						}						
+					}
+					else units[counter].comments.Add(comment.Key, comment.Value);
+				}
 			}
-
 			txt_Output += ("\n" + units.Count + "Units loaded from EDU");
 
 			edu.Close();
@@ -61,6 +78,8 @@ namespace RTWLib.Functions.EDU
 
 			return output;
 		}
+
+
 		public Unit FindUnit(string name)
 		{
 			Unit unit = units.Find(x => x.dictionary.Contains(name));

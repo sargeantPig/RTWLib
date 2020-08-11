@@ -354,7 +354,7 @@ namespace RTWLib.Functions
 					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
-		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false)
+		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, int newLineCount = 1)
 		{
 			string value = "";
 			int i = 0;
@@ -365,7 +365,8 @@ namespace RTWLib.Functions
 				value += str;
 
 				if (insertNewlines)
-					value += "\r\n";
+					for(int nl = 0; nl < newLineCount; nl++)
+						value += "\r\n";
 				else value += ", ";
 				
 
@@ -418,6 +419,25 @@ namespace RTWLib.Functions
 				if (c != ';')
 					s += c;
 				else return s;
+			}
+
+			return s;
+		}
+
+		public static string DropAndOutComments(this string line, out string comment)
+		{
+			string s = "";
+			bool commentFound = false;
+			comment = "";
+			foreach (char c in line.ToCharArray())
+			{
+				if (c != ';' && !commentFound)
+					s += c;
+				else
+					commentFound = true;
+
+				if (commentFound)
+					comment += c; 
 			}
 
 			return s;

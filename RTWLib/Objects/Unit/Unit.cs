@@ -168,7 +168,10 @@ namespace RTWLib.Objects
         /// a score given to the unit (randomiser use)
         /// </summary>
         public float unitPointValue = 0;
-
+        /// <summary>
+        /// comments written by a user in the file loaded
+        /// </summary>
+        public Dictionary<EDULineEnums, object> comments = new Dictionary<EDULineEnums, object>();
         public Unit()
         {
             soldier = new Soldier();
@@ -509,9 +512,34 @@ namespace RTWLib.Objects
                 setAndTagChanged(() => unitString += faction);
             }
 
-            unitString += ("\r\n\n");
+            unitString += ("\r\n");
 
-            return unitString;
+            string[] lines = unitString.Split('\r', '\n').CleanStringArray();
+            Dictionary<EDULineEnums, int> multiple = new Dictionary<EDULineEnums, int>();
+
+            for (int i =0; i < lines.Count(); i++)
+            {
+                EDULineEnums identifier;
+                bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(lines[i]).Capitalise(), out identifier);
+
+                if (isIdentifier)
+                {
+                    if (comments[identifier] is string)
+                        lines[i] += "\t\t" + comments[identifier];
+                    else if (comments[identifier] is List<string>)
+                    {
+                        if (!multiple.ContainsKey(identifier))
+                            multiple.Add(identifier, 0);
+                        else multiple[identifier] += 1;
+
+                        lines[i] += "\t\t" + ((List<string>)comments[identifier])[multiple[identifier]];
+
+                    }
+
+                }  
+            }
+
+            return lines.ArrayToString(false, true) + "\r\n";
         }
 
     }

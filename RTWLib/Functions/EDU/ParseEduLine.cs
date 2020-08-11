@@ -14,10 +14,12 @@ namespace RTWLib.Functions.EDU
 {
     public partial class EDU
     {
-        private bool ParseLine(string line, ref int counter, int lineNumber)
+        private bool ParseLine(string line, ref int counter, int lineNumber, out KeyValuePair<EDULineEnums, object> commentPair)
         {
             EDULineEnums identifier;
-            string[] data = Functions_General.RemoveFirstWord(line).Trim().DropComments().TrimEnd(',').Split(';', ',');
+            string comment = "";
+            commentPair = new KeyValuePair<EDULineEnums, object>();
+            string[] data = Functions_General.RemoveFirstWord(line).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
             bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(line).Capitalise(), out identifier);
 
             if (!isIdentifier)
@@ -126,6 +128,7 @@ namespace RTWLib.Functions.EDU
                     line + "\r\n");
             }
 
+            commentPair = new KeyValuePair<EDULineEnums, object>(identifier, comment);
             return true;
         }
 
@@ -238,10 +241,10 @@ namespace RTWLib.Functions.EDU
 
             foreach (string full in data)
             {
-                newCombined += full;
+                newCombined +=  full + " ";
             }
 
-            string[] reSplit = newCombined.Split(' ');
+            string[] reSplit = newCombined.Split(' ').CleanStringArray();
 
             for (int index = 0; index < reSplit.Count(); index += 2)
             {
