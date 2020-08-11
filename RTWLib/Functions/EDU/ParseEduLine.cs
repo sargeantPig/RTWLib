@@ -158,16 +158,27 @@ namespace RTWLib.Functions.EDU
             stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
             stat_pri.TechFlags = lu.LookUpKey<TechType>(data[6].Trim());
             stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
-            stat_pri.SoundFlags = lu.LookUpKey<SoundType>(data[8].Trim());
+            stat_pri.SoundFlags = data[8].Trim();
+            stat_pri.attackdelay[0] = Convert.ToInt32(data[9].Trim());
+            stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[10].Trim());
         }
 
         private void HandleStatPriAttr(ref Stat_pri_attr stat_Pri_, string[] data)
         {
             LookUpTables lu = new LookUpTables();
+
+            Stat_pri_attr temp = Stat_pri_attr.PA_no;
+            stat_Pri_ = temp;
+
+            if (data[0] == lu.LookUpString<Stat_pri_attr>(Stat_pri_attr.PA_no)) 
+                return;
+
             foreach (string str in data)
             {
                 stat_Pri_ |= lu.LookUpKey<Stat_pri_attr>(str.Trim());
             }
+
+            stat_Pri_ &= ~Stat_pri_attr.PA_no;
         }
 
         private void HandleStatPriArmour<T>(ref T statPriArmour, string[] data)
@@ -190,16 +201,27 @@ namespace RTWLib.Functions.EDU
 
         private void HandleAttributes(ref Attributes attributes, string[] data)
         {
+            Attributes attri = Attributes.no_custom;
             LookUpTables lookUp = new LookUpTables();
+            bool set_noCustom = false;
+            attributes = attri;
             foreach (string str in data)
             {
                 if (str != " ")
                 {
                     object obj;
-                    if ((obj = lookUp.LookUpKey<Attributes>(str)) != null)
-                        attributes |= lookUp.LookUpKey<Attributes>(str.Trim());
+                    if ((obj = lookUp.LookUpKey<Attributes>(str.Trim())) != null)
+                    {
+                        if ((Attributes)obj == Attributes.no_custom)
+                            set_noCustom = true;
+                        else attributes |= lookUp.LookUpKey<Attributes>(str.Trim());
+                    }
                 }
             }
+
+            if (set_noCustom)
+                attributes |= Attributes.no_custom;
+            else attributes &= ~Attributes.no_custom;
         }
 
         private void HandleGenericInts(ref int[] values, string[] data)

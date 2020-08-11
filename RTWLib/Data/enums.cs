@@ -28,7 +28,10 @@ namespace RTWLib.Data
 		warcry = 1 << 16,
 		hardy = 1 << 17,
 		very_hardy = 1 << 18,
-		screeching_women = 1 << 19
+		screeching_women = 1 << 19,
+		power_charge = 1 << 20,
+		can_swim = 1 << 21,
+		is_peasant = 1 << 22
 	}
 	[Flags]
 	public enum FormationTypes
@@ -39,7 +42,8 @@ namespace RTWLib.Data
 		testudo = 1 << 3,
 		schiltrom = 1 << 4,
 		wedge = 1 << 5,
-		none = 1 << 6
+		shield_wall = 1 << 6,
+		none = 1 << 7
 	};
 
 	public enum MissileType

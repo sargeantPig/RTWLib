@@ -49,6 +49,7 @@ namespace RTWLib.Data
 			{Attributes.cantabrian_circle, "cantabrian_circle" },
 			{Attributes.can_run_amok, "can_run_amok" },
 			{Attributes.can_sap, "can_sap" },
+			{Attributes.can_swim, "can_swim" },
 			{Attributes.command, "command" },
 			{Attributes.druid, "druid" },
 			{Attributes.frighten_foot, "frighten_foot" },
@@ -65,7 +66,9 @@ namespace RTWLib.Data
 			{Attributes.warcry, "warcry" },
 			{Attributes.hardy, "hardy" },
 			{Attributes.very_hardy, "very_hardy" },
-			{Attributes.screeching_women, "screeching_women" }
+			{Attributes.screeching_women, "screeching_women" },
+			{Attributes.power_charge, "power_charge" },
+			{Attributes.is_peasant, "is_peasant" },
 		};
 		static public Dictionary<FormationTypes, string> dic_formations = new Dictionary<FormationTypes, string>()
 		{
@@ -75,7 +78,8 @@ namespace RTWLib.Data
 			{FormationTypes.schiltrom, "schiltrom" },
 			{FormationTypes.square, "square" },
 			{FormationTypes.testudo, "testudo" },
-			{FormationTypes.wedge, "wedge"}
+			{FormationTypes.wedge, "wedge"},
+			{FormationTypes.shield_wall, "shield_wall" }
 		};
 		static public Dictionary<MissileType, string> dic_missleTypes = new Dictionary<MissileType, string>()
 		{

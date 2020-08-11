@@ -192,6 +192,16 @@ namespace RTWLib.Objects
             LookUpTables lookTables = new LookUpTables();
             string unitString = "";
 
+            bool firstAttr = false;
+            Action<Action> setAndTagChanged = (action) =>
+            {
+                if (firstAttr == false)
+                    firstAttr = true;
+                else unitString += ", ";
+                action();
+            };
+
+
             unitString += (
                 "type\t\t\t\t " + type + "\r\n" +
                 "dictionary\t\t\t " + dictionary + "\r\n" +
@@ -203,6 +213,30 @@ namespace RTWLib.Objects
 
             //unitString +=("\r\n");
 
+            if (officer.Count > 0)
+            {
+                if (officer[0] != null)
+                {
+                    unitString += ("\r\nofficer\t\t\t\t " + officer[0]);
+                }
+            }
+
+            if (officer.Count > 1)
+            {
+                if (officer[1] != null)
+                {
+                    unitString += ("\r\nofficer\t\t\t\t " + officer[1]);
+                }
+            }
+
+            if (officer.Count > 2)
+            {
+                if (officer[2] != null)
+                {
+                    unitString += ("\r\nofficer\t\t\t\t " + officer[2]);
+                }
+            }
+
             if (engine != null)
                 unitString += ("\r\nengine\t\t\t " + engine);
 
@@ -212,43 +246,25 @@ namespace RTWLib.Objects
             if (mount != null)
                 unitString += ("\r\nmount\t\t\t " + mount);
 
-            if (officer.Count > 0)
+            if (mountEffect.mountType.Count() > 0)
             {
-                if (officer[0] != null)
+
+                unitString += "\r\nmount_effect\t\t ";
+                for (int i = 0; i < mountEffect.mountType.Count(); i++)
                 {
-                    unitString += ("\r\nofficer\t\t\t " + officer[0]);
+                    if(mountEffect.modifier[i] < 0)
+                        setAndTagChanged(() => unitString += (mountEffect.mountType[i]) + " " + mountEffect.modifier[i].ToString());
+                    else setAndTagChanged(() => unitString += (mountEffect.mountType[i]) + " +" + mountEffect.modifier[i].ToString());
                 }
             }
 
-            if (officer.Count > 1)
-            {
-                if (officer[1] != null)
-                {
-                    unitString += ("\r\nofficer\t\t\t " + officer[1]);
-                }
-            }
-
-            if (officer.Count > 2)
-            {
-                if (officer[2] != null)
-                {
-                    unitString += ("\r\nofficer\t\t\t " + officer[2]);
-                }
-            }
 
             if (naval != null)
                 unitString += ("\r\nship\t\t\t\t " + naval);
 
             unitString += ("\r\nattributes\t\t\t "); // write attributes
 
-            bool firstAttr = false;
-            Action<Action> setAndTagChanged = (action) =>
-            {
-                if (firstAttr == false)
-                    firstAttr = true;
-                else unitString += ", ";
-                action();
-            };
+            firstAttr = false;
             if (attributes.HasFlag(Attributes.sea_faring))
                 setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.sea_faring));
             if (attributes.HasFlag(Attributes.can_run_amok))
@@ -283,6 +299,21 @@ namespace RTWLib.Objects
                 setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.no_custom));
             if (attributes.HasFlag(Attributes.warcry))
                 setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.warcry));
+            if (attributes.HasFlag(Attributes.screeching_women))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.screeching_women));
+            if (attributes.HasFlag(Attributes.hardy))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.hardy));
+            if (attributes.HasFlag(Attributes.very_hardy))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.very_hardy));
+            if (attributes.HasFlag(Attributes.power_charge))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.power_charge));
+            if (attributes.HasFlag(Attributes.can_swim))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.can_swim));
+            if (attributes.HasFlag(Attributes.is_peasant))
+                setAndTagChanged(() => unitString += lookTables.LookUpString(Attributes.is_peasant));
+
+
+
 
 
             unitString += ("\r\n");
@@ -301,6 +332,7 @@ namespace RTWLib.Objects
             if (formation.FormationFlags.HasFlag(FormationTypes.horde)) setAndTagChanged(() => unitString += lookTables.LookUpString(FormationTypes.horde));
             if (formation.FormationFlags.HasFlag(FormationTypes.square)) setAndTagChanged(() => unitString += lookTables.LookUpString(FormationTypes.square));
             if (formation.FormationFlags.HasFlag(FormationTypes.wedge)) setAndTagChanged(() => unitString += lookTables.LookUpString(FormationTypes.wedge));
+            if (formation.FormationFlags.HasFlag(FormationTypes.shield_wall)) setAndTagChanged(() => unitString += lookTables.LookUpString(FormationTypes.shield_wall));
 
             unitString += ("\r\n");
 
@@ -329,7 +361,7 @@ namespace RTWLib.Objects
                 lookTables.LookUpString(primaryWeapon.WeaponFlags) + ", " +
                  lookTables.LookUpString(primaryWeapon.TechFlags) + ", " +
                 lookTables.LookUpString(primaryWeapon.DamageFlags) + ", " +
-                lookTables.LookUpString(primaryWeapon.SoundFlags) + ", ");
+                primaryWeapon.SoundFlags + ", ");
 
             firstAttr = false;
             foreach (float atkd in primaryWeapon.attackdelay)
@@ -352,13 +384,16 @@ namespace RTWLib.Objects
             if (priAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
             if (priAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
             if (priAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
-            if (priAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
-            if (priAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
             if (priAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
             if (priAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
-
+            if (priAttri.HasFlag(Stat_pri_attr.light_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.light_spear));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_2)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_2));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_6)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_6));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_10)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_10));
+            if (priAttri.HasFlag(Stat_pri_attr.spear_bonus_12)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_12));
+         
             unitString += ("\r\n");
 
             unitString += ("stat_sec\t\t\t "); // secondary weapon
@@ -373,7 +408,7 @@ namespace RTWLib.Objects
                 lookTables.LookUpString(secondaryWeapon.WeaponFlags) + ", " +
                 lookTables.LookUpString(secondaryWeapon.TechFlags) + ", " +
                 lookTables.LookUpString(secondaryWeapon.DamageFlags) + ", " +
-                lookTables.LookUpString(secondaryWeapon.SoundFlags) + ", ");
+                secondaryWeapon.SoundFlags + ", ");
 
 
 
@@ -398,12 +433,16 @@ namespace RTWLib.Objects
             if (secAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
             if (secAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
             if (secAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
-            if (secAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
-            if (secAttri.HasFlag(Stat_pri_attr.ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.ap));
-            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
             if (secAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
             if (secAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
+            if (secAttri.HasFlag(Stat_pri_attr.light_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.light_spear));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_2)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_2));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_4)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_4));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_6)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_6));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_8)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_8));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_10)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_10));
+            if (secAttri.HasFlag(Stat_pri_attr.spear_bonus_12)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.spear_bonus_12));
+
 
             unitString += ("\r\n");
 

@@ -37,7 +37,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// Sound type when weapon hits = none, knife, mace, axe, sword, or spear
         /// </summary>
-		public SoundType SoundFlags;
+		public string SoundFlags;
         /// <summary>
         /// Min delay between attacks(in 1/10th of a second)
         /// </summary>
