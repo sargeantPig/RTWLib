@@ -29,15 +29,17 @@ namespace RTWLib.Functions
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
+			lineNumber = 0;
+			currentLine = "";
 			if (!FileCheck(paths[0]))
-				DisplayLogExit();
-
+			{
+				DisplayLog();
+				return;
+			}
 			string line;
 			int counter = -1;
 
 			StreamReader strat = new StreamReader(paths[0]);
-			lineNumber = 0;
-			currentLine = "";
 			//get factions
 			while ((line = strat.ReadLine()) != null)
 			{
@@ -47,16 +49,12 @@ namespace RTWLib.Functions
 
 				if (trimmedLine.StartsWith("hidden_resources"))
 				{
-
 					string modified = Functions_General.RemoveFirstWord(trimmedLine);
 					string[] splitStr = modified.Split(' ');
 					foreach (string str in splitStr)
 					{
 						hiddenResources.Add(str);
-						PLog("Loaded: " + str);
-
 					}
-
 				}
 
 				if (trimmedLine.StartsWith("building"))
@@ -72,7 +70,6 @@ namespace RTWLib.Functions
 					//start new while loop after every { and stop at }
 					line = strat.ReadLine();
 
-					Output("Loading: " + split[1].Trim() + "\r\n");
 					if (line.Trim().StartsWith("{")) // start the while loop
 					{
 						bool whileOne = false;
@@ -324,9 +321,6 @@ namespace RTWLib.Functions
 																	buildingTrees[counter].buildings.Add(new Building(newBuilding));
 																	buildingNext = true;
 																	whileFive = true; //break out of loop
-
-																	PLog("Loaded -- " + buildingTrees[counter].buildings.Last().buildingName);
-
 																	break;
 																}
 

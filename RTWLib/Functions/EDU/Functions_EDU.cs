@@ -26,9 +26,13 @@ namespace RTWLib.Functions.EDU
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
+			lineNumber = 0;
+			currentLine = "";
 			if (!FileCheck(paths[0]))
-				DisplayLogExit();
-
+			{
+				DisplayLog();
+				return;
+			}
 			LookUpTables lookUp = new LookUpTables();
 			units.Clear();
 			string txt_Output = "";
@@ -37,8 +41,6 @@ namespace RTWLib.Functions.EDU
 
 			StreamReader edu = new StreamReader(paths[0]);
 
-			lineNumber = 0;
-			currentLine = "";
 			while ((line = edu.ReadLine()) != null)
 			{
 				KeyValuePair<EDULineEnums, object> comment;

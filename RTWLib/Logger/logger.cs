@@ -16,10 +16,12 @@ namespace RTWLib.Logger
 		static string LOGFILE = "RTWLlog.txt";
 		static string current = "";
 
+		static string fileFound = "File Found ";
+		static string fileNotFound = "File not found: ";
 		static string dirFound = "Directory Found: ";
 		static string dirNotFound = "Directory Not Found: ";
-		static string isAdmin = "Running as administrator";
-		static string isNotAdmin = "Not running as administrator";
+		static string isAdmin = "Running as administrator ";
+		static string isNotAdmin = "Not running as administrator ";
 
         public bool is_on = true;
 		public string fileName = "";
@@ -72,11 +74,11 @@ namespace RTWLib.Logger
 		{
 			if (File.Exists(file))
 			{
-				current = PLog(dirFound + file);
+				current = PLog(fileFound + file);
 				return true;
 			}
 			else
-				current = PLog(dirNotFound + file);
+				current = PLog(fileNotFound + file);
 
 			return false;
 		}
@@ -90,7 +92,7 @@ namespace RTWLib.Logger
 				return true;
 			}
 			else
-				current = PLog(isNotAdmin + ": unit info fix will be disabled.");
+				current = PLog(isNotAdmin);
 
 			return false;
 		}
@@ -99,7 +101,6 @@ namespace RTWLib.Logger
 		{
 			current += logtxt;
 			OutputToConsole(logtxt);
-
 		}
 
 		public void DisplayLogExit()

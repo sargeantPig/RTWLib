@@ -8,9 +8,10 @@ using ImageMagick;
 using RTWLib.Objects;
 using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
+using RTWLib.Logger;
 namespace RTWLib.Functions
 {
-	public class SelectMaps
+	public class SelectMaps : Logger.Logger
 	{
 		public string saveLocation;
 		public string radarMapLocation;
@@ -220,10 +221,13 @@ namespace RTWLib.Functions
 			string fileType = ".tga";
 			map.Scale(384, 237);
 			map.Write(filepath + "map_" + name + fileType);
+			map.Dispose();
 		}
 		public void Save(string path)
 		{
-			full_map.Write(@path, MagickFormat.Png);
+			if (FileCheck(@path))
+				full_map.Write(@path, MagickFormat.Png);
+			else PLog("Unable to write to " + path + " - does the directory exist?");
 		}
 		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)
 		{

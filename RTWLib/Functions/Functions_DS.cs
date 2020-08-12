@@ -32,9 +32,13 @@ namespace RTWLib.Functions
 
         override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
         {
+            lineNumber = 0;
+            currentLine = "";
             if (!FileCheck(filepath[0]))
-                DisplayLogExit();
-
+            {
+                DisplayLog();
+                return;
+            }
             LookUpTables tb = new LookUpTables();
 
             string PATH = filepath[0];
@@ -47,8 +51,7 @@ namespace RTWLib.Functions
             bool newfactionReady = false;
             bool newcharacterReady = false;
             //get factions
-            lineNumber = 0;
-            currentLine = "";
+            
             while ((line = strat.ReadLine()) != null)
             {
                 lineNumber++;
@@ -155,7 +158,6 @@ namespace RTWLib.Functions
                     newFaction.ai[1] = split[4].Trim();
                     //FactionRosters.AddFactionKey(tb.LookUpKey<FactionOwnership>(split[1]));
 
-                    Output("Retrieving: " + faction + " campaign information");
                 }
 
                 if (line.StartsWith("superfaction"))

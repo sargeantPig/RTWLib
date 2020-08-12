@@ -26,12 +26,18 @@ namespace RTWLib.Functions
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
+			currentLine = "";
+			lineNumber = 0;
 			if (!FileCheck(paths[0]))
-				DisplayLogExit();
-
+			{
+				DisplayLog();
+				return;
+			}
 			if (!FileCheck(paths[1]))
-				DisplayLogExit();
-
+			{
+				DisplayLog();
+				return;
+			}
 			//add an output for this in the tool section
 			string line;
 
@@ -41,24 +47,17 @@ namespace RTWLib.Functions
 			string name = "";
 			string cityName = "";
 			string faction_creator = "";
-			currentLine = "";
-			lineNumber = 0;
+			
 			while ((line = reg.ReadLine()) != null)
 			{
 				lineNumber++;
 				currentLine = line;
 				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
 				{
-					if (counter >= 0)
-					{
-						PLog("Loaded -- " + name + ", " + cityName);
-					}
-
 					counter++;
 					name = line.Trim();
 					rgbRegions.Add(name, new Objects.Region());
 					rgbRegions[name].name = name;
-					Output("\r\nRegion found: " + name);
 
 					line = reg.ReadLine();
 					cityName = line.Trim();

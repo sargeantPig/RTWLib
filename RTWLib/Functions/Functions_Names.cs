@@ -43,7 +43,6 @@ namespace RTWLib.Functions
                         if (line.Trim() != "" && !line.Trim().Contains(";;") && !line.Trim().Contains(";") && CheckForNonASCII(line.Trim()))
                         {
                             names[faction].Add(line.Trim());
-                            PLog("Loaded: " + names[faction].Last());
                         }
                             line = sr.ReadLine();
 					}

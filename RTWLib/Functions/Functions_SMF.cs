@@ -19,19 +19,20 @@ namespace RTWLib.Functions
 		}
 		override public void Parse(string[] path, out int lineNumber, out string currentLine)
 		{
-			if (!FileCheck(path[0]))
-				DisplayLogExit();
 
+			lineNumber = 0; ;
+			currentLine = "";
+			if (!FileCheck(path[0]))
+			{
+				DisplayLog();
+				return;
+			}
 			StreamReader edu = new StreamReader(path[0]);
 
 			string line, faction = "";
 
 			LookUpTables lut = new LookUpTables();
 
-			Output("Retrieving Faction Colours" + "\r\n");
-
-			lineNumber = 0; ;
-			currentLine = "";
 			while ((line = edu.ReadLine()) != null)
 			{
 				lineNumber++;
@@ -42,7 +43,6 @@ namespace RTWLib.Functions
 				{
 					string[] split = trim.Split('\t');
 					faction = split[6];
-					Output("Getting Colours for: " + faction + "\r\n");
 
 				}
 
