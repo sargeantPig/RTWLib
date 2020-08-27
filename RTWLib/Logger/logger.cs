@@ -13,8 +13,11 @@ namespace RTWLib.Logger
 	public class Logger
 	{
 		//Will handle logging any errors, outputs to RTWLlog.txt after every method completion
+		public static string AssemblyPrefix { get; set; }
+		public string ModulePrefix { get; set; }
+
 		static string LOGFILE = "RTWLlog.txt";
-		static string current = "";
+		public static string current { get; set; }
 
 		static string fileFound = "File Found ";
 		static string fileNotFound = "File not found: ";
@@ -27,6 +30,12 @@ namespace RTWLib.Logger
 		public string fileName = "";
 		public string lineText = "";
 		public int lineNumber = 0;
+		public Logger()
+		{
+			AssemblyPrefix = "";
+			ModulePrefix = "";
+		}
+
 		private void OutputToConsole(string logtxt)
 		{
 			Console.WriteLine("\r\n" + logtxt);
@@ -38,23 +47,52 @@ namespace RTWLib.Logger
                 return logtxt;
             
 			StreamWriter SW = new StreamWriter(LOGFILE, true);
-			SW.WriteLine(logtxt + " -- " + DateTime.Now + "\r\n");
+			SW.WriteLine(AssemblyPrefix + ":" + ModulePrefix + ": " + logtxt + " -- " + DateTime.Now + "\r\n");
 			SW.Close();
 
 			OutputToConsole(logtxt);
-			current = logtxt;
+			current = AssemblyPrefix + ":" + ModulePrefix + ": " + logtxt;
 
 			return logtxt;
 		}
 
-		public string ExceptionLog(Exception ex)
+		public string ExceptionLog(Exception ex, bool hasLines = true)
 		{
 			string newLine = "\r\n";
-			return this.PLog(ex.Message + newLine +
-				"Error in: " + this.fileName + newLine +
-				"At Line: " + this.lineNumber.ToString() + newLine +
-				"'" + this.lineText + "'" + newLine +
-				ex.InnerException);
+			if (hasLines)
+			{
+				return this.PLog(ex.Message + newLine +
+					"Error in: " + this.fileName + newLine +
+					"At Line: " + this.lineNumber.ToString() + newLine +
+					"'" + this.lineText + "'" + newLine +
+					ex.InnerException);
+
+			}
+			else
+			{
+				return this.PLog(ex.Message + newLine +
+					ex.InnerException);
+			}
+
+		}
+
+
+		public string ExceptionCurrentLog(Exception ex, string msg, bool hasLines = true)
+		{
+			string newLine = "\r\n";
+			if (hasLines)
+			{
+				return this.PLog(msg + newLine + ex.Message + newLine +
+					"Error in: " + this.fileName + newLine +
+					"At Line: " + this.lineNumber.ToString() + newLine +
+					"'" + this.lineText + "'" + newLine +
+					ex.InnerException);
+			}
+			else
+			{
+				return this.PLog(msg + newLine + ex.Message + newLine +
+					ex.InnerException);
+			}
 		}
 
 		public bool DirectoryCheck(string directory)
@@ -120,6 +158,17 @@ namespace RTWLib.Logger
 			"Error",
 			MessageBoxButtons.OK,
 			MessageBoxIcon.Error);
+		}
+
+		public DialogResult DisplayRetry()
+		{
+			DialogResult result = MessageBox.Show(current, 
+				"Warning", 
+				MessageBoxButtons.YesNo, 
+				MessageBoxIcon.Warning);
+
+			return result;
+
 		}
 
 		public void CleanLog()

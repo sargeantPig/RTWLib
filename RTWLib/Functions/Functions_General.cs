@@ -16,6 +16,7 @@ using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.IO;
 using System.CodeDom;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace RTWLib.Functions
 {
@@ -144,6 +145,68 @@ namespace RTWLib.Functions
 
 		}
 
+		public static void RenameFile(string old, string newFile)
+		{
+			if (File.Exists(old))
+			{
+				if (File.Exists(newFile))
+					File.Delete(newFile);
+
+				File.Move(old, newFile);
+			}
+		}
+
+		public static string GetPathFrom( this string fullpath, string pathStart, int counterMatchesToIgnore)
+		{ 
+			string[] split = fullpath.Split('\\');
+			bool found = false;
+			string partpath = "";
+			int matchCount = 0;
+			foreach (string line in split)
+			{
+				if (line.Contains(pathStart))
+				{
+					matchCount++;
+					if(matchCount > counterMatchesToIgnore)
+						found = true;
+				}
+				if(found)
+				{
+					partpath += line + @"\";
+				}
+			}
+
+			return partpath;
+		}
+
+		public static string CutFileFromPath(this string fullpath)
+		{
+			string[] split = fullpath.Split('\\');
+			string partpath = "";
+			for(int i = 0; i < split.Count() - 1; i++ )
+			{
+				partpath += split[i] + @"\";
+			}
+
+			return partpath;
+
+		}
+
+		public static void ReplaceFile(string old, string newFile, bool overwrite = false)
+		{
+			if (File.Exists(old) && !overwrite)
+			{
+				return;
+			}
+
+			else
+			{
+				if (File.Exists(old))
+					File.Delete(old);
+
+				File.Move(newFile, old);
+			}
+		}
 
 
 		public static float UniversalParse(this string input)
