@@ -20,7 +20,7 @@ namespace RTWLib.Objects.Buildings
 
         }
 
-        public string outputRecruit()
+        virtual public string outputRecruit()
         {
             string a = "";
 

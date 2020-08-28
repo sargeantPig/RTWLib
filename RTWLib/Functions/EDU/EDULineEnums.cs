@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Functions
 {
-
-
-
 	public class FileScheme //helps find the locations of specific values like attack within a file
 	{
 		Dictionary<string, Dictionary<string, int>> scheme;
@@ -59,7 +56,6 @@ namespace RTWLib.Functions
 		}
 	}
 
-
 	public enum EDULineEnums
     {
         Type,
@@ -90,6 +86,26 @@ namespace RTWLib.Functions
         Stat_fire_delay,
         Stat_food,
         Stat_cost,
-        Ownership
-    }
+        Ownership,
+
+        //m2tw only
+        Stat_ter,
+        Stat_ter_ex,
+        Stat_ter_attr,
+        Stat_armour_ex,
+        Stat_pri_ex,
+        BannerFaction,
+        BannerHoly,
+        Stat_sec_ex,
+        Stat_stl,
+        Armour_ug_levels,
+        Armour_ug_models,
+        Era0,
+        Era1,
+        Era2,
+        Info_pic_dir,
+        Card_pic_info,
+        Unit_info,
+
+}
 }

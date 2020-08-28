@@ -9,12 +9,13 @@ using RTWLib.Objects;
 using RTWLib.Logger;
 using RTWLib.Functions;
 using RTWLib.Data;
+using RTWLib.Medieval2;
 
 namespace RTWLib.Functions.EDU
 {
 	public partial class EDU : FileBase, IFile
 	{
-		public List<Unit> units = new List<Unit>();
+		public List<Unit> units;
 
 		Dictionary<int, string> fileComments = new Dictionary<int, string>();
 
@@ -22,6 +23,8 @@ namespace RTWLib.Functions.EDU
 			: base(FileNames.export_descr_unit, @"data\export_descr_unit.txt", "Unit details and stats")
 		{
             is_on = log_on;
+			units = new List<Unit>();
+
 		}
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)

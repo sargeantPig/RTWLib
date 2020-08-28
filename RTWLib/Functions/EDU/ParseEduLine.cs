@@ -1,4 +1,5 @@
 ﻿using RTWLib.Data;
+using RTWLib.Medieval2;
 using RTWLib.Objects;
 using System;
 using System.CodeDom;
@@ -14,7 +15,7 @@ namespace RTWLib.Functions.EDU
 {
     public partial class EDU
     {
-        private bool ParseLine(string line, ref int counter, int lineNumber, out KeyValuePair<EDULineEnums, object> commentPair)
+        protected bool ParseLine(string line, ref int counter, int lineNumber, out KeyValuePair<EDULineEnums, object> commentPair)
         {
             EDULineEnums identifier;
             string comment = "";
@@ -30,7 +31,9 @@ namespace RTWLib.Functions.EDU
                 switch (identifier)
                 {
                     case EDULineEnums.Type:
-                        units.Add(new Unit());
+                        if (this.GetType() == typeof(M2EDU))
+                            units.Add(new M2Unit());
+                        else units.Add(new Unit());
                         counter++;
                         HandleGenericLine(ref units[counter].type, data);
                         break;
@@ -117,6 +120,54 @@ namespace RTWLib.Functions.EDU
                         break;
                     case EDULineEnums.Stat_cost:
                         HandleGenericInts(ref units[counter].cost, data);
+                        break;
+                    case EDULineEnums.Stat_ter:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter, data);
+                        break;
+                    case EDULineEnums.Stat_ter_ex:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_ex, data);
+                        break;
+                    case EDULineEnums.Stat_ter_attr:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_attr, data);
+                        break;
+                    case EDULineEnums.Stat_armour_ex:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_armour_ex, data);
+                        break;
+                    case EDULineEnums.Stat_pri_ex:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_pri_ex, data);
+                        break;
+                    case EDULineEnums.BannerFaction:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).bannerFaction, data);
+                        break;
+                    case EDULineEnums.Stat_sec_ex:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_sec_ex, data);
+                        break;
+                    case EDULineEnums.Stat_stl:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_stl, data);
+                        break;
+                    case EDULineEnums.Armour_ug_levels:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).armour_ug_levels, data);
+                        break;
+                    case EDULineEnums.Armour_ug_models:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).armour_ug_models, data);
+                        break;
+                    case EDULineEnums.Era0:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).era0, data);
+                        break;
+                    case EDULineEnums.Era1:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).era1, data);
+                        break;
+                    case EDULineEnums.Era2:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).era2, data);
+                        break;
+                    case EDULineEnums.Info_pic_dir:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).info_pic_dir, data);
+                        break;
+                    case EDULineEnums.Card_pic_info:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).card_pic_info, data);
+                        break;
+                    case EDULineEnums.Unit_info:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).unit_info, data);
                         break;
                     default: return false;
                 }
@@ -212,12 +263,12 @@ namespace RTWLib.Functions.EDU
             {
                 if (str != " ")
                 {
-                    object obj;
-                    if ((obj = lookUp.LookUpKey<Attributes>(str.Trim())) != null)
+                    Attributes obj;
+                    if (Enum.TryParse<Attributes>(str.Trim(), out obj))
                     {
                         if ((Attributes)obj == Attributes.no_custom)
                             set_noCustom = true;
-                        else attributes |= lookUp.LookUpKey<Attributes>(str.Trim());
+                        else attributes |= obj;
                     }
                 }
             }

@@ -31,7 +31,16 @@ namespace RTWLib.Data
 		screeching_women = 1 << 19,
 		power_charge = 1 << 20,
 		can_swim = 1 << 21,
-		is_peasant = 1 << 22
+		is_peasant = 1 << 22,
+		//m2tw attributes only
+		free_upkeep_unit = 1 << 23,
+		can_withdraw = 1 << 24,
+		knight = 1 << 25,
+		gunpowder_unit = 1 << 26,
+		start_not_skirmishing = 1 << 27,
+		stakes = 1 << 28,
+		fire_by_rank = 1 << 29,
+		cannot_skirmish = 1 << 30 //kingdoms only?
 	}
 	[Flags]
 	public enum FormationTypes
@@ -64,7 +73,57 @@ namespace RTWLib.Data
 		boulder,
 		big_boulder,
 		harpoon,
-		MT_no
+		MT_no,
+		//m2tw only
+		arrow_fiery,
+		composite_arrow,
+		composite_arrow_fiery,
+		cav_composite_arrow,
+		cav_composite_arrow_fiery,
+		bodkin_arrow,
+		bodkin_arrow_fiery,
+		cav_bodkin_arrow,
+		cav_bodkin_arrow_fiery,
+		catapult,
+		fiery_catapult,
+		trebuchet,
+		fiery_trebuchet,
+		tarred_rock,
+		bolt,
+		flaming_ballista,
+		tower_ballista,
+		tower_flaming_ballista,
+		flaming_scorpion,
+		bombard_shot,
+		flaming_bombard_shot,
+		ribault_shot,
+		monster_ribault_shot,
+		grand_bombard_shot,
+		flaming_grand_bombard_shot,
+		monster_bombard_shot,
+		cannon_shot,
+		exploding_cannon_shot,
+		culverin_shot,
+		exploding_culverin_shot,
+		mortar_shot,
+		basilisk_shot,
+		exploding_basilisk_shot,
+		serpentine_shot,
+		elephant_cannon_shot,
+		cow_carcass,
+		rocket,
+		elephant_rocket,
+		test_cannon_ball,
+		naphtha_bomb,
+		hand_gun_bullet,
+		arquebus_bullet,
+		musket_bullet,
+		pistol_bullet,
+		camel_gun_bullet,
+		crossbow_bolt,
+		steel_crossbow_bolt,
+		norman_catapult,
+		fiery_norman_catapult,
 	};
 
 	public enum WeaponType
@@ -161,7 +220,8 @@ namespace RTWLib.Data
 		spear_bonus_9 = 1 << 21,
 		spear_bonus_10 = 1 << 22,
 		spear_bonus_11 = 1 << 23,
-		spear_bonus_12 = 1 << 24
+		spear_bonus_12 = 1 << 24,
+		spear = 1 << 25
 	};
 
 	public enum Cultures
