@@ -187,5 +187,12 @@ namespace RTWLib.Logger
 
 		}
 
+		public string ContinueParseAndCountLine(ref StreamReader sr, ref int lineCounter)
+		{
+			lineCounter++;
+			return sr.ReadLine();
+			
+		}
+
 	}
 }

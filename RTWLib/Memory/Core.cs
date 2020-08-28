@@ -29,9 +29,9 @@ namespace RTWLib.Memory
 		Process p;
 		public Core() { }
 
-		public void StartProcess(string[] args)
+		public void StartProcess(string[] args, string name)
 		{
-			p = Functions_General.ExecuteCommand("RomeTW.exe", args);
+			p = Functions_General.ExecuteCommand(name, args);
 			p.Start();
 			
 			pName = p.ProcessName;

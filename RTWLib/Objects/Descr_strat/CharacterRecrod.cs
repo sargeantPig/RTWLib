@@ -7,17 +7,31 @@ using System.Threading.Tasks;
 namespace RTWLib.Objects.Descr_strat
 {
 
-    public class CharacterRecord
+    public interface ICharacterRecord
     {
-        public string name;
-        public string gender;
-        public int command;
-        public int influence;
-        public int management;
-        public int subterfuge;
-        public int age;
-        public string status;
-        public string leader;
+        string name { get; set; }
+        string gender { get; set; }
+        int command { get; set; }
+        int influence { get; set; }
+        int management { get; set; }
+        int subterfuge { get; set; }
+        int age { get; set; }
+        string status { get; set; }
+        string leader { get; set; }
+
+    }
+
+    public class CharacterRecord : ICharacterRecord
+    {
+        public string name { get; set; }
+        public string gender { get; set; }
+        public int command { get; set; }
+        public int influence { get; set; }
+        public int management { get; set; }
+        public int subterfuge { get; set; }
+        public int age { get; set; }
+        public string status { get; set; }
+        public string leader { get; set; }
 
         public CharacterRecord(CharacterRecord cr)
         {
@@ -35,7 +49,7 @@ namespace RTWLib.Objects.Descr_strat
         public CharacterRecord()
         { }
 
-        public string Output()
+        virtual public string Output()
         {
             return "character_record\t\t" + name + ", \t" + gender + ", command " + command.ToString() + ", influence " + influence.ToString() + ", management " + management.ToString() +
                 ", subterfuge " + subterfuge.ToString() + ", age " + age.ToString() + ", " + status + ", " + leader + " " + "\r\n";

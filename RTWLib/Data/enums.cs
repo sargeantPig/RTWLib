@@ -144,7 +144,14 @@ namespace RTWLib.Data
 		blade,
 		archery,
 		siege,
-		TT_no
+		TT_no,
+		//M2TW ONLY
+		melee_simple, 
+		melee_blade, 
+		missile_mechanical, 
+		missile_gunpowder, 
+		artillery_mechanical,
+		artillery_gunpowder
 	};
 
 	public enum DamageType

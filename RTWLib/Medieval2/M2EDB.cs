@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Medieval2
 {
-	class M2EDB : EDB
+	public class M2EDB : EDB
 	{
 		public M2EDB(bool log_on) : base(log_on)
 		{
@@ -357,6 +357,13 @@ namespace RTWLib.Medieval2
 				}
 			}
 			strat.Close();
+		}
+
+		override public void ToFile(string filepath)
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(Output());
+			sw.Close();
 		}
 	}
 

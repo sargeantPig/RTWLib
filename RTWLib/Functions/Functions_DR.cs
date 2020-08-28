@@ -14,13 +14,15 @@ namespace RTWLib.Functions
 {
 	public class Descr_Region : FileBase,  IFile
 	{
-		public const string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
-		public const string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
+		public string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
+		public  string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
 		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
 
-		public Descr_Region(bool log_on) 
-			: base(FileNames.descr_regions, @"data\world\maps\base\descr_regions.txt", "handles region colours and locations" )
+		public Descr_Region(bool log_on, string filePathImage, string filePathDR) 
+			: base(FileNames.descr_regions, filePathDR, "handles region colours and locations" )
 		{
+			FILEPATH_REGIONS = filePathImage;
+			FILEPATH_DR = filePathDR;
             is_on = log_on;
         }
 
@@ -59,15 +61,15 @@ namespace RTWLib.Functions
 					rgbRegions.Add(name, new Objects.Region());
 					rgbRegions[name].name = name;
 
-					line = reg.ReadLine();
+					line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
 					cityName = line.Trim();
 					rgbRegions[name].cityName = cityName;
-					line = reg.ReadLine();
+					line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
 					faction_creator = line.Trim();
 					rgbRegions[name].faction_creator = faction_creator;
 				}
 
-				else if (line.Split(' ').Count() == 3)
+				else if (line.Split(' ').Count() == 3 && !line.Contains("religions"))
 				{
 					decimal num;
 
@@ -80,7 +82,7 @@ namespace RTWLib.Functions
 						rgbRegions[name].rgb[1] = Convert.ToInt32(split[1].Trim());
 						rgbRegions[name].rgb[2] = Convert.ToInt32(split[2].Trim());
 
-						line = reg.ReadLine();
+						line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
 						string res = line.Trim();
 						string[] resArr = res.Split(',');
 
@@ -89,9 +91,6 @@ namespace RTWLib.Functions
 						rgbRegions[name].resources = resArr;
 
 					}
-
-					
-
 				}
 			}
 
@@ -116,6 +115,10 @@ namespace RTWLib.Functions
 		private void GetCityCoordinates(string filepath)
 		{
 			MagickImage img = new MagickImage(filepath);
+
+			Misc_Data.regionWater = new bool[img.Width, img.Height];
+			Misc_Data.editRegionWater = new bool[img.Width, img.Height];
+
 			var pixels = img.GetPixels();
 
 			MagickColor black = MagickColor.FromRgb(0, 0, 0);
@@ -156,12 +159,7 @@ namespace RTWLib.Functions
 					{
 						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
 					}
-
-
-
 				}
-
-
 		}
 		private bool CompareColour(int[] col1, int[] col2)
 		{

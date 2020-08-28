@@ -6,14 +6,28 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Objects.Descr_strat
 {
-    public class Settlement
+    public interface ISettlement
+    { 
+        List<DSBuilding> b_types { get; set; }
+        string s_level { get; set; }
+        string region { get; set; }
+        string faction_creator { get; set; }
+        int yearFounded { get; set; }
+        int population { get; set; }
+    }
+
+
+    public class Settlement : ISettlement
     {
-        public List<DSBuilding> b_types = new List<DSBuilding>();
+        public List<DSBuilding> b_types { get; set; }
 
-        string plan_set = "default_set";
-        public string s_level, region, faction_creator;
+        public string plan_set = "default_set";
+        public string s_level { get; set; }
+        public string region { get; set; }
+        public string faction_creator { get; set; }
 
-        public int yearFounded, population;
+        public int yearFounded { get; set; }
+        public int population { get; set; }
 
         public Settlement(string level, string reg, string creator, List<DSBuilding> buildings, int yrFounded, int pop)
         {
@@ -40,9 +54,11 @@ namespace RTWLib.Objects.Descr_strat
         }
 
         public Settlement()
-        { }
+        {
+            b_types = new List<DSBuilding>();
+        }
 
-        public string outputSettlement()
+        virtual public string outputSettlement()
         {
 
             string settlement =

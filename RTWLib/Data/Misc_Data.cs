@@ -8,8 +8,8 @@ namespace RTWLib.Data
 {
 	public static class Misc_Data
 	{
-		public static bool[,] regionWater = new bool[255, 156];
-		public static bool[,] editRegionWater = new bool[255, 156];
+		public static bool[,] regionWater { get; set; }
+		public static bool[,] editRegionWater { get; set; }
 
 		public static int[] GetClosestWater(int[] coords)
 		{

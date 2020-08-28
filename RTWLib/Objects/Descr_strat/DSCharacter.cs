@@ -38,7 +38,7 @@ namespace RTWLib.Objects.Descr_strat
             army = new List<DSUnit>(character.army);
         }
 
-        public string Output()
+        virtual public string Output()
         {
             string output = "";
 

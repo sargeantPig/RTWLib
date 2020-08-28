@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Medieval2
 {
-    class M2EDU : EDU
+    public class M2EDU : EDU
     {
 
         public M2EDU(bool log_on) : base(log_on)
@@ -76,6 +76,12 @@ namespace RTWLib.Medieval2
 			return output;
 		}
 
+		override public void ToFile(string filepath)
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(Output());
+			sw.Close();
+		}
 
 	}
 }

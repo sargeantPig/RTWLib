@@ -41,7 +41,7 @@ namespace RTWLib.Functions
 
 				if (trim.StartsWith("faction"))
 				{
-					string[] split = trim.Split('\t');
+					string[] split = trim.Split('\t', ',');
 					faction = split[6];
 
 				}

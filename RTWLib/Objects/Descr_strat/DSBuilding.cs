@@ -25,7 +25,7 @@ namespace RTWLib.Objects.Descr_strat
             return "\r\n\t" + "building" +
                     "\r\n\t" + "{" +
                     "\r\n\t\ttype " + type + " " + name + "\r\n" +
-                "\r\n\t" + "}\r\n";
+                "\t" + "}\r\n";
         }
     }
 }

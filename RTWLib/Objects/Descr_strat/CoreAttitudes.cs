@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
+using ImageMagick;
 using RTWLib.Data;
 using RTWLib.Objects;
 namespace RTWLib.Objects.Descr_strat
@@ -19,19 +21,19 @@ namespace RTWLib.Objects.Descr_strat
         War
     }
 
-    public class CoreAttitudes
+    public class CoreAttitudes<T>
     {
         string text;
-        public Dictionary<string, Dictionary<int, List<string>>> attitudes;
+        public Dictionary<string, Dictionary<object, List<string>>> attitudes;
         public CoreAttitudes(string text)
         {
-            attitudes = new Dictionary<string, Dictionary<int, List<string>>>();
+            attitudes = new Dictionary<string, Dictionary<object, List<string>>>();
             this.text = text;
         }
 
-        public CoreAttitudes(CoreAttitudes ca)
+        public CoreAttitudes(CoreAttitudes<object> ca)
         {
-            attitudes = new Dictionary<string, Dictionary<int, List<string>>>(ca.attitudes);
+            attitudes = new Dictionary<string, Dictionary<object, List<string>>>(ca.attitudes);
             this.text = ca.text;
         }
 
@@ -89,22 +91,24 @@ namespace RTWLib.Objects.Descr_strat
 
         }
 
-        public int DoesFactionHaveRelations(string target, string relation) //gets value and checks if relation exists, returns -1 if not found
+        public object DoesFactionHaveRelations(string target, string relation) //gets value and checks if relation exists, returns -1 if not found
         {
             if (attitudes.ContainsKey(target))
             {
-                foreach (KeyValuePair<int, List<string>> valFac in attitudes[target])
+                foreach (KeyValuePair<object, List<string>> valFac in attitudes[target])
                 {
                     foreach (string fo in valFac.Value)
                     {
                         if (fo == relation)
+                        {
                             return valFac.Key;
+                        }
+
                     }
-                }
+                } 
             }
             return -1;
         }
-
         public DiplomaticPosition GetDiplomaticPosition(int value)
         {
             if (value < 100)
@@ -121,19 +125,51 @@ namespace RTWLib.Objects.Descr_strat
             return 0;
         }
 
+        public DiplomaticPosition GetDiplomaticPosition(float value)
+        {
+            if (value < 100)
+                return DiplomaticPosition.Allied;
+            else if (value < 200)
+                return DiplomaticPosition.Suspicous;
+            else if (value < 400)
+                return DiplomaticPosition.Neutral;
+            else if (value < 600)
+                return DiplomaticPosition.Hostile;
+            else if (value >= 600)
+                return DiplomaticPosition.War;
+
+            return 0;
+        }
+
+
         public string[] GetRelationships(DiplomaticPosition value, string faction)
         {
             List<string> relations = new List<string>();
             if (attitudes.ContainsKey(faction))
             {
-                foreach (KeyValuePair<int, List<string>> valFac in attitudes[faction])
+                foreach (KeyValuePair<object, List<string>> valFac in attitudes[faction])
                 {
-                    if (GetDiplomaticPosition(valFac.Key) == value)
+                    if (typeof(T) == typeof(int))
                     {
-                        foreach (string fo in valFac.Value)
+                        if (GetDiplomaticPosition((int)valFac.Key) == value)
                         {
+                            foreach (string fo in valFac.Value)
+                            {
 
-                            relations.Add(fo);
+                                relations.Add(fo);
+                            }
+                        }
+                    }
+
+                    else if (typeof(T) == typeof(float))
+                    {
+                        if (GetDiplomaticPosition((float)valFac.Key) == value)
+                        {
+                            foreach (string fo in valFac.Value)
+                            {
+
+                                relations.Add(fo);
+                            }
                         }
                     }
                 }

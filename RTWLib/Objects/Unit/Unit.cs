@@ -188,6 +188,7 @@ namespace RTWLib.Objects
             ground = new int[4];
             food = new int[2];
             cost = new int[costValues];
+            
         }
 
         public virtual string unitOutput()

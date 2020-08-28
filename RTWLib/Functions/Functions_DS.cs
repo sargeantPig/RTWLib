@@ -22,13 +22,15 @@ namespace RTWLib.Functions
         public int pirate_spawn_value = 0;
         public List<Landmark> landmarks = new List<Landmark>();
         public List<Resource> resources = new List<Resource>();
-        public List<Faction> factions = new List<Faction>();
-        public CoreAttitudes coreAttitudes = new CoreAttitudes("core_attitudes");
-        public CoreAttitudes factionRelationships = new CoreAttitudes("faction_relationships");
-
+        public List<IFaction> factions = new List<IFaction>();
+        public CoreAttitudes<int> coreAttitudes;
+        public CoreAttitudes<int> factionRelationships;
         public Descr_Strat() 
             : base(FileNames.descr_strat, @"data\world\maps\campaign\imperial_campaign\descr_strat.txt", "Campaign Info and Setup")
-        { }
+        {
+            coreAttitudes = new CoreAttitudes<int>("core_attitudes");
+            factionRelationships = new CoreAttitudes<int>("faction_relationships");
+        }
 
         override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
         {
@@ -390,7 +392,7 @@ namespace RTWLib.Functions
 
                     string fo = split[1];
 
-                    Dictionary<int, List<string>> f_a = new Dictionary<int, List<string>>(); 
+                    Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>(); 
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
@@ -402,7 +404,7 @@ namespace RTWLib.Functions
 
                     if (!coreAttitudes.attitudes.ContainsKey(fo))
                     {
-                        coreAttitudes.attitudes.Add(fo, new Dictionary<int, List<string>>(f_a));
+                        coreAttitudes.attitudes.Add(fo, new Dictionary<object, List<string>>(f_a));
                     }
                     
                     else
@@ -433,7 +435,7 @@ namespace RTWLib.Functions
 
                     string fo = split[1];
 
-                    Dictionary<int, List<string>> f_a = new Dictionary<int, List<string>>();
+                    Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
@@ -445,7 +447,7 @@ namespace RTWLib.Functions
 
                     if (!factionRelationships.attitudes.ContainsKey(fo))
                     {
-                        factionRelationships.attitudes.Add(fo, new Dictionary<int, List<string>>(f_a));
+                        factionRelationships.attitudes.Add(fo, new Dictionary<object, List<string>>(f_a));
                     }
 
                     else
@@ -554,16 +556,16 @@ namespace RTWLib.Functions
         //remove spqr from factions
         public void RemoveSPQR()
         {
-            int spqrIndex = factions.FindIndex(x => x.name == LookUpTables.dic_factions[FactionOwnership.romans_senate]);
+            int spqrIndex = factions.FindIndex((x => ((Faction)x).name == LookUpTables.dic_factions[FactionOwnership.romans_senate]));
             factions.RemoveAt(spqrIndex);
 
-            int rjInd = factions.FindIndex(x => x.name == LookUpTables.dic_factions[FactionOwnership.romans_julii]);
-            int rbInd = factions.FindIndex(x => x.name == LookUpTables.dic_factions[FactionOwnership.romans_brutii]);
-            int rsInd = factions.FindIndex(x => x.name == LookUpTables.dic_factions[FactionOwnership.romans_scipii]);
+            int rjInd = factions.FindIndex(x => ((Faction)x).name == LookUpTables.dic_factions[FactionOwnership.romans_julii]);
+            int rbInd = factions.FindIndex(x => ((Faction)x).name == LookUpTables.dic_factions[FactionOwnership.romans_brutii]);
+            int rsInd = factions.FindIndex(x => ((Faction)x).name == LookUpTables.dic_factions[FactionOwnership.romans_scipii]);
 
-            factions[rjInd].superFaction = "";
-            factions[rbInd].superFaction = "";
-            factions[rsInd].superFaction = "";
+            ((Faction)factions[rjInd]).superFaction = "";
+            ((Faction)factions[rbInd]).superFaction = "";
+            ((Faction)factions[rsInd]).superFaction = "";
 
             spqrIndex = campaignNonPlayable.FindIndex(x => x == LookUpTables.dic_factions[FactionOwnership.romans_senate]);
             campaignNonPlayable.RemoveAt(spqrIndex);
@@ -575,7 +577,7 @@ namespace RTWLib.Functions
         {
             factions.Shuffle(rnd);
         }
-        void RemoveSenateRelations(ref CoreAttitudes coreA)
+        void RemoveSenateRelations(ref CoreAttitudes<int> coreA)
         {
             coreA.attitudes.Remove("romans_senate");
 
@@ -599,7 +601,7 @@ namespace RTWLib.Functions
 
             if (facIndex > -1 && facIndex < factions.Count())
             {
-                foreach (DSCharacter character in factions[facIndex].characters)
+                foreach (DSCharacter character in ((Faction)factions[facIndex]).characters)
                 {
                     if (character.type == "named character" || character.type == "general")
                     {
@@ -617,7 +619,7 @@ namespace RTWLib.Functions
 
             if (facIndex > -1 && facIndex < factions.Count())
             {
-                foreach (DSCharacter character in factions[facIndex].characters)
+                foreach (DSCharacter character in ((Faction)factions[facIndex]).characters)
                 {
                     if (character.type == "spy" || character.type == "diplomat")
                     {
@@ -635,7 +637,7 @@ namespace RTWLib.Functions
 
             if (facIndex > -1 && facIndex < factions.Count())
             {
-                foreach (DSCharacter character in factions[facIndex].characters)
+                foreach (DSCharacter character in ((Faction)factions[facIndex]).characters)
                 {
                     if (character.type == "admiral")
                     {

@@ -29,9 +29,9 @@ namespace RTWLib.Objects.Descr_strat
             weapon = dsu.weapon;
         }
 
-        public string Output()
+        public string Output(string weaponName = "weapon")
         {
-            string output = "unit\t\t" + name + "\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " weapon " + weapon.ToString() + "\r\n";
+            string output = "unit\t\t" + name + "\t\t\t\texp " + exp.ToString() + " armour " + armour.ToString() + " " + weaponName + " " + weapon.ToString() + "\r\n";
             return output;
         }
 

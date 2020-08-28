@@ -11,8 +11,8 @@ namespace RTWLib.Medieval2
 {
     public class M2Unit : Unit
     {
-        public string stat_ter; //M2TW
-        public string stat_ter_ex; //M2TW
+        public M2StatWeapons stat_ter; //M2TW
+        public Stat_pri_attr stat_ter_ex; //M2TW
         public string stat_ter_attr; //M2tw
         public string stat_armour_ex; //M2TW
         public string stat_pri_ex; // M2TW
@@ -28,11 +28,13 @@ namespace RTWLib.Medieval2
         public string info_pic_dir;
         public string card_pic_info;
         public string unit_info;
-
+        new public M2StatWeapons primaryWeapon;
 
         public M2Unit() : base(8)
         {
-        
+            primaryWeapon = new M2StatWeapons();
+            stat_ter = new M2StatWeapons();
+            stat_ter_ex = Stat_pri_attr.PA_no;
         }
 
         public override string unitOutput()
@@ -208,6 +210,8 @@ namespace RTWLib.Medieval2
 
             unitString += ("\r\n");
 
+
+
             unitString += ("stat_pri\t\t\t "); // write primary weapon
 
             foreach (int atk in primaryWeapon.attack)
@@ -220,9 +224,12 @@ namespace RTWLib.Medieval2
 
             unitString += (
                 lookTables.LookUpString(primaryWeapon.WeaponFlags) + ", " +
-                 lookTables.LookUpString(primaryWeapon.TechFlags) + ", " +
+                 primaryWeapon.TechFlags.ToString() + ", " +
                 lookTables.LookUpString(primaryWeapon.DamageFlags) + ", " +
                 primaryWeapon.SoundFlags + ", ");
+
+            if (primaryWeapon.musket_shot_set != null)
+                unitString += primaryWeapon.musket_shot_set + ", ";
 
             firstAttr = false;
             foreach (float atkd in primaryWeapon.attackdelay)
@@ -279,7 +286,7 @@ namespace RTWLib.Medieval2
                 unitString += (miss + ", ");
             unitString += (
                 lookTables.LookUpString(secondaryWeapon.WeaponFlags) + ", " +
-                lookTables.LookUpString(secondaryWeapon.TechFlags) + ", " +
+                secondaryWeapon.TechFlags.ToString() + ", " +
                 lookTables.LookUpString(secondaryWeapon.DamageFlags) + ", " +
                 secondaryWeapon.SoundFlags + ", ");
 
@@ -319,19 +326,45 @@ namespace RTWLib.Medieval2
 
             unitString += ("\r\n");
 
-            if (stat_ter != null)
+            
+
+            if (stat_ter.missileType != null)
             {
-                unitString += ("stat_ter\t\t\t " + stat_ter);
+                unitString += ("stat_ter\t\t\t ");
+
+                foreach (int atk in stat_ter.attack)
+                    unitString += (atk + ", ");
+
+                unitString += (stat_ter.missileType + ", ");
+
+                foreach (int miss in stat_ter.Missleattri)
+                    unitString += (miss + ", ");
+
+                unitString += (
+                    lookTables.LookUpString(stat_ter.WeaponFlags) + ", " +
+                     stat_ter.TechFlags.ToString() + ", " +
+                    lookTables.LookUpString(stat_ter.DamageFlags) + ", " +
+                    stat_ter.SoundFlags + ", ");
+
+                if (stat_ter.musket_shot_set != null)
+                    unitString += stat_ter.musket_shot_set + ", ";
+
+                firstAttr = false;
+                foreach (float atkd in primaryWeapon.attackdelay)
+                {
+                    setAndTagChanged(() => unitString += (atkd));
+                }
+
                 unitString += ("\r\n");
             }
-            if (stat_ter_ex != null)
+            if (stat_ter_ex != Stat_pri_attr.PA_no)
             {
-                unitString += ("stat_sec_ex\t\t " + stat_ter_ex);
+                unitString += ("stat_ter_ex\t\t " + stat_ter_ex.ToString());
                 unitString += ("\r\n");
             }
             if (stat_ter_attr != null)
             {
-                unitString += ("stat_sec_ex\t\t " + stat_ter_attr);
+                unitString += ("stat_ter_attr\t\t " + stat_ter_attr);
                 unitString += ("\r\n");
             }
 
@@ -344,7 +377,7 @@ namespace RTWLib.Medieval2
 
             if (stat_armour_ex != null)
             {
-                unitString += ("stat_ter\t\t\t " + stat_armour_ex);
+                unitString += ("stat_armour_ex\t\t\t " + stat_armour_ex);
                 unitString += ("\r\n");
             }
 
@@ -398,19 +431,19 @@ namespace RTWLib.Medieval2
 
             if (stat_stl != null)
             {
-                unitString += ("stat_stl\t\t\t " + stat_ter);
+                unitString += ("stat_stl\t\t\t " + stat_stl);
                 unitString += ("\r\n");
             }
 
             if (armour_ug_levels != null)
             {
-                unitString += ("stat_ter\t\t\t " + armour_ug_levels);
+                unitString += ("armour_ug_levels\t\t\t " + armour_ug_levels);
                 unitString += ("\r\n");
             }
 
             if (armour_ug_models != null)
             {
-                unitString += ("stat_ter\t\t\t " + armour_ug_models);
+                unitString += ("armour_ug_models\t\t\t " + armour_ug_models);
                 unitString += ("\r\n");
             }
 
@@ -426,32 +459,32 @@ namespace RTWLib.Medieval2
 
             if (era0 != null)
             {
-                unitString += ("stat_ter\t\t\t " + era0);
+                unitString += ("era0\t\t\t " + era0);
                 unitString += ("\r\n");
             }
             if (era1 != null)
             {
-                unitString += ("stat_ter\t\t\t " + era1);
+                unitString += ("era1\t\t\t " + era1);
                 unitString += ("\r\n");
             }
             if (era2 != null)
             {
-                unitString += ("stat_ter\t\t\t " + era2);
+                unitString += ("era2\t\t\t " + era2);
                 unitString += ("\r\n");
             }
             if (info_pic_dir != null)
             {
-                unitString += ("stat_ter\t\t\t " + info_pic_dir);
+                unitString += ("info_pic_dic\t\t\t " + info_pic_dir);
                 unitString += ("\r\n");
             }
             if (card_pic_info != null)
             {
-                unitString += ("stat_ter\t\t\t " + card_pic_info);
+                unitString += ("card_pic_info\t\t\t " + card_pic_info);
                 unitString += ("\r\n");
             }
             if (unit_info != null)
             {
-                unitString += ("stat_ter\t\t\t " + unit_info);
+                unitString += ("unit_info\t\t\t " + unit_info);
                 unitString += ("\r\n");
             }
 
@@ -463,20 +496,23 @@ namespace RTWLib.Medieval2
                 EDULineEnums identifier;
                 bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(lines[i]).Capitalise(), out identifier);
 
-                if (isIdentifier)
+                if (isIdentifier )
                 {
-                    if (comments[identifier] is string)
-                        lines[i] += "\t\t" + comments[identifier];
-                    else if (comments[identifier] is List<string>)
+                    if (comments.ContainsKey(identifier))
                     {
-                        if (!multiple.ContainsKey(identifier))
-                            multiple.Add(identifier, 0);
-                        else multiple[identifier] += 1;
+                        if (comments[identifier] is string)
+                            lines[i] += "\t\t" + comments[identifier];
+                        else if (comments[identifier] is List<string>)
+                        {
+                            if (!multiple.ContainsKey(identifier))
+                                multiple.Add(identifier, 0);
+                            else multiple[identifier] += 1;
 
-                        lines[i] += "\t\t" + ((List<string>)comments[identifier])[multiple[identifier]];
+                            lines[i] += "\t\t" + ((List<string>)comments[identifier])[multiple[identifier]];
+
+                        }
 
                     }
-
                 }
             }
 

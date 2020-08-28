@@ -12,6 +12,14 @@ namespace RTWLib.Medieval2
 {
     public class M2DS : Descr_Strat
     {
+        float timescale;
+        CoreAttitudes<float> m2twAttitudes = new CoreAttitudes<float>("faction_standings");
+
+        public M2DS() : base()
+        { 
+        
+        }
+
         override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
         {
             lineNumber = 0;
@@ -28,8 +36,8 @@ namespace RTWLib.Medieval2
 
             StreamReader strat = new StreamReader(PATH);
             string faction = "";
-            Faction newFaction = new Faction();
-            DSCharacter newCharacter = new DSCharacter();
+            M2Faction newFaction = new M2Faction();
+            M2DSCharacter newCharacter = new M2DSCharacter();
             bool newfactionReady = false;
             bool newcharacterReady = false;
             //get factions
@@ -38,7 +46,7 @@ namespace RTWLib.Medieval2
             {
                 lineNumber++;
                 currentLine = line;
-                if (line.StartsWith("campaign"))
+                if (line.StartsWith("campaign") && !line.Contains("script"))
                 {
                     string[] split = line.Split('\t');
                     campaign = split[2];
@@ -46,7 +54,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("playable"))
                 {
-                    while ((line = strat.ReadLine()) != "end")
+                    while ((line = this.ContinueParseAndCountLine(ref strat, ref lineNumber)).TrimEnd() != "end")
                     {
                         playableFactions.Add(line.Trim());
 
@@ -55,7 +63,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("unlockable"))
                 {
-                    while ((line = strat.ReadLine()) != "end")
+                    while ((line = this.ContinueParseAndCountLine(ref strat, ref lineNumber)).TrimEnd() != "end")
                     {
                         unlockableFactions.Add(line.Trim());
 
@@ -64,7 +72,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("nonplayable"))
                 {
-                    while ((line = strat.ReadLine()) != "end")
+                    while ((line = this.ContinueParseAndCountLine(ref strat, ref lineNumber)).TrimEnd() != "end")
                     {
                         campaignNonPlayable.Add(line.Trim());
                     }
@@ -82,6 +90,12 @@ namespace RTWLib.Medieval2
                     string temp = Functions_General.RemoveFirstWord(line, '\t');
                     endDate = temp.Trim();
 
+                }
+
+                if (line.StartsWith("timescale"))
+                {
+                    string temp = Functions_General.RemoveFirstWord(line, '\t');
+                    timescale = (float)Convert.ToDouble(temp.Trim());
                 }
 
                 if (line.StartsWith("brigand_spawn_value"))
@@ -119,14 +133,14 @@ namespace RTWLib.Medieval2
                 }
 
 
-                if (line.StartsWith("faction") && !line.StartsWith("faction_relationships"))
+                if (line.StartsWith("faction") && !line.StartsWith("faction_relationships") && !line.StartsWith("faction_standings"))
                 {
                     if (newfactionReady)
                     { //catch final character
-                        newFaction.characters.Add(new DSCharacter(newCharacter));
-                        factions.Add(new Faction(newFaction));
+                        newFaction.characters.Add(new M2DSCharacter(newCharacter));
+                        factions.Add(new M2Faction(newFaction));
                         newfactionReady = false;
-                        newCharacter = new DSCharacter();
+                        newCharacter = new M2DSCharacter();
                         newcharacterReady = false;
                     }
                     newfactionReady = true;
@@ -150,20 +164,41 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("denari"))
                 {
-                    string[] den = line.Split('\t');
+                    string[] den = line.Split('\t', ' ');
                     newFaction.denari = Convert.ToInt32(den[1].Trim());
+                }
+
+                if (line.StartsWith("denari_kings_purse"))
+                {
+                    string[] den = line.Split('\t', ' ').CleanStringArray();
+                    newFaction.kings_purse = Convert.ToInt32(den[1].Trim());
+                }
+
+                if (line.StartsWith("ai_label"))
+                {
+                    string[] den = line.Split('\t', ' ').CleanStringArray();
+                    newFaction.ai_label = den[1].Trim();
                 }
 
                 if (line.StartsWith("settlement"))
                 {
-                    Settlement tempSettlement;
+                    string[] typeCheck = line.Split(' '); //check for castle
+
+                    
+
+                    M2Settlement tempSettlement;
                     List<DSBuilding> b_types = new List<DSBuilding>();
 
-                    string s_level = "", region = "", faction_creator = "";
+                   
+                    string s_level = "", region = "", faction_creator = "", type = "";
 
-                    int yearFounded = 0, population = 100;
+                    if (typeCheck.Count() > 1)
+                        type = typeCheck[1];
 
-                    while ((line = strat.ReadLine().TrimEnd()) != "}")
+
+                     int yearFounded = 0, population = 100;
+
+                    while ((line = this.ContinueParseAndCountLine(ref strat, ref lineNumber).TrimEnd()) != "}")
                     {
                         if (line.Trim().StartsWith("level"))
                         {
@@ -226,7 +261,7 @@ namespace RTWLib.Medieval2
                     }
 
                     //Output("\n" + "Added: " + region + "\n");
-                    tempSettlement = new Settlement(s_level, region, faction_creator, b_types, yearFounded, population);
+                    tempSettlement = new M2Settlement(s_level, region, faction_creator, b_types, yearFounded, population, type);
                     newFaction.settlements.Add(tempSettlement);
 
 
@@ -237,12 +272,12 @@ namespace RTWLib.Medieval2
                 {
                     if (newcharacterReady)
                     {
-                        newFaction.characters.Add(new DSCharacter(newCharacter));
+                        newFaction.characters.Add(newCharacter);
                         newcharacterReady = false;
                     }
                     newcharacterReady = true;
 
-                    newCharacter = new DSCharacter();
+                    newCharacter = new M2DSCharacter();
 
                     string[] split = line.Split('\t', ',');
 
@@ -250,14 +285,15 @@ namespace RTWLib.Medieval2
                     {
                         newCharacter.name = split[1].Trim();
                         newCharacter.type = split[2].Trim();
-                        string[] ageSplit = split[3].Split(' ');
+                        newCharacter.gender = split[3].Trim();
+                        string[] ageSplit = split[4].Split(' ');
                         newCharacter.age = Convert.ToInt32(ageSplit[2].Trim());
                         string[] xsplit = split[5].Split(' ');
                         string[] ysplit = split[6].Split(' ');
                         newCharacter.coords[0] = Convert.ToInt32(xsplit[2].Trim());
                         newCharacter.coords[1] = Convert.ToInt32(ysplit[2].Trim());
 
-                        line = strat.ReadLine(); //move to traits
+                        line = this.ContinueParseAndCountLine(ref strat, ref lineNumber); //move to traits
                         string traits = Functions_General.RemoveFirstWord(line);
                         newCharacter.traits = traits.Trim();
                     }
@@ -265,9 +301,10 @@ namespace RTWLib.Medieval2
                     else if (split.Count() == 8)
                     {
                         newCharacter.name = split[1].Trim();
+                        newCharacter.gender = split[3].Trim();
                         newCharacter.type = split[2].Trim();
-                        newCharacter.rank = split[3].Trim();
-                        string[] ageSplit = split[4].Split(' ');
+                        newCharacter.rank = split[4].Trim();
+                        string[] ageSplit = split[5].Split(' ');
                         newCharacter.age = Convert.ToInt32(ageSplit[2].Trim());
                         string[] xsplit = split[6].Split(' ');
                         string[] ysplit = split[7].Split(' ');
@@ -327,32 +364,19 @@ namespace RTWLib.Medieval2
                 {
                     string record = Functions_General.RemoveFirstWord(line, '\t');//
 
-                    CharacterRecord cr = new CharacterRecord();
+                    M2CharacterRecord cr = new M2CharacterRecord();
 
                     string[] recordSplit = record.Split(',');
                     cr.name = recordSplit[0].Trim();
                     cr.gender = recordSplit[1].Trim();
-
-                    string[] command = recordSplit[2].Split(' ');
-
-                    cr.command = Convert.ToInt32(command[2].Trim());
-
-                    string[] influence = recordSplit[3].Split(' ');
-                    cr.influence = Convert.ToInt32(influence[2].Trim());
-
-                    string[] management = recordSplit[4].Split(' ');
-                    cr.management = Convert.ToInt32(management[2].Trim());
-
-                    string[] subterfuge = recordSplit[5].Split(' ');
-                    cr.subterfuge = Convert.ToInt32(subterfuge[2].Trim());
-
-                    string[] age = recordSplit[6].Split(' ');
+                  
+                    string[] age = recordSplit[2].Split(' ');
                     cr.age = Convert.ToInt32(age[2].Trim());
 
-                    cr.status = recordSplit[7].Trim();
-                    cr.leader = recordSplit[8].Trim();
+                    cr.status = recordSplit[3].Trim();
+                    cr.leader = recordSplit[4].Trim();
 
-                    newFaction.characterRecords.Add(new CharacterRecord(cr));
+                    newFaction.characterRecords.Add(new M2CharacterRecord(cr));
                 }
 
                 if (line.StartsWith("relative"))
@@ -361,7 +385,7 @@ namespace RTWLib.Medieval2
                     newFaction.relatives.Add(relative);
                 }
 
-                if (line.StartsWith("core_attitudes"))
+                if (line.StartsWith("faction_standings"))
                 {
                     string[] split = line.Split('\t', ',');
 
@@ -372,19 +396,19 @@ namespace RTWLib.Medieval2
 
                     string fo = split[1];
 
-                    Dictionary<int, List<string>> f_a = new Dictionary<int, List<string>>();
+                    Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
-                        int temp = Convert.ToInt32(split[2]);
+                        float temp = (float)Convert.ToDouble(split[2]);
                         string f = split[i + 3];
                         if (!f_a.ContainsKey(temp))
                             f_a.Add(temp, new List<string> { f });
                         else f_a[temp].Add(f);
                     }
 
-                    if (!coreAttitudes.attitudes.ContainsKey(fo))
+                    if (!m2twAttitudes.attitudes.ContainsKey(fo))
                     {
-                        coreAttitudes.attitudes.Add(fo, new Dictionary<int, List<string>>(f_a));
+                        m2twAttitudes.attitudes.Add(fo, new Dictionary<object, List<string>>(f_a));
                     }
 
                     else
@@ -393,18 +417,18 @@ namespace RTWLib.Medieval2
                         {
                             foreach (var toAdd in cf.Value)
                             {
-                                if (!coreAttitudes.attitudes[fo].ContainsKey(cf.Key))
+                                if (!m2twAttitudes.attitudes[fo].ContainsKey(cf.Key))
                                 {
-                                    coreAttitudes.attitudes[fo].Add(cf.Key, new List<string> { toAdd });
+                                    m2twAttitudes.attitudes[fo].Add(cf.Key, new List<string> { toAdd });
                                 }
 
-                                else coreAttitudes.attitudes[fo][cf.Key].Add(toAdd);
+                                else m2twAttitudes.attitudes[fo][cf.Key].Add(toAdd);
                             }
                         }
                     }
                 }
 
-                if (line.StartsWith("faction_relationships"))
+               /* if (line.StartsWith("faction_relationships"))
                 {
                     string[] split = line.Split('\t', ',');
 
@@ -446,15 +470,15 @@ namespace RTWLib.Medieval2
                             }
                         }
                     }
-                };
+                };*/
             }
 
             if (newfactionReady) //catches final faction
             { //catch final character
-                newFaction.characters.Add(new DSCharacter(newCharacter));
-                factions.Add(new Faction(newFaction));
+                newFaction.characters.Add(newCharacter);
+                factions.Add(new M2Faction(newFaction));
                 newfactionReady = false;
-                newCharacter = new DSCharacter();
+                newCharacter = new M2DSCharacter();
                 newcharacterReady = false;
             }
 
@@ -500,6 +524,12 @@ namespace RTWLib.Medieval2
             output +=
                 "start_date\t" + startDate + "\r\n" +
                 "end_date\t" + endDate + "\r\n\r\n" +
+                "timescale\t" + timescale + "\r\n\r\n" +
+                "marian_reforms_disabled\r\n" +
+                "rebelling_characters_active\r\n" +
+                "gladiator_uprising_disabled\r\n" +
+                "night_battles_enabled\r\n" +
+                "show_date_as_turns\r\n" +
                 "brigand_spawn_value " + brigand_spawn_value.ToString() + "\r\n" +
                 "pirate_spawn_value " + pirate_spawn_value.ToString() + "\r\n\r\n";
 
@@ -517,15 +547,23 @@ namespace RTWLib.Medieval2
 
             output += "\r\n\r\n";
 
-            foreach (Faction fac in factions)
+            foreach (IFaction fac in factions)
             {
-                output += fac.Output();
+                output += ((M2Faction)fac).Output();
             }
 
             output += "\r\n";
-            output += coreAttitudes.OutputMulti();
-            output += factionRelationships.OutputSingle();
+            output += m2twAttitudes.OutputMulti();
+
+            output += "\r\nscript\r\ncampaign_script.txt\r\n";
+
             return output;
+        }
+        override public void ToFile(string filepath)
+        {
+            StreamWriter sw = new StreamWriter(filepath);
+            sw.Write(Output());
+            sw.Close();
         }
     }
 }

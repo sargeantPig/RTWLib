@@ -137,10 +137,15 @@
     <Compile Include="Functions\Functions_SMF.cs" />
     <Compile Include="Functions\Functions_DR.cs" />
     <Compile Include="Logger\logger.cs" />
+    <Compile Include="Medieval2\M2CharacterRecord.cs" />
     <Compile Include="Medieval2\M2DS.cs" />
+    <Compile Include="Medieval2\M2DSCharacter.cs" />
     <Compile Include="Medieval2\M2EDB.cs" />
     <Compile Include="Medieval2\M2EDU.cs" />
+    <Compile Include="Medieval2\M2Faction.cs" />
     <Compile Include="Medieval2\M2Recruit.cs" />
+    <Compile Include="Medieval2\M2Settlement.cs" />
+    <Compile Include="Medieval2\M2StatWeapons.cs" />
     <Compile Include="Memory\Core.cs" />
     <Compile Include="Objects\Buildings\BCapability.cs" />
     <Compile Include="Objects\Buildings\BConstruction.cs" />

@@ -30,6 +30,8 @@ namespace RTWLib.Functions
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
 			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
 
+			regionMap.Resize(fullFactionMap.Width, fullFactionMap.Height);
+
 			var rpixels = regionMap.GetPixels();
 
 			foreach (Faction f in ds.factions) // loop through faction
@@ -48,6 +50,7 @@ namespace RTWLib.Functions
 
 						MagickColor priCol = MagickColor.FromRgb(facCol1.R, facCol1.G, facCol1.B); //convert the colours to magickcolour
 						MagickColor secCol = MagickColor.FromRgb(facCol2.R, facCol2.G, facCol2.B);
+
 
 						int channelsCount = fmPixels.Channels;
 						for (int y = 0; y < factionMap.Height; y++)
@@ -77,7 +80,7 @@ namespace RTWLib.Functions
 								i = 0;
 							else i = 1;
 
-							for (int x = 0; x < regVert[i].Length; x += channelsCount) // traverse each pixel across the image at the current y value
+							for (int x = 0; x < regVert[i].Length - channelsCount; x += channelsCount) // traverse each pixel across the image at the current y value
 							{
 								MagickColor pixCol = new MagickColor(regVert[i][x], regVert[i][x + 1], regVert[i][x + 2]);//create magickcolour using 
 								MagickColor fCol = new MagickColor(facVert[i][x], facVert[i][x + 1], facVert[i][x + 2]);
@@ -130,7 +133,7 @@ namespace RTWLib.Functions
 			foreach (Faction f in ds.factions) // loop through faction
 			{
 				
-				int relationval = ds.factionRelationships.DoesFactionHaveRelations(factionName, f.name);
+				int relationval = (int)ds.factionRelationships.DoesFactionHaveRelations(factionName, f.name);
 				if (f.name == factionName)
 				{
 					currentColour1 = fac1;

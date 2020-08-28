@@ -80,7 +80,9 @@ namespace RTWLib.Functions.EDU
                         HandleGenericInts(ref units[counter].heatlh, data);
                         break;
                     case EDULineEnums.Stat_pri:
-                        HandleStatPri(ref units[counter].primaryWeapon, data);
+                        if(this.GetType() == typeof(M2EDU))
+                             M2TWHandleStatPri(ref ((M2Unit)units[counter]).primaryWeapon, data);
+                        else HandleStatPri(ref units[counter].primaryWeapon, data);
                         break;
                     case EDULineEnums.Stat_pri_attr:
                         HandleStatPriAttr(ref units[counter].priAttri, data);
@@ -122,10 +124,10 @@ namespace RTWLib.Functions.EDU
                         HandleGenericInts(ref units[counter].cost, data);
                         break;
                     case EDULineEnums.Stat_ter:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter, data);
+                        M2TWHandleStatPri(ref ((M2Unit)units[counter]).stat_ter, data);
                         break;
                     case EDULineEnums.Stat_ter_ex:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_ex, data);
+                        HandleStatPriAttr(ref ((M2Unit)units[counter]).stat_ter_ex, data);
                         break;
                     case EDULineEnums.Stat_ter_attr:
                         HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_attr, data);
@@ -210,13 +212,47 @@ namespace RTWLib.Functions.EDU
             stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
             stat_pri.missileType = data[2].Trim();
             stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
-            stat_pri.TechFlags = lu.LookUpKey<TechType>(data[6].Trim());
+            stat_pri.TechFlags =(TechType)Enum.Parse(typeof(TechType), data[6].Trim());
             stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
             stat_pri.SoundFlags = data[8].Trim();
             stat_pri.attackdelay[0] = Convert.ToInt32(data[9].Trim());
             stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[10].Trim());
         }
+        private void M2TWHandleStatPri(ref M2StatWeapons stat_pri, string[] data)
+        {
+            if (data.Count() == 11)
+            {
 
+                LookUpTables lu = new LookUpTables();
+                stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
+                stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
+                stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
+                stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
+                stat_pri.missileType = data[2].Trim();
+                stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
+                stat_pri.TechFlags = (TechType)Enum.Parse(typeof(TechType), data[6].Trim());
+                stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
+                stat_pri.SoundFlags = data[8].Trim();
+                stat_pri.attackdelay[0] = Convert.ToInt32(data[9].Trim());
+                stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[10].Trim());
+            }
+            else if (data.Count() == 12)
+             {
+                LookUpTables lu = new LookUpTables();
+                stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
+                stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
+                stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
+                stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
+                stat_pri.missileType = data[2].Trim();
+                stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
+                stat_pri.TechFlags = (TechType)Enum.Parse(typeof(TechType), data[6].Trim());
+                stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
+                stat_pri.SoundFlags = data[8].Trim();
+                stat_pri.musket_shot_set = data[9].Trim();
+                stat_pri.attackdelay[0] = Convert.ToInt32(data[10].Trim());
+                stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[11].Trim());
+            }
+        }
         private void HandleStatPriAttr(ref Stat_pri_attr stat_Pri_, string[] data)
         {
             LookUpTables lu = new LookUpTables();
