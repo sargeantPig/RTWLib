@@ -16,6 +16,14 @@ namespace RTWLib.Medieval2
             this.gender = character.gender;        
         }
 
+
+        public M2DSCharacter(string Name, Random rnd)
+        {
+            name = Name;
+            type = "general";
+            age = rnd.Next(20, 50);
+        }
+
         public M2DSCharacter() : base()
         { }
 
@@ -32,10 +40,10 @@ namespace RTWLib.Medieval2
                 output += ", age " + age.ToString() + ", x " + coords[0].ToString() + ", y " + coords[1].ToString() + " \r\n";
 
                 if (traits != null && traits != "")
-                    output += "traits " + traits + "\r\n";
+                    output += "traits " + traits.Trim() + " \r\n";
 
                 if (ancillaries != null && ancillaries != "")
-                    output += "ancillaries " + ancillaries + "\r\n";
+                    output += "ancillaries " + ancillaries.Trim() + "\r\n";
 
                 if (type == "admiral" || type == "named character" || type == "general")
                 {
@@ -54,10 +62,10 @@ namespace RTWLib.Medieval2
 
 
             if (traits != null && traits != "")
-                output += "traits " + traits + " \r\n";
+                output += "traits " + traits.Trim() + " \r\n";
 
             if (ancillaries != null && ancillaries != "")
-                output += "ancillaries " + ancillaries + " \r\n";
+                output += "ancillaries " + ancillaries.Trim() + "\r\n";
 
 
             output += "\r\narmy\r\n";

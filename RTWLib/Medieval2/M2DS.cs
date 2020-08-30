@@ -137,8 +137,11 @@ namespace RTWLib.Medieval2
                 {
                     if (newfactionReady)
                     { //catch final character
-                        newFaction.characters.Add(new M2DSCharacter(newCharacter));
+                        if(newCharacter.gender != null)
+                            newFaction.characters.Add(new M2DSCharacter(newCharacter));
+
                         factions.Add(new M2Faction(newFaction));
+                        newFaction = new M2Faction();
                         newfactionReady = false;
                         newCharacter = new M2DSCharacter();
                         newcharacterReady = false;
@@ -173,6 +176,9 @@ namespace RTWLib.Medieval2
                     string[] den = line.Split('\t', ' ').CleanStringArray();
                     newFaction.kings_purse = Convert.ToInt32(den[1].Trim());
                 }
+
+                if (line.StartsWith("dead_until_resurrected"))
+                    newFaction.isDeadUntilResurrected = true;
 
                 if (line.StartsWith("ai_label"))
                 {

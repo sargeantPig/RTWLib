@@ -32,9 +32,11 @@ namespace RTWLib.Medieval2
             string settlement =
                 "\r\nsettlement";
 
-            if (type != null)
+            var ca = type.ToCharArray();
+
+            if (ca.Count() > 2)
             {
-                settlement += type;
+                settlement += " " + type;
             }
             
             settlement +=

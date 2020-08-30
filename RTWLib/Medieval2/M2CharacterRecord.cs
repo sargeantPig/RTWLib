@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Medieval2
 {
-    class M2CharacterRecord : CharacterRecord, ICharacterRecord
+    public class M2CharacterRecord : CharacterRecord, ICharacterRecord
     {
 
         public M2CharacterRecord(CharacterRecord cr) : base(cr)

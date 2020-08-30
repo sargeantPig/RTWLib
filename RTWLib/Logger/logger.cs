@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using RTWLib.Functions;
 using System.Net.Http.Headers;
+using System.Diagnostics;
 
 namespace RTWLib.Logger
 {
@@ -14,7 +15,10 @@ namespace RTWLib.Logger
 	{
 		//Will handle logging any errors, outputs to RTWLlog.txt after every method completion
 		public static string AssemblyPrefix { get; set; }
-		public string ModulePrefix { get; set; }
+		public string ModulePrefix  { get; set; }
+		public string Type;
+		 
+		public static string[] AssemblyWatchList { get; set; }
 
 		static string LOGFILE = "RTWLlog.txt";
 		public static string current { get; set; }
@@ -28,12 +32,10 @@ namespace RTWLib.Logger
 
         public bool is_on = true;
 		public string fileName = "";
-		public string lineText = "";
-		public int lineNumber = 0;
+		static public string lineText = "";
+		static public int lineNumber = 0;
 		public Logger()
 		{
-			AssemblyPrefix = "";
-			ModulePrefix = "";
 		}
 
 		private void OutputToConsole(string logtxt)
@@ -45,7 +47,7 @@ namespace RTWLib.Logger
 		{
             if (!is_on)
                 return logtxt;
-            
+
 			StreamWriter SW = new StreamWriter(LOGFILE, true);
 			SW.WriteLine(AssemblyPrefix + ":" + ModulePrefix + ": " + logtxt + " -- " + DateTime.Now + "\r\n");
 			SW.Close();
@@ -53,44 +55,51 @@ namespace RTWLib.Logger
 			OutputToConsole(logtxt);
 			current = AssemblyPrefix + ":" + ModulePrefix + ": " + logtxt;
 
+			ModulePrefix = "";
+
 			return logtxt;
 		}
 
 		public string ExceptionLog(Exception ex, bool hasLines = true)
 		{
+			ModulePrefix = GetLastCalledMethod<object>(ex, out Type);
+
 			string newLine = "\r\n";
 			if (hasLines)
 			{
 				return this.PLog(ex.Message + newLine +
-					"Error in: " + this.fileName + newLine +
-					"At Line: " + this.lineNumber.ToString() + newLine +
-					"'" + this.lineText + "'" + newLine +
+					"Error in: " + Type + newLine +
+					"At Line: " + lineNumber.ToString() + newLine +
+					"'" + lineText + "'" + newLine +
 					ex.InnerException);
 
 			}
 			else
 			{
 				return this.PLog(ex.Message + newLine +
+					"Error in: " + Type + newLine +
 					ex.InnerException);
 			}
-
 		}
 
 
 		public string ExceptionCurrentLog(Exception ex, string msg, bool hasLines = true)
 		{
+			ModulePrefix = GetLastCalledMethod<object>(ex, out Type);
+
 			string newLine = "\r\n";
 			if (hasLines)
 			{
 				return this.PLog(msg + newLine + ex.Message + newLine +
-					"Error in: " + this.fileName + newLine +
-					"At Line: " + this.lineNumber.ToString() + newLine +
-					"'" + this.lineText + "'" + newLine +
+					"Error in: " + Type + newLine +
+					"At Line: " +lineNumber.ToString() + newLine +
+					"'" + lineText + "'" + newLine +
 					ex.InnerException);
 			}
 			else
 			{
-				return this.PLog(msg + newLine + ex.Message + newLine +
+				return this.PLog(ex.Message + newLine +
+					"Error in: " + Type + newLine +
 					ex.InnerException);
 			}
 		}
@@ -194,5 +203,29 @@ namespace RTWLib.Logger
 			
 		}
 
+		public static string GetLastCalledMethod<T>(Exception ex, out string type)
+		{
+			var stackTrace = new System.Diagnostics.StackTrace(ex);
+			var lastFrame = stackTrace.GetFrames();
+
+			string methodName = "";
+
+			foreach (StackFrame sf in lastFrame)
+			{
+				string[] split;
+				string fullname = sf.GetMethod().DeclaringType.AssemblyQualifiedName;
+				split = fullname.Split('.');
+
+				if (AssemblyWatchList.Contains(split[0]))
+				{
+					type = sf.GetMethod().DeclaringType.Name;
+					methodName = sf.GetMethod().Name;
+					return methodName;
+				}
+
+			}
+			type = "";
+			return methodName;
+		}
 	}
 }

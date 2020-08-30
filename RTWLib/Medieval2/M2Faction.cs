@@ -11,17 +11,17 @@ namespace RTWLib.Medieval2
     {
         public string ai_label;
         public int kings_purse;
-
+        public bool isDeadUntilResurrected;
         public M2Faction()
-        { 
-        
-        
+        {
+            isDeadUntilResurrected = false;
         }
 
         public M2Faction(M2Faction faction) : base(faction)
         {
             this.ai_label = faction.ai_label;
             this.kings_purse = faction.kings_purse;
+            isDeadUntilResurrected = faction.isDeadUntilResurrected;
         }
 
         override public string Output()
@@ -30,16 +30,18 @@ namespace RTWLib.Medieval2
 
             output +=
                 "faction\t" + name + ", " + ai[0] + " " + ai[1] + "\r\n" +
-                "ai_label\t\t" + ai_label + "\r\n" +
-                "denari\t" + denari.ToString() + "\r\n" +
+                "ai_label\t\t " + ai_label + " \r\n";
+
+            if (isDeadUntilResurrected)
+                output += "dead_until_resurrected\r\n";
+
+            output += "denari\t" + denari.ToString() + "\r\n" +
                 "denari_kings_purse\t" + kings_purse.ToString() + "\r\n";
 
             foreach (Settlement settlement in settlements)
             {
                 output += settlement.outputSettlement();
-
                 output += "\r\n";
-
             }
 
             output += "\r\n";
@@ -50,7 +52,6 @@ namespace RTWLib.Medieval2
                 output += "\r\n";
             }
 
-            output += "\r\n";
             foreach (M2CharacterRecord rec in characterRecords)
             {
                 output += rec.Output();

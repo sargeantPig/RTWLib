@@ -387,7 +387,7 @@ namespace RTWLib.Objects
             if (priAttri.HasFlag(Stat_pri_attr.pa_thrown)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_thrown));
             if (priAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
             if (priAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
-            if (priAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
+            if (priAttri.HasFlag(Stat_pri_attr.no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.no));
             if (priAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
             if (priAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
             if (priAttri.HasFlag(Stat_pri_attr.light_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.light_spear));
@@ -436,7 +436,7 @@ namespace RTWLib.Objects
             if (secAttri.HasFlag(Stat_pri_attr.pa_thrown)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.pa_thrown));
             if (secAttri.HasFlag(Stat_pri_attr.launching)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.launching));
             if (secAttri.HasFlag(Stat_pri_attr.area)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.area));
-            if (secAttri.HasFlag(Stat_pri_attr.PA_no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.PA_no));
+            if (secAttri.HasFlag(Stat_pri_attr.no)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.no));
             if (secAttri.HasFlag(Stat_pri_attr.thrown_ap)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.thrown_ap));
             if (secAttri.HasFlag(Stat_pri_attr.fire)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.fire));
             if (secAttri.HasFlag(Stat_pri_attr.light_spear)) setAndTagChanged(() => unitString += lookTables.LookUpString(Stat_pri_attr.light_spear));

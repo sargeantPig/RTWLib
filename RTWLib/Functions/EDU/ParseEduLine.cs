@@ -176,9 +176,9 @@ namespace RTWLib.Functions.EDU
             }
             catch (Exception ex)
             {
-                PLog(ex.Message + "\r\n" +
-                    "Error at Line: " + lineNumber.ToString() + "\r\n" +
-                    line + "\r\n");
+                ExceptionLog(ex, true);
+
+                DisplayLog();
             }
 
             commentPair = new KeyValuePair<EDULineEnums, object>(identifier, comment);
@@ -257,10 +257,10 @@ namespace RTWLib.Functions.EDU
         {
             LookUpTables lu = new LookUpTables();
 
-            Stat_pri_attr temp = Stat_pri_attr.PA_no;
+            Stat_pri_attr temp = Stat_pri_attr.no;
             stat_Pri_ = temp;
 
-            if (data[0] == lu.LookUpString<Stat_pri_attr>(Stat_pri_attr.PA_no)) 
+            if (data[0] == lu.LookUpString<Stat_pri_attr>(Stat_pri_attr.no)) 
                 return;
 
             foreach (string str in data)
@@ -268,7 +268,7 @@ namespace RTWLib.Functions.EDU
                 stat_Pri_ |= lu.LookUpKey<Stat_pri_attr>(str.Trim());
             }
 
-            stat_Pri_ &= ~Stat_pri_attr.PA_no;
+            stat_Pri_ &= ~Stat_pri_attr.no;
         }
 
         private void HandleStatPriArmour<T>(ref T statPriArmour, string[] data)

@@ -29,15 +29,29 @@ namespace RTWLib.Functions
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
 			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
+			
+			var mag = new MagickGeometry(fullFactionMap.Width, fullFactionMap.Height);
+			mag.FillArea = true;
+			mag.IgnoreAspectRatio = true;
 
-			regionMap.Resize(fullFactionMap.Width, fullFactionMap.Height);
+			regionMap.Alpha(AlphaOption.Remove);
 
+			regionMap.AdaptiveResize(mag);
 			var rpixels = regionMap.GetPixels();
 
 			foreach (Faction f in ds.factions) // loop through faction
 			{
 				var fpixels = fullFactionMap.GetPixels(); //set up both maps
 				MagickImage factionMap = new MagickImage(radarMapLocation);
+				var fmag = new MagickGeometry(fullFactionMap.Width, fullFactionMap.Height);
+				fmag.FillArea = true;
+				fmag.IgnoreAspectRatio = true;
+
+				factionMap.Alpha(AlphaOption.Remove);
+
+				factionMap.AdaptiveResize(fmag);
+
+
 				using (IPixelCollection fmPixels = factionMap.GetPixels())
 				{
 					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
@@ -80,7 +94,7 @@ namespace RTWLib.Functions
 								i = 0;
 							else i = 1;
 
-							for (int x = 0; x < regVert[i].Length - channelsCount; x += channelsCount) // traverse each pixel across the image at the current y value
+							for (int x = 0; x < regVert[i].Length; x += channelsCount) // traverse each pixel across the image at the current y value
 							{
 								MagickColor pixCol = new MagickColor(regVert[i][x], regVert[i][x + 1], regVert[i][x + 2]);//create magickcolour using 
 								MagickColor fCol = new MagickColor(facVert[i][x], facVert[i][x + 1], facVert[i][x + 2]);
@@ -108,8 +122,9 @@ namespace RTWLib.Functions
 			}
 
 			full_map = fullFactionMap;
-			
-
+			mag.Width = 277;
+			mag.Height = 196;
+			fullFactionMap.Resize(mag);
 			return fullFactionMap.ToBitmap();
 		}
 		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf, string factionName, string savepath)

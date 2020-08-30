@@ -144,7 +144,7 @@ namespace RTWLib.Data
 		blade,
 		archery,
 		siege,
-		TT_no,
+		no,
 		//M2TW ONLY
 		melee_simple, 
 		melee_blade, 
@@ -161,7 +161,7 @@ namespace RTWLib.Data
 		blunt,
 		slashing,
 		fire,
-		DM_no
+		no
 	};
 
 	public enum SoundType
@@ -171,7 +171,7 @@ namespace RTWLib.Data
 		axe,
 		sword,
 		spear,
-		ST_no
+		no
 	};
 
 	public enum ArmourSound
@@ -217,7 +217,7 @@ namespace RTWLib.Data
 		spear_bonus_6 = 1 << 11,
 		spear_bonus_8 = 1 << 12,
 		thrown_ap = 1 << 13,
-		PA_no = 1 << 14,
+		no = 1 << 14,
 		light_spear = 1 << 15,
 		spear_bonus_1 = 1 << 16,
 		spear_bonus_2 = 1 << 17,

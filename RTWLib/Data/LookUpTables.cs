@@ -114,12 +114,12 @@ namespace RTWLib.Data
 			{TechType.other, "other" },
 			{TechType.siege, "siege" },
 			{TechType.simple, "simple" },
-			{TechType.TT_no, "no" }
+			{TechType.no, "no" }
 		};
 		static public Dictionary<DamageType, string> dic_damageTypes = new Dictionary<DamageType, string>()
 		{
 			{DamageType.blunt, "blunt" },
-			{DamageType.DM_no, "no" },
+			{DamageType.no, "no" },
 			{DamageType.fire, "fire" },
 			{DamageType.piercing, "piercing" },
 			{DamageType.slashing, "slashing" }
@@ -130,7 +130,7 @@ namespace RTWLib.Data
 			{SoundType.knife, "knife" },
 			{SoundType.mace, "mace" },
 			{SoundType.spear, "spear" },
-			{SoundType.ST_no, "none" },
+			{SoundType.no, "none" },
 			{SoundType.sword, "sword" }
 		};
 		static public Dictionary<ArmourSound, string> dic_armourSounds = new Dictionary<ArmourSound, string>()
@@ -161,7 +161,7 @@ namespace RTWLib.Data
 			{Stat_pri_attr.fire, "fire" },
 			{Stat_pri_attr.launching, "launching" },
 			{Stat_pri_attr.long_pike, "long_pike" },
-			{Stat_pri_attr.PA_no, "no" },
+			{Stat_pri_attr.no, "no" },
 			{Stat_pri_attr.pa_spear, "spear" },
 			{Stat_pri_attr.pa_thrown, "thrown" },
 			{Stat_pri_attr.prec, "prec" },
