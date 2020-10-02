@@ -7,40 +7,46 @@ using System.Threading.Tasks;
 namespace RTWLib.Data
 {
 	[Flags]
-	public enum Attributes
+	public enum Attributes : Int64
 	{
-		sea_faring = 1 << 0,
-		hide_forest = 1 << 1,
-		hide_improved_forest = 1 << 2,
-		hide_long_grass = 1 << 3,
-		hide_anywhere = 1 << 4,
-		can_sap = 1 << 5,
-		frighten_foot = 1 << 6,
-		frighten_mounted = 1 << 7,
-		can_run_amok = 1 << 8,
-		general_unit = 1 << 9,
-		general_unit_upgrade = 1 << 10,
-		cantabrian_circle = 1 << 11,
-		no_custom = 1 << 12,
-		command = 1 << 13,
-		mercenary_unit = 1 << 14,
-		druid = 1 << 15,
-		warcry = 1 << 16,
-		hardy = 1 << 17,
-		very_hardy = 1 << 18,
-		screeching_women = 1 << 19,
-		power_charge = 1 << 20,
-		can_swim = 1 << 21,
-		is_peasant = 1 << 22,
+		sea_faring =  1L << 0,
+		hide_forest = 1L << 1,
+		hide_improved_forest = 1L << 2,
+		hide_long_grass = 1L << 3,
+		hide_anywhere = 1L << 4,
+		can_sap = 1L << 5,
+		frighten_foot = 1L << 6,
+		frighten_mounted = 1L << 7,
+		can_run_amok = 1L << 8,
+		general_unit = 1L << 9,
+		general_unit_upgrade = 1L << 10,
+		cantabrian_circle = 1L << 11,
+		no_custom = 1L << 12,
+		command = 1L << 13,
+		mercenary_unit = 1L << 14,
+		druid = 1L << 15,
+		warcry = 1L << 16,
+		hardy = 1L << 17,
+		very_hardy = 1L << 18,
+		screeching_women = 1L << 19,
+		power_charge = 1L << 20,
+		can_swim = 1L << 21,
+		is_peasant = 1L << 22,
 		//m2tw attributes only
-		free_upkeep_unit = 1 << 23,
-		can_withdraw = 1 << 24,
-		knight = 1 << 25,
-		gunpowder_unit = 1 << 26,
-		start_not_skirmishing = 1 << 27,
-		stakes = 1 << 28,
-		fire_by_rank = 1 << 29,
-		cannot_skirmish = 1 << 30 //kingdoms only?
+		free_upkeep_unit = 1L << 23,
+		can_withdraw = 1L << 24,
+		knight = 1L << 25,
+		gunpowder_unit = 1L << 26,
+		start_not_skirmishing = 1L << 27,
+		stakes = 1L << 28,
+		fire_by_rank = 1L << 29,
+		cannot_skirmish = 1L << 30,//kingdoms only?
+		can_formed_charge = 1L << 31,
+		peasant = 1L << 32,
+		crossbow = 1L << 33,
+		rocket = 1L << 34,
+		cannon = 1L << 35,
+		artillery = 1L << 36
 	}
 	[Flags]
 	public enum FormationTypes
@@ -133,7 +139,7 @@ namespace RTWLib.Data
 		thrown,
 		missile,
 		siege_missile,
-		WT_no
+		no
 	};
 
 	public enum TechType
@@ -205,11 +211,11 @@ namespace RTWLib.Data
 	{
 		ap = 1 << 0,
 		bp = 1 << 1,
-		pa_spear = 1 << 2,
+		spear = 1 << 2,
 		long_pike = 1 << 3,
 		short_pike = 1 << 4,
 		prec = 1 << 5,
-		pa_thrown = 1 << 6,
+		thrown = 1 << 6,
 		launching = 1 << 7,
 		area = 1 << 8,
 		fire = 1 << 9,
@@ -228,7 +234,6 @@ namespace RTWLib.Data
 		spear_bonus_10 = 1 << 22,
 		spear_bonus_11 = 1 << 23,
 		spear_bonus_12 = 1 << 24,
-		spear = 1 << 25
 	};
 
 	public enum Cultures

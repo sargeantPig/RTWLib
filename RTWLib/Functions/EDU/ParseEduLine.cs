@@ -20,9 +20,14 @@ namespace RTWLib.Functions.EDU
             EDULineEnums identifier;
             string comment = "";
             commentPair = new KeyValuePair<EDULineEnums, object>();
-            string[] data = Functions_General.RemoveFirstWord(line).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
-            bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(line).Capitalise(), out identifier);
-
+            string[] data = Functions_General.RemoveFirstWord(line, new string[] { "era", "banner" }, 1).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
+            string ident; 
+               ident = Functions_General.GetFirstWord(line, new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
+            bool isIdentifier = Enum.TryParse<EDULineEnums>(ident, out identifier);
+            int asd;
+            if (lineNumber > 4000)
+                asd = 1;
+             
             if (!isIdentifier)
                 return false;
 
@@ -127,10 +132,10 @@ namespace RTWLib.Functions.EDU
                         M2TWHandleStatPri(ref ((M2Unit)units[counter]).stat_ter, data);
                         break;
                     case EDULineEnums.Stat_ter_ex:
-                        HandleStatPriAttr(ref ((M2Unit)units[counter]).stat_ter_ex, data);
+                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_ex, data);
                         break;
                     case EDULineEnums.Stat_ter_attr:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).stat_ter_attr, data);
+                        HandleStatPriAttr(ref ((M2Unit)units[counter]).stat_ter_attr, data);
                         break;
                     case EDULineEnums.Stat_armour_ex:
                         HandleGenericLine(ref ((M2Unit)units[counter]).stat_armour_ex, data);
@@ -141,6 +146,12 @@ namespace RTWLib.Functions.EDU
                     case EDULineEnums.BannerFaction:
                         HandleGenericLine(ref ((M2Unit)units[counter]).bannerFaction, data);
                         break;
+                    case EDULineEnums.BannerUnit:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).bannerUnit, data);
+                        break;
+                    case EDULineEnums.BannerHoly:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).bannerHoly, data);
+                        break;
                     case EDULineEnums.Stat_sec_ex:
                         HandleGenericLine(ref ((M2Unit)units[counter]).stat_sec_ex, data);
                         break;
@@ -148,19 +159,19 @@ namespace RTWLib.Functions.EDU
                         HandleGenericLine(ref ((M2Unit)units[counter]).stat_stl, data);
                         break;
                     case EDULineEnums.Armour_ug_levels:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).armour_ug_levels, data);
+                        HandleOwnership(ref ((M2Unit)units[counter]).armour_ug_levels, data);
                         break;
                     case EDULineEnums.Armour_ug_models:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).armour_ug_models, data);
+                        HandleOwnership(ref ((M2Unit)units[counter]).armour_ug_models, data);
                         break;
                     case EDULineEnums.Era0:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).era0, data);
+                        HandleOwnership(ref ((M2Unit)units[counter]).era0, data);
                         break;
                     case EDULineEnums.Era1:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).era1, data);
+                        HandleOwnership(ref ((M2Unit)units[counter]).era1, data);
                         break;
                     case EDULineEnums.Era2:
-                        HandleGenericLine(ref ((M2Unit)units[counter]).era2, data);
+                        HandleOwnership(ref ((M2Unit)units[counter]).era2, data);
                         break;
                     case EDULineEnums.Info_pic_dir:
                         HandleGenericLine(ref ((M2Unit)units[counter]).info_pic_dir, data);
@@ -171,6 +182,10 @@ namespace RTWLib.Functions.EDU
                     case EDULineEnums.Unit_info:
                         HandleGenericLine(ref ((M2Unit)units[counter]).unit_info, data);
                         break;
+                    case EDULineEnums.Accent:
+                        HandleGenericLine(ref ((M2Unit)units[counter]).accent, data);
+                        break;
+
                     default: return false;
                 }
             }

@@ -269,23 +269,42 @@ namespace RTWLib.Functions
 			return value1.CompareTo(value2);
 		}
 
-		public static string RemoveFirstWord(string String)
+		public static string RemoveFirstWord(string String, string[] specialCases = null, int spacesToInclude = 0)
 		{
 			string newString = "";
-
 			string[] Temp = String.Split(' ');
 
-			int i = 0;
+			if (specialCases == null)
+				specialCases = new string[0];
 
-			foreach (string temp in Temp)
+			if (spacesToInclude < 1 || !specialCases.Contains(Temp[0]))
 			{
-				if (i != 0)
-					newString += temp + " ";
+				int i = 0;
 
-				i++;
+				foreach (string temp in Temp)
+				{
+					if (i != 0)
+						newString += temp + " ";
+
+					i++;
+				}
+
+				return newString;
 			}
 
-			return newString;
+			else
+			{
+				for (int i = 0; i < Temp.Count(); i++)
+				{
+					if (i > spacesToInclude)
+						newString += Temp[i] + " ";
+				}
+
+				return newString;
+			}
+
+
+			
 		}
 
 		public static string RemoveFirstWord(string String, char delimiter)
@@ -311,28 +330,64 @@ namespace RTWLib.Functions
 			return newString;
 		}
 
-		public static string GetFirstWord(string String)
+		public static string GetFirstWord(string String, string[] specialCases = null, int spacesToInclude = 0, char delimiter = ' ')
 		{
-			string[] Temp = String.Split(' ');
+			string[] Temp = String.Split(delimiter);
+			string newString = string.Empty;
 
-			return Temp[0].Trim();
+			if (specialCases == null)
+				specialCases = new string[0];
+
+			if (spacesToInclude < 1 || Temp.Count() < 2 || !specialCases.Contains(Temp[0]))
+				return Temp[0].Trim();
+
+			else
+			{
+				for (int i = 0; i <= spacesToInclude; i++)
+					newString += Temp[i] + " ";
+
+				return newString.Trim();
+
+			}
 		}
 
-		public static string Capitalise(this string input)
+		public static string Capitalise(this string input, bool allWords = false)
 		{
 			char[] characters = input.ToCharArray();
 
-
 			if (characters.Count() == 0)
 				return "";
-			
-			
+
+			if (allWords)
+			{
+				for(int i =0; i < characters.Count(); i++)
+				{
+					if (characters[i] == ' ')
+					{
+						if (i + 1 < characters.Count())
+						{
+							if(char.IsLetter(characters[i+1]))
+								characters[i+1] = char.ToUpper(characters[i+1]);
+						}
+					}
+				}
+			}
 
 			characters[0] = char.ToUpper(characters[0]);
-
 			return new string(characters);
-
 		}
+
+		public static string RemoveSpaces(this string input)
+		{
+			string[] split = input.Split(' ');
+			string newString = "";
+			foreach(string word in split)
+			{
+				newString += word;
+			}
+			return newString;
+		}
+
 
 		public static string RemoveLastWord(string String)
 		{

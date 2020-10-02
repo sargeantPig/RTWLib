@@ -129,7 +129,7 @@ namespace RTWLib.Functions
 										{
 											newBuilding.factionsRequired = new List<string>();
 
-											newBuilding.buildingName = Functions_General.GetFirstWord(line.Trim());
+											newBuilding.buildingName = Functions_General.GetFirstWord(line.Trim(), new string[0]);
 											//get factions
 											string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
 											output = Functions_General.RemoveLastWord(output);
@@ -189,7 +189,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "{")
+														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -221,7 +221,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														if (Functions_General.GetFirstWord(line.Trim()) == "recruit" || Functions_General.GetFirstWord(line.Trim()) == "recruit_pool")
+														if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "recruit" || Functions_General.GetFirstWord(line.Trim(), new string[0]) == "recruit_pool")
 														{
 															Brecruit newRecruit = new Brecruit();
 
@@ -249,12 +249,12 @@ namespace RTWLib.Functions
 															newCapa.canRecruit.Add(newRecruit);
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "agent")
+														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "agent")
 														{
 															newCapa.agentList.Add(line.Trim());
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "{")
+														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))

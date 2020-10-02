@@ -95,6 +95,7 @@ namespace RTWLib.Functions
         Stat_armour_ex,
         Stat_pri_ex,
         BannerFaction,
+        BannerUnit,
         BannerHoly,
         Stat_sec_ex,
         Stat_stl,
@@ -106,6 +107,7 @@ namespace RTWLib.Functions
         Info_pic_dir,
         Card_pic_info,
         Unit_info,
+        Accent
 
 }
 }

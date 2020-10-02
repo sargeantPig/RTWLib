@@ -105,7 +105,7 @@ namespace RTWLib.Data
 			{WeaponType.missile, "missile" },
 			{WeaponType.siege_missile, "siege_missile" },
 			{WeaponType.thrown, "thrown" },
-			{WeaponType.WT_no, "no" }
+			{WeaponType.no, "no" }
 		};
 		static public Dictionary<TechType, string> dic_techs = new Dictionary<TechType, string>()
 		{
@@ -162,8 +162,8 @@ namespace RTWLib.Data
 			{Stat_pri_attr.launching, "launching" },
 			{Stat_pri_attr.long_pike, "long_pike" },
 			{Stat_pri_attr.no, "no" },
-			{Stat_pri_attr.pa_spear, "spear" },
-			{Stat_pri_attr.pa_thrown, "thrown" },
+			{Stat_pri_attr.spear, "spear" },
+			{Stat_pri_attr.thrown, "thrown" },
 			{Stat_pri_attr.prec, "prec" },
 			{Stat_pri_attr.short_pike, "short_pike" },
 			{Stat_pri_attr.spear_bonus_4, "spear_bonus_4" },
