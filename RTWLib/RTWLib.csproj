@@ -143,6 +143,7 @@
     <Compile Include="Medieval2\M2EDB.cs" />
     <Compile Include="Medieval2\M2EDU.cs" />
     <Compile Include="Medieval2\M2Faction.cs" />
+    <Compile Include="Medieval2\M2ModelBattle.cs" />
     <Compile Include="Medieval2\M2Recruit.cs" />
     <Compile Include="Medieval2\M2Settlement.cs" />
     <Compile Include="Medieval2\M2StatWeapons.cs" />
