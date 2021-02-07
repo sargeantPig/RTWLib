@@ -241,7 +241,7 @@ namespace RTWLib.Objects
 
             if (mountEffect.mountType.Count() > 0)
             {
-                unitString += "\r\nmount_effect\t\t ";
+                unitString += "\r\nmount_effect" + identSpacing(identifierLength("mount_effect"));
                 for (int i = 0; i < mountEffect.mountType.Count(); i++)
                 {
                     if(mountEffect.modifier[i] < 0)
@@ -347,7 +347,7 @@ namespace RTWLib.Objects
             if (list.Count() == 0)
                 return string.Empty;
 
-            string line = identifier + "\t\t\t";
+            string line = identifier + identSpacing(identifierLength(identifier));
 
             for (int i = 0; i < list.Count(); i++)
             {
@@ -362,11 +362,11 @@ namespace RTWLib.Objects
         public virtual string LineOutput<T>(T data, string identifier)
         {
             string line = string.Empty;
-
+            
             if (data == null)
                 return line;
             else
-                line += identifier + "\t\t\t" + data.ToString();
+                line += identifier + identSpacing(identifierLength(identifier)) + data.ToString();
 
             return line + "\r\n";
         }
@@ -376,7 +376,7 @@ namespace RTWLib.Objects
             if (vars.Count() == 0)
                 return string.Empty;
 
-            string line = identifier + "\t\t\t";
+            string line = identifier + identSpacing(identifierLength(identifier));
 
             for (int i = 0; i < vars.Count(); i++)
             {
@@ -418,6 +418,22 @@ namespace RTWLib.Objects
             return newString;
         
         }
+
+
+        int identifierLength(string ident)
+        {
+            return 17 - ident.Length;
+        }
+
+        string identSpacing(int identifierLength)
+        {
+            string spaces = "";
+
+            for (int i = 0; i < identifierLength; i++)
+                spaces += " ";
+            return spaces;
+        }
+    
     }
 
 }

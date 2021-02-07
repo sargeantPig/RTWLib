@@ -24,9 +24,6 @@ namespace RTWLib.Functions.EDU
             string ident; 
                ident = Functions_General.GetFirstWord(line, new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
             bool isIdentifier = Enum.TryParse<EDULineEnums>(ident, out identifier);
-            int asd;
-            if (lineNumber > 4000)
-                asd = 1;
              
             if (!isIdentifier)
                 return false;

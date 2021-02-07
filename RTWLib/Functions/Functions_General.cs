@@ -269,10 +269,10 @@ namespace RTWLib.Functions
 			return value1.CompareTo(value2);
 		}
 
-		public static string RemoveFirstWord(string String, string[] specialCases = null, int spacesToInclude = 0)
+		public static string RemoveFirstWord(string String, string[] specialCases = null, int spacesToInclude = 0, char delimiter = ' ')
 		{
 			string newString = "";
-			string[] Temp = String.Split(' ');
+			string[] Temp = String.Split(delimiter);
 
 			if (specialCases == null)
 				specialCases = new string[0];
@@ -280,15 +280,12 @@ namespace RTWLib.Functions
 			if (spacesToInclude < 1 || !specialCases.Contains(Temp[0]))
 			{
 				int i = 0;
-
 				foreach (string temp in Temp)
 				{
 					if (i != 0)
 						newString += temp + " ";
-
 					i++;
 				}
-
 				return newString;
 			}
 
@@ -299,22 +296,15 @@ namespace RTWLib.Functions
 					if (i > spacesToInclude)
 						newString += Temp[i] + " ";
 				}
-
 				return newString;
 			}
-
-
-			
 		}
 
 		public static string RemoveFirstWord(string String, char delimiter)
 		{
 			string newString = "";
-
 			string[] Temp = String.Split(delimiter);
-
 			int i = 0;
-
 			foreach (string temp in Temp)
 			{
 				if (i != 0)
@@ -326,7 +316,6 @@ namespace RTWLib.Functions
 
 				i++;
 			}
-
 			return newString;
 		}
 
