@@ -9,6 +9,8 @@ using RTWLib.Objects;
 using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
 using RTWLib.Logger;
+using System.Windows.Forms;
+
 namespace RTWLib.Functions
 {
 	public class SelectMaps : Logger.Logger
@@ -146,8 +148,7 @@ namespace RTWLib.Functions
 			MagickColor currentColour2 = facCol2;
 			MagickImage factionMap = new MagickImage(radarMapLocation);
 			foreach (Faction f in ds.factions) // loop through faction
-			{
-				
+			{ 
 				int relationval = (int)ds.factionRelationships.DoesFactionHaveRelations(factionName, f.name);
 				if (f.name == factionName)
 				{

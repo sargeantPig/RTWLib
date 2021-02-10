@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Schema;
 using ImageMagick;
 using RTWLib.Data;
@@ -88,7 +90,6 @@ namespace RTWLib.Objects.Descr_strat
             }
 
             return output;
-
         }
 
         public object DoesFactionHaveRelations(string target, string relation) //gets value and checks if relation exists, returns -1 if not found
@@ -103,18 +104,29 @@ namespace RTWLib.Objects.Descr_strat
                         {
                             return valFac.Key;
                         }
-
                     }
-                } 
+                }
             }
+
+            foreach (var fac in attitudes)
+            {
+                foreach (var secFac in fac.Value)
+                {
+                    foreach (var rel in secFac.Value)
+                    {
+                        if (rel == target && relation == fac.Key)
+                            return secFac.Key;
+                    }
+                }
+            }
+
             return -1;
-        }
+        }    
+        
         public DiplomaticPosition GetDiplomaticPosition(int value)
         {
-            if (value < 100)
+            if (value < 200)
                 return DiplomaticPosition.Allied;
-            else if (value < 200)
-                return DiplomaticPosition.Suspicous;
             else if (value < 400)
                 return DiplomaticPosition.Neutral;
             else if (value < 600)
@@ -127,10 +139,8 @@ namespace RTWLib.Objects.Descr_strat
 
         public DiplomaticPosition GetDiplomaticPosition(float value)
         {
-            if (value < 100)
+            if (value < 200)
                 return DiplomaticPosition.Allied;
-            else if (value < 200)
-                return DiplomaticPosition.Suspicous;
             else if (value < 400)
                 return DiplomaticPosition.Neutral;
             else if (value < 600)
@@ -141,6 +151,44 @@ namespace RTWLib.Objects.Descr_strat
             return 0;
         }
 
+        public void PopulateRelationTree(ref TreeView tree)
+        {
+            foreach (var priFac in attitudes)
+            {
+                foreach (var relValue in priFac.Value)
+                {
+                    foreach (string secFac in relValue.Value)
+                    {
+                        DiplomaticPosition dp = GetDiplomaticPosition((int)relValue.Key);
+
+                        switch (dp)
+                        {
+                            case DiplomaticPosition.Allied:
+                                tree.Nodes[priFac.Key].Nodes["Relationships"].Nodes["Allied"].Nodes.Add(secFac);
+                                tree.Nodes[secFac].Nodes["Relationships"].Nodes["Allied"].Nodes.Add(priFac.Key);
+                                break;
+                            case DiplomaticPosition.Hostile:
+                                tree.Nodes[priFac.Key].Nodes["Relationships"].Nodes["Hostile"].Nodes.Add(secFac);
+                                tree.Nodes[secFac].Nodes["Relationships"].Nodes["Hostile"].Nodes.Add(priFac.Key);
+                                break;
+                            case DiplomaticPosition.Neutral:
+                                tree.Nodes[priFac.Key].Nodes["Relationships"].Nodes["Neutral"].Nodes.Add(secFac);
+                                tree.Nodes[secFac].Nodes["Relationships"].Nodes["Neutral"].Nodes.Add(priFac.Key);
+                                break;
+                            case DiplomaticPosition.Suspicous:
+                                tree.Nodes[priFac.Key].Nodes["Relationships"].Nodes["Suspicous"].Nodes.Add(secFac);
+                                tree.Nodes[secFac].Nodes["Relationships"].Nodes["Suspicous"].Nodes.Add(priFac.Key);
+                                break;
+                            case DiplomaticPosition.War:
+                                tree.Nodes[priFac.Key].Nodes["Relationships"].Nodes["At War"].Nodes.Add(secFac);
+                                tree.Nodes[secFac].Nodes["Relationships"].Nodes["At War"].Nodes.Add(priFac.Key);
+                                break;
+
+                        }
+                    }
+                }
+            }
+        }
 
         public string[] GetRelationships(DiplomaticPosition value, string faction)
         {
@@ -155,7 +203,6 @@ namespace RTWLib.Objects.Descr_strat
                         {
                             foreach (string fo in valFac.Value)
                             {
-
                                 relations.Add(fo);
                             }
                         }
