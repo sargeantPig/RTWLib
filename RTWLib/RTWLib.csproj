@@ -137,7 +137,9 @@
     <Compile Include="Functions\Functions_SMF.cs" />
     <Compile Include="Functions\Functions_DR.cs" />
     <Compile Include="Logger\logger.cs" />
+    <Compile Include="Medieval2\M2Building.cs" />
     <Compile Include="Medieval2\M2CharacterRecord.cs" />
+    <Compile Include="Medieval2\M2CityEnum.cs" />
     <Compile Include="Medieval2\M2DS.cs" />
     <Compile Include="Medieval2\M2DSCharacter.cs" />
     <Compile Include="Medieval2\M2EDB.cs" />

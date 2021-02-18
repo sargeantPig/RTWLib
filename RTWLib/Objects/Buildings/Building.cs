@@ -33,7 +33,7 @@ namespace RTWLib.Objects.Buildings
         }
 
 
-        public string outputBuilding()
+        public virtual string outputBuilding()
         {
             string a = "";
 

@@ -102,7 +102,7 @@ namespace RTWLib.Medieval2
 									//line = strat.ReadLine(); //continue to next line
 									bool buildingNext = true;
 
-									Building newBuilding = new Building();
+									M2Building newBuilding = new M2Building();
 
 
 									while (!whileTwo)
@@ -117,9 +117,14 @@ namespace RTWLib.Medieval2
 
 										if (buildingNext)
 										{
-											newBuilding.factionsRequired = new List<string>();
+											newBuilding.factionsRequired = new List<string>();                  
 
 											newBuilding.buildingName = Functions_General.GetFirstWord(line.Trim());
+											string[] completeSplit = line.TrimStart().Split(' ');
+											bool parseSuccess = Enum.TryParse(completeSplit[1].Capitalise(), out newBuilding.settlementType);
+
+											if (!parseSuccess)
+												newBuilding.settlementType = SettlementType.None;
 											//get factions
 											string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
 											output = Functions_General.RemoveLastWord(output);
@@ -310,7 +315,7 @@ namespace RTWLib.Medieval2
 																if (line.Trim().StartsWith("}"))
 																{
 																	newBuilding.construction = newConstruction;
-																	buildingTrees[counter].buildings.Add(new Building(newBuilding));
+																	buildingTrees[counter].buildings.Add(new M2Building(newBuilding));
 																	buildingNext = true;
 																	whileFive = true; //break out of loop
 																	break;
