@@ -170,49 +170,49 @@ namespace RTWLib.Functions.EDU
 						added = true;
 					}
 
-					if (arg == "light infantry" && unit.category == "infantry" && unit.unitClass == "light" && !added)
+					if (arg == "light infantry" && unit.category == "infantry" && unit.uClass == "light" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "heavy infantry" && unit.category == "infantry" && unit.unitClass == "heavy" && !added)
+					if (arg == "heavy infantry" && unit.category == "infantry" && unit.uClass == "heavy" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "light cavalry" && unit.category == "cavalry" && unit.unitClass == "light" && !added)
+					if (arg == "light cavalry" && unit.category == "cavalry" && unit.uClass == "light" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "heavy cavalry" && unit.category == "cavalry" && unit.unitClass == "heavy" && !added)
+					if (arg == "heavy cavalry" && unit.category == "cavalry" && unit.uClass == "heavy" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "missile cavalry" && unit.category == "cavalry" && unit.unitClass == "missile" && !added)
+					if (arg == "missile cavalry" && unit.category == "cavalry" && unit.uClass == "missile" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "missile infantry" && unit.category == "infantry" && unit.unitClass == "missile" && !added)
+					if (arg == "missile infantry" && unit.category == "infantry" && unit.uClass == "missile" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "spearmen" && unit.unitClass == "spearmen" && !added)
+					if (arg == "spearmen" && unit.uClass == "spearmen" && !added)
 					{
 						selection.Add(unit);
 						added = true;
 					}
 
-					if (arg == "missile" && unit.unitClass == "missile" && !added)
+					if (arg == "missile" && unit.uClass == "missile" && !added)
 					{
 						selection.Add(unit);
 						added = true;
@@ -242,6 +242,33 @@ namespace RTWLib.Functions.EDU
 			else return false;
 
 		}
+
+		/// <summary>
+		/// Get min, mid, max and total of unit points from list supplied
+		/// </summary>
+		/// <returns>
+		/// float[4] min, mid, max, total 
+		/// </returns>
+		public static float[] GetUnitsPointData(List<Unit> units)
+		{
+			float min = float.MaxValue;
+			float mid = 0;
+			float max = 0;
+			float total = 0;
+			foreach (Unit u in units)
+			{
+				total += u.pointValue;
+				if (min > u.pointValue)
+					min = u.pointValue;
+				if (max < u.pointValue)
+					max = u.pointValue;
+			}
+
+			mid = (max - min) / units.Count;
+
+			return new float[4] {min, mid, max, total};
+		}
+
 		public string[] GetUnitNameList()
 		{
 			string[] lstUnit = new string[units.Count];

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Data;
@@ -9,7 +12,7 @@ using RTWLib.Functions;
 
 namespace RTWLib.Objects
 {
-    public class Unit
+    public class Unit : IComparable
     {
         /// <summary>
         /// internal name of the unit.
@@ -26,7 +29,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// light, heavy, spearman, or missle
         /// </summary>
-        public string unitClass;
+        public string uClass;
         /// <summary>
         /// determines the type of voice used by the unit
         /// </summary>
@@ -81,7 +84,7 @@ namespace RTWLib.Objects
         /// [0] hit point of man
         /// [1] hitpoint of mount or attached animal (horses and camels do not have separate hitpoints.
         /// </summary>
-        public int[] heatlh;
+        public int[] health;
         /// <summary>
         /// primary weapon stats
         /// </summary>
@@ -168,7 +171,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// a score given to the unit (randomiser use)
         /// </summary>
-        public float unitPointValue = 0;
+        public float pointValue = 0;
         /// <summary>
         /// comments written by a user in the file loaded
         /// </summary>
@@ -185,11 +188,11 @@ namespace RTWLib.Objects
             mental = new Mentality();
             officer = new List<string>();
             ownership = new List<string>();
-            heatlh = new int[2];
+            health = new int[2];
             ground = new int[4];
             food = new int[2];
             cost = new int[costValues];
-            
+
         }
 
         public virtual string unitOutput()
@@ -206,36 +209,36 @@ namespace RTWLib.Objects
                 action();
             };
 
-            unitString += LineOutput(type, 
+            unitString += LineOutput(type,
                 "type");
-            unitString += LineOutput(dictionary, 
+            unitString += LineOutput(dictionary,
                 "dictionary");
-            unitString += LineOutput(category, 
+            unitString += LineOutput(category,
                 "category");
-            unitString += LineOutput(unitClass, 
+            unitString += LineOutput(uClass,
                 "class");
-            unitString += LineOutput(voiceType, 
+            unitString += LineOutput(voiceType,
                 "voice_type");
 
             unitString += SpecialOutput(new object[] { soldier.name, soldier.number,
-                soldier.extras, soldier.collisionMass.UniversalOutput()}, 
+                soldier.extras, soldier.collisionMass.UniversalOutput()},
                 "soldier");
 
             if (officer.Count > 0)
-                unitString += LineOutput(officer[0], 
+                unitString += LineOutput(officer[0],
                     "officer");
             if (officer.Count > 1)
-                unitString += LineOutput(officer[1], 
+                unitString += LineOutput(officer[1],
                     "officer");
             if (officer.Count > 2)
-                unitString += LineOutput(officer[2], 
+                unitString += LineOutput(officer[2],
                     "officer");
-            
-            unitString += LineOutput(engine, 
+
+            unitString += LineOutput(engine,
                 "engine");
-            unitString += LineOutput(animal, 
+            unitString += LineOutput(animal,
                 "animal");
-            unitString += LineOutput(mount, 
+            unitString += LineOutput(mount,
                 "mount");
 
 
@@ -244,38 +247,38 @@ namespace RTWLib.Objects
                 unitString += "\r\nmount_effect" + identSpacing(identifierLength("mount_effect"));
                 for (int i = 0; i < mountEffect.mountType.Count(); i++)
                 {
-                    if(mountEffect.modifier[i] < 0)
+                    if (mountEffect.modifier[i] < 0)
                         setAndTagChanged(() => unitString += (mountEffect.mountType[i]) + " " + mountEffect.modifier[i].ToString());
                     else setAndTagChanged(() => unitString += (mountEffect.mountType[i]) + " +" + mountEffect.modifier[i].ToString());
                 }
                 unitString += "\r\n";
             }
 
-            unitString += LineOutput(naval, 
+            unitString += LineOutput(naval,
                 "ship");
-            unitString += LineOutput(EnumFlagsToString(attributes), 
+            unitString += LineOutput(EnumFlagsToString(attributes),
                 "attributes");
 
-            unitString += SpecialOutput(new object[] { formation.FormationTight[0], 
+            unitString += SpecialOutput(new object[] { formation.FormationTight[0],
             formation.FormationTight[1],
-            formation.FormationSparse[0], formation.FormationSparse[1], 
+            formation.FormationSparse[0], formation.FormationSparse[1],
             formation.FormationRanks, EnumFlagsToString(formation.FormationFlags)},
             "formation");
-           
-            
-            unitString += ListOutput(heatlh, 
+
+
+            unitString += ListOutput(health,
                 "stat_health");
 
             unitString += SpecialOutput(new object[] {primaryWeapon.attack[0], primaryWeapon.attack[1],
             primaryWeapon.missileType, primaryWeapon.Missleattri[0], primaryWeapon.Missleattri[1],
             primaryWeapon.WeaponFlags, primaryWeapon.TechFlags, primaryWeapon.DamageFlags,
-            primaryWeapon.SoundFlags, primaryWeapon.attackdelay[0], primaryWeapon.attackdelay[1] }, 
+            primaryWeapon.SoundFlags, primaryWeapon.attackdelay[0], primaryWeapon.attackdelay[1] },
             "stat_pri");
 
 
             unitString += LineOutput(EnumFlagsToString(priAttri, false, new Dictionary<Enum, string>() {
                 {Stat_pri_attr.thrown_ap, "thrown ap" }
-            }), 
+            }),
                 "stat_pri_attr");
 
             unitString += SpecialOutput(new object[] {secondaryWeapon.attack[0], secondaryWeapon.attack[1],
@@ -286,23 +289,23 @@ namespace RTWLib.Objects
 
             unitString += LineOutput(EnumFlagsToString(secAttri, false, new Dictionary<Enum, string>() {
                 {Stat_pri_attr.thrown_ap, "thrown ap" }
-            }), 
+            }),
                 "stat_sec_attr");
 
             unitString += SpecialOutput(new object[] { primaryArmour.stat_pri_armour[0], primaryArmour.stat_pri_armour[1],
-            primaryArmour.stat_pri_armour[2], primaryArmour.armour_sound}, 
+            primaryArmour.stat_pri_armour[2], primaryArmour.armour_sound},
             "stat_pri_armour");
 
             unitString += SpecialOutput(new object[] { secondaryArmour.stat_sec_armour[0], secondaryArmour.stat_sec_armour[1],
                 secondaryArmour.sec_armour_sound},
             "stat_sec_armour");
 
-            unitString += LineOutput(heat, 
+            unitString += LineOutput(heat,
                 "stat_heat");
-            unitString += ListOutput(ground, 
+            unitString += ListOutput(ground,
                 "stat_ground");
 
-            unitString += SpecialOutput(new object[] {mental.morale, mental.discipline, 
+            unitString += SpecialOutput(new object[] {mental.morale, mental.discipline,
                 mental.training}, "stat_mental");
 
 
@@ -319,7 +322,7 @@ namespace RTWLib.Objects
             string[] lines = unitString.Split('\r', '\n').CleanStringArray();
             Dictionary<EDULineEnums, int> multiple = new Dictionary<EDULineEnums, int>();
 
-            for (int i =0; i < lines.Count(); i++)
+            for (int i = 0; i < lines.Count(); i++)
             {
                 EDULineEnums identifier;
                 bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(lines[i]).Capitalise(), out identifier);
@@ -336,7 +339,7 @@ namespace RTWLib.Objects
 
                         lines[i] += "\t\t" + ((List<string>)comments[identifier])[multiple[identifier]];
                     }
-                }  
+                }
             }
 
             return lines.ArrayToString(false, true) + "\r\n";
@@ -362,7 +365,7 @@ namespace RTWLib.Objects
         public virtual string LineOutput<T>(T data, string identifier)
         {
             string line = string.Empty;
-            
+
             if (data == null)
                 return line;
             else
@@ -416,9 +419,8 @@ namespace RTWLib.Objects
             }
 
             return newString;
-        
-        }
 
+        }
 
         int identifierLength(string ident)
         {
@@ -433,7 +435,137 @@ namespace RTWLib.Objects
                 spaces += " ";
             return spaces;
         }
-    
+
+        public virtual void CalculatePointValue()
+        {
+            float points = 0f;
+
+            Dictionary<string, float> statWeights = new Dictionary<string, float>()
+            {
+                {"health", 2f },
+                {"attackFactor", 2f },
+                {"attackBonus", 0.8f },
+                {"attackDelay", 1f},
+                {"siegeAttack", 0.5f},
+                {"missileAttack", 2f },
+                {"missileRange", 1f},
+                {"soldierNumber", 0.2f},
+                {"armourFactor", 1.5f},
+                {"armourShield", 1.5f},
+                {"armourDefence", 1.5f},
+                {"morale", 2f},
+                {"berserker", 4f},
+                {"impetuous", 1f},
+                {"disciplined", 2f},
+                {"low", 0f},
+                {"normal", 1f},
+                {"highlyTrained", 2f},
+                {"trained", 1f},
+                {"untrained", 0f},
+                {"frightenFoot", 0.2f},
+                {"frightenMounted", 0.2f},
+                {"command", 0.2f},
+            };
+
+            points += health[0] * statWeights["health"];
+            points += soldier.number * statWeights["soldierNumber"];
+            points += primaryArmour.stat_pri_armour[0] * statWeights["armourFactor"];
+            points += primaryArmour.stat_pri_armour[1] * statWeights["armourDefence"];
+            points += primaryArmour.stat_pri_armour[2] * statWeights["armourShield"];
+            points += mental.morale * statWeights["morale"];
+
+            if (this.uClass == "missile")
+            {
+                if (this.category != "siege")
+                {
+                    points += primaryWeapon.Missleattri[0] * statWeights["missileRange"];
+                    points += primaryWeapon.attack[0] * statWeights["missileAttack"];
+                }
+                else
+                {
+                    points += secondaryWeapon.Missleattri[0] * statWeights["missileRange"];
+                    points += secondaryWeapon.attack[0] * statWeights["siegeAttack"];
+                }
+            }
+
+            else
+            {
+                points += primaryWeapon.attack[0] * statWeights["attackFactor"];
+                points += primaryWeapon.attack[1] * statWeights["attackBonus"];
+            }
+
+            switch (mental.discipline)
+            {
+                case Statmental_discipline.berserker:
+                    points += statWeights["berserker"];
+                    break;
+                case Statmental_discipline.disciplined:
+                    points += statWeights["disciplined"];
+                    break;
+                case Statmental_discipline.impetuous:
+                    points += statWeights["impetuous"];
+                    break;
+                case Statmental_discipline.low:
+                    points += statWeights["low"];
+                    break;
+                case Statmental_discipline.normal:
+                    points += statWeights["normal"];
+                    break;
+
+            }
+            switch (mental.training)
+            {
+                case Statmental_training.highly_trained:
+                    points += statWeights["highlyTrained"];
+                    break;
+                case Statmental_training.trained:
+                    points += statWeights["trained"];
+                    break;
+                case Statmental_training.untrained:
+                    points += statWeights["untrained"];
+                    break;
+
+            }
+
+            if (attributes.HasFlag(Attributes.frighten_foot))
+                points += statWeights["frightenFoot"];
+            if (attributes.HasFlag(Attributes.frighten_mounted))
+                points += statWeights["frightenMounted"];
+            if (attributes.HasFlag(Attributes.command))
+                points += statWeights["command"];
+
+            pointValue = points;
+        }
+
+
+        private class ComparePointsHelper : IComparer
+        {
+            int IComparer.Compare(object x, object y)
+            {
+                var unit = Unit.CastForCompare(x, y);
+
+                if (unit[0].pointValue > unit[1].pointValue)
+                    return 1;
+                else if (unit[0].pointValue < unit[1].pointValue)
+                    return -1;
+                else return 0;
+            }
+        }
+
+        public static Unit[] CastForCompare(object x, object y)
+        {
+            return new Unit[] { (Unit)x, (Unit)y };
+        }
+
+        public static IComparer ComparePoints()
+        {
+            return (IComparer) new ComparePointsHelper();
+        }
+
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

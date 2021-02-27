@@ -525,5 +525,16 @@ namespace RTWLib.Functions
 			return buildings;
 
 		}
+
+		public CoreBuilding GetBuildingTree(string treeName)
+		{
+			foreach (CoreBuilding b in buildingTrees)
+			{
+				if (b.buildingType == treeName)
+					return b;
+			}
+			return null;
+		}
+	
 	}
 }

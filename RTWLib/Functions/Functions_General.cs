@@ -126,6 +126,15 @@ namespace RTWLib.Functions
 			return input.ToString().GetSafeRTWDoubleStr();	
 		}
 
+		public static int Clamp(this int value, int min, int max)
+		{
+			if (value < min)
+				return min;
+			else if (value > max)
+				return max;
+			else return value;
+		}
+
 		public static string GetSafeRTWDoubleStr(this string input)
 		{
 			//trim excess
@@ -481,6 +490,12 @@ namespace RTWLib.Functions
 			}
 
 			return value;
+		}
+
+		public static string[] StringToArray(this string str, char delimeter = ',')
+		{
+			var split = str.Split(',').CleanStringArray();
+			return split;
 		}
 
 		public static object GetRandomItemFromArray(this object[] array, Random rng)

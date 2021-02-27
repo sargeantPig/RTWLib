@@ -65,7 +65,7 @@ namespace RTWLib.Medieval2
                 "dictionary");
             unitString += LineOutput(category,
                 "category");
-            unitString += LineOutput(unitClass,
+            unitString += LineOutput(uClass,
                 "class");
             unitString += LineOutput(voiceType,
                 "voice_type");
@@ -118,7 +118,7 @@ namespace RTWLib.Medieval2
             formation.FormationSparse[0], formation.FormationSparse[1],
             formation.FormationRanks, EnumFlagsToString(formation.FormationFlags)},
             "formation");
-            unitString += ListOutput(heatlh,
+            unitString += ListOutput(health,
                 "stat_health");
             unitString += SpecialOutput(new object[] {primaryWeapon.attack[0], primaryWeapon.attack[1],
             primaryWeapon.missileType, primaryWeapon.Missleattri[0], primaryWeapon.Missleattri[1],

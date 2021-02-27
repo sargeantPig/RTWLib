@@ -245,7 +245,10 @@ namespace RTWLib.Functions
 		public void Save(string path)
 		{
 			if (FileCheck(@path))
+			{
 				full_map.Write(@path, MagickFormat.Png);
+				full_map.Dispose();
+			}
 			else PLog("Unable to write to " + path + " - does the directory exist?");
 		}
 		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)

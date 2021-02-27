@@ -284,4 +284,30 @@ namespace RTWLib.Data
 		
 	}
 
+	//class missile, light, spearmen, heavy
+	//category infantry, ship, cavalry, seige, handler, non_combatant
+	[Flags]
+	public enum UnitType
+	{ 
+		//weight
+		LightInfantry,
+		HeavyInfantry,
+		LightCavalry,
+		HeavyCavalry,
+		LightShip,
+		HeavyShip,
+		LightHandler,
+		HeavyHandler,
+		LightNon_combatant,
+		HeavyNon_combatant,
+
+		//missile
+		MissileInfantry,
+		MissileCavalry,
+		MissileSiege,
+
+		//spearmen
+		SpearmenInfantry,
+	}
+
 }

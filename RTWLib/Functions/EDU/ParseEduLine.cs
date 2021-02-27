@@ -46,7 +46,7 @@ namespace RTWLib.Functions.EDU
                         HandleGenericLine(ref units[counter].category, data);
                         break;
                     case EDULineEnums.Class:
-                        HandleGenericLine(ref units[counter].unitClass, data);
+                        HandleGenericLine(ref units[counter].uClass, data);
                         break;
                     case EDULineEnums.Voice_type:
                         HandleGenericLine(ref units[counter].voiceType, data);
@@ -79,7 +79,7 @@ namespace RTWLib.Functions.EDU
                         HandleFormation(ref units[counter].formation, data);
                         break;
                     case EDULineEnums.Stat_health:
-                        HandleGenericInts(ref units[counter].heatlh, data);
+                        HandleGenericInts(ref units[counter].health, data);
                         break;
                     case EDULineEnums.Stat_pri:
                         if(this.GetType() == typeof(M2EDU))

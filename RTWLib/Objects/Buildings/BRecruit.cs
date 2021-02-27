@@ -20,6 +20,12 @@ namespace RTWLib.Objects.Buildings
 
         }
 
+        public Brecruit(string name, int experience)
+        {
+            this.name = name;
+            this.experience = experience;
+        }
+
         virtual public string outputRecruit()
         {
             string a = "";
