@@ -35,7 +35,7 @@ namespace RTWLib.Functions
 					names.Add(faction, new List<string>());
 				}
 
-				if (Functions_General.GetFirstWord(line) == "characters" && !line.StartsWith(";"))
+				if (LibFuncs.GetFirstWord(line) == "characters" && !line.StartsWith(";"))
 				{
 					line = sr.ReadLine();
 					while (!line.Contains("women") && !line.Contains("faction") && !line.Contains("surnames"))

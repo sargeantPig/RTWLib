@@ -23,7 +23,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// collision mass of the men. 1.0 is normal. Only applies to infantry
         /// </summary>
-        public float collisionMass; 
+        public float collMass; 
 
         public Soldier()
         {

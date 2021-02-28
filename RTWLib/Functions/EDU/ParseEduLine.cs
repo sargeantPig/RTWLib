@@ -20,9 +20,9 @@ namespace RTWLib.Functions.EDU
             EDULineEnums identifier;
             string comment = "";
             commentPair = new KeyValuePair<EDULineEnums, object>();
-            string[] data = Functions_General.RemoveFirstWord(line, new string[] { "era", "banner" }, 1).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
+            string[] data = LibFuncs.RemoveFirstWord(line, new string[] { "era", "banner" }, 1).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
             string ident; 
-               ident = Functions_General.GetFirstWord(line, new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
+               ident = LibFuncs.GetFirstWord(line, new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
             bool isIdentifier = Enum.TryParse<EDULineEnums>(ident, out identifier);
              
             if (!isIdentifier)
@@ -40,7 +40,7 @@ namespace RTWLib.Functions.EDU
                         HandleGenericLine(ref units[counter].type, data);
                         break;
                     case EDULineEnums.Dictionary:
-                        HandleGenericLine(ref units[counter].dictionary, data);
+                        HandleGenericLine(ref units[counter].dic, data);
                         break;
                     case EDULineEnums.Category:
                         HandleGenericLine(ref units[counter].category, data);
@@ -49,7 +49,7 @@ namespace RTWLib.Functions.EDU
                         HandleGenericLine(ref units[counter].uClass, data);
                         break;
                     case EDULineEnums.Voice_type:
-                        HandleGenericLine(ref units[counter].voiceType, data);
+                        HandleGenericLine(ref units[counter].voice, data);
                         break;
                     case EDULineEnums.Ship:
                         HandleGenericLine(ref units[counter].naval, data);
@@ -84,22 +84,22 @@ namespace RTWLib.Functions.EDU
                     case EDULineEnums.Stat_pri:
                         if(this.GetType() == typeof(M2EDU))
                              M2TWHandleStatPri(ref ((M2Unit)units[counter]).primaryWeapon, data);
-                        else HandleStatPri(ref units[counter].primaryWeapon, data);
+                        else HandleStatPri(ref units[counter].priWep, data);
                         break;
                     case EDULineEnums.Stat_pri_attr:
                         HandleStatPriAttr(ref units[counter].priAttri, data);
                         break;
                     case EDULineEnums.Stat_sec:
-                        HandleStatPri(ref units[counter].secondaryWeapon, data);
+                        HandleStatPri(ref units[counter].secWep, data);
                         break;
                     case EDULineEnums.Stat_sec_attr:
                         HandleStatPriAttr(ref units[counter].secAttri, data);
                         break;
                     case EDULineEnums.Stat_pri_armour:
-                        HandleStatPriArmour(ref units[counter].primaryArmour, data);
+                        HandleStatPriArmour(ref units[counter].priArm, data);
                         break;
                     case EDULineEnums.Stat_sec_armour:
-                        HandleStatPriArmour(ref units[counter].secondaryArmour, data);
+                        HandleStatPriArmour(ref units[counter].secArmr, data);
                         break;
                     case EDULineEnums.Stat_heat:
                         HandleGenericLine(ref units[counter].heat, data);
@@ -111,7 +111,7 @@ namespace RTWLib.Functions.EDU
                         HandleMental(ref units[counter].mental, data);
                         break;
                     case EDULineEnums.Stat_charge_dist:
-                        HandleGenericLine(ref units[counter].chargeDistance, data);
+                        HandleGenericLine(ref units[counter].chargeDist, data);
                         break;
                     case EDULineEnums.Stat_fire_delay:
                         HandleGenericLine(ref units[counter].fireDelay, data);
@@ -212,23 +212,23 @@ namespace RTWLib.Functions.EDU
             soldier.name = data[0].Trim();
             soldier.number = Convert.ToInt32(data[1].Trim());
             soldier.extras = Convert.ToInt32(data[2].Trim());
-            soldier.collisionMass = data[3].Trim().UniversalParse();
+            soldier.collMass = data[3].Trim().UniversalParse();
         }
 
         private void HandleStatPri(ref StatWeapons stat_pri, string[] data)
         {
             LookUpTables lu = new LookUpTables();
-            stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
-            stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
-            stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
-            stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
-            stat_pri.missileType = data[2].Trim();
-            stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
+            stat_pri.atk[0] = Convert.ToInt32(data[0].Trim());
+            stat_pri.atk[1] = Convert.ToInt32(data[1].Trim());
+            stat_pri.missAttr[0] = Convert.ToInt32(data[3].Trim());
+            stat_pri.missAttr[1] = Convert.ToInt32(data[4].Trim());
+            stat_pri.missType = data[2].Trim();
+            stat_pri.WepFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
             stat_pri.TechFlags =(TechType)Enum.Parse(typeof(TechType), data[6].Trim());
-            stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
+            stat_pri.DmgFlags = lu.LookUpKey<DamageType>(data[7].Trim());
             stat_pri.SoundFlags = data[8].Trim();
-            stat_pri.attackdelay[0] = Convert.ToInt32(data[9].Trim());
-            stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[10].Trim());
+            stat_pri.atkDly[0] = Convert.ToInt32(data[9].Trim());
+            stat_pri.atkDly[1] = (float)Convert.ToDouble(data[10].Trim());
         }
         private void M2TWHandleStatPri(ref M2StatWeapons stat_pri, string[] data)
         {
@@ -236,33 +236,33 @@ namespace RTWLib.Functions.EDU
             {
 
                 LookUpTables lu = new LookUpTables();
-                stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
-                stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
-                stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
-                stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
-                stat_pri.missileType = data[2].Trim();
-                stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
+                stat_pri.atk[0] = Convert.ToInt32(data[0].Trim());
+                stat_pri.atk[1] = Convert.ToInt32(data[1].Trim());
+                stat_pri.missAttr[0] = Convert.ToInt32(data[3].Trim());
+                stat_pri.missAttr[1] = Convert.ToInt32(data[4].Trim());
+                stat_pri.missType = data[2].Trim();
+                stat_pri.WepFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
                 stat_pri.TechFlags = (TechType)Enum.Parse(typeof(TechType), data[6].Trim());
-                stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
+                stat_pri.DmgFlags = lu.LookUpKey<DamageType>(data[7].Trim());
                 stat_pri.SoundFlags = data[8].Trim();
-                stat_pri.attackdelay[0] = Convert.ToInt32(data[9].Trim());
-                stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[10].Trim());
+                stat_pri.atkDly[0] = Convert.ToInt32(data[9].Trim());
+                stat_pri.atkDly[1] = (float)Convert.ToDouble(data[10].Trim());
             }
             else if (data.Count() == 12)
              {
                 LookUpTables lu = new LookUpTables();
-                stat_pri.attack[0] = Convert.ToInt32(data[0].Trim());
-                stat_pri.attack[1] = Convert.ToInt32(data[1].Trim());
-                stat_pri.Missleattri[0] = Convert.ToInt32(data[3].Trim());
-                stat_pri.Missleattri[1] = Convert.ToInt32(data[4].Trim());
-                stat_pri.missileType = data[2].Trim();
-                stat_pri.WeaponFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
+                stat_pri.atk[0] = Convert.ToInt32(data[0].Trim());
+                stat_pri.atk[1] = Convert.ToInt32(data[1].Trim());
+                stat_pri.missAttr[0] = Convert.ToInt32(data[3].Trim());
+                stat_pri.missAttr[1] = Convert.ToInt32(data[4].Trim());
+                stat_pri.missType = data[2].Trim();
+                stat_pri.WepFlags = lu.LookUpKey<WeaponType>(data[5].Trim());
                 stat_pri.TechFlags = (TechType)Enum.Parse(typeof(TechType), data[6].Trim());
-                stat_pri.DamageFlags = lu.LookUpKey<DamageType>(data[7].Trim());
+                stat_pri.DmgFlags = lu.LookUpKey<DamageType>(data[7].Trim());
                 stat_pri.SoundFlags = data[8].Trim();
                 stat_pri.musket_shot_set = data[9].Trim();
-                stat_pri.attackdelay[0] = Convert.ToInt32(data[10].Trim());
-                stat_pri.attackdelay[1] = (float)Convert.ToDouble(data[11].Trim());
+                stat_pri.atkDly[0] = Convert.ToInt32(data[10].Trim());
+                stat_pri.atkDly[1] = (float)Convert.ToDouble(data[11].Trim());
             }
         }
         private void HandleStatPriAttr(ref Stat_pri_attr stat_Pri_, string[] data)
@@ -288,16 +288,16 @@ namespace RTWLib.Functions.EDU
             LookUpTables lookUp = new LookUpTables();
             if (statPriArmour is StatPriArmour)
             {
-                ((StatPriArmour)(object)statPriArmour).stat_pri_armour[0] = Convert.ToInt32(data[0].Trim());
-                ((StatPriArmour)(object)statPriArmour).stat_pri_armour[1] = Convert.ToInt32(data[1].Trim());
-                ((StatPriArmour)(object)statPriArmour).stat_pri_armour[2] = Convert.ToInt32(data[2].Trim());
-                ((StatPriArmour)(object)statPriArmour).armour_sound = lookUp.LookUpKey<ArmourSound>(data[3].Trim());
+                ((StatPriArmour)(object)statPriArmour).priArm[0] = Convert.ToInt32(data[0].Trim());
+                ((StatPriArmour)(object)statPriArmour).priArm[1] = Convert.ToInt32(data[1].Trim());
+                ((StatPriArmour)(object)statPriArmour).priArm[2] = Convert.ToInt32(data[2].Trim());
+                ((StatPriArmour)(object)statPriArmour).armSound = lookUp.LookUpKey<ArmourSound>(data[3].Trim());
             }
             else if (statPriArmour is StatSecArmour)
             {
-                ((StatSecArmour)(object)statPriArmour).stat_sec_armour[0] = Convert.ToInt32(data[0].Trim());
-                ((StatSecArmour)(object)statPriArmour).stat_sec_armour[1] = Convert.ToInt32(data[1].Trim());
-                ((StatSecArmour)(object)statPriArmour).sec_armour_sound = lookUp.LookUpKey<ArmourSound>(data[2].Trim());
+                ((StatSecArmour)(object)statPriArmour).secArmour[0] = Convert.ToInt32(data[0].Trim());
+                ((StatSecArmour)(object)statPriArmour).secArmour[1] = Convert.ToInt32(data[1].Trim());
+                ((StatSecArmour)(object)statPriArmour).secArmSound = lookUp.LookUpKey<ArmourSound>(data[2].Trim());
             }
         }
 

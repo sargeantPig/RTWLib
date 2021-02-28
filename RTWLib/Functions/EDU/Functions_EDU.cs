@@ -87,7 +87,7 @@ namespace RTWLib.Functions.EDU
 
 		public Unit FindUnit(string name)
 		{
-			Unit unit = units.Find(x => x.dictionary.Contains(name));
+			Unit unit = units.Find(x => x.dic.Contains(name));
 
 			if (unit == null)
 			{
@@ -98,7 +98,7 @@ namespace RTWLib.Functions.EDU
 		}
 		public List<Unit> FindUnits(string name)
 		{
-			List<Unit> unit = units.FindAll(x => x.dictionary.Contains(name));
+			List<Unit> unit = units.FindAll(x => x.dic.Contains(name));
 			return unit;
 		}
 		public List<Unit> FindUnitsByFaction(string faction)
@@ -141,13 +141,16 @@ namespace RTWLib.Functions.EDU
 			}
 			return new List<Unit>();
 		}
-		public List<Unit> FindUnitsByArgAndFaction(string[] args, string faction = null, bool useFaction = false)
+		public List<Unit> FindUnitsByArgAndFaction(string[] args, string faction = null, bool useFaction = false, bool ignorePeasants = true)
 		{
 			List<Unit> selection = new List<Unit>();
 			bool added = false;
 			bool isFaction = false;
 			foreach (Unit unit in units)
 			{
+				if (unit.dic.Contains("peasant") && ignorePeasants)
+					continue;
+
 				if (useFaction)
 				{
 					isFaction = CheckUnitBelongsToFactionAndCulture(faction, unit);
@@ -275,7 +278,7 @@ namespace RTWLib.Functions.EDU
 			int ind = 0;
 			foreach (Unit unit in units)
 			{
-				lstUnit[ind] = unit.dictionary;
+				lstUnit[ind] = unit.dic;
 				ind++;
 			}
 			return lstUnit;

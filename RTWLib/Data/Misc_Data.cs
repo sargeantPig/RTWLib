@@ -20,7 +20,7 @@ namespace RTWLib.Data
 			{
 				for (int y = 0; y < 156; y++)
 				{
-					int temp = (int)Functions_General.DistanceTo(new int[] { x, y }, coords);
+					int temp = (int)LibFuncs.DistanceTo(new int[] { x, y }, coords);
 					if (temp < distance && editRegionWater[x, y])
 					{
 						distance = temp;

@@ -21,7 +21,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// tag for looking up the screen name
         /// </summary>
-        public string dictionary;
+        public string dic;
         /// <summary>
         /// infantry, cavalry, siege, handler, ship or non_combatant
         /// </summary>
@@ -33,7 +33,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// determines the type of voice used by the unit
         /// </summary>
-        public string voiceType;
+        public string voice;
         /// <summary>
         /// make-up of each soldier (name, number, collision etc)
         /// </summary>
@@ -88,7 +88,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// primary weapon stats
         /// </summary>
-        public StatWeapons primaryWeapon;
+        public StatWeapons priWep;
         /// <summary>
         /// primary weapon attributes any or all of
         /// ap = armour piercing.Only counts half of target's armour
@@ -105,7 +105,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// secondary weapon stats
         /// </summary>
-        public StatWeapons secondaryWeapon;
+        public StatWeapons secWep;
         /// <summary>
         /// primary weapon attributes any or all of
         /// ap = armour piercing.Only counts half of target's armour
@@ -122,11 +122,11 @@ namespace RTWLib.Objects
         /// <summary>
         /// details of the units defences
         /// </summary>
-        public StatPriArmour primaryArmour;
+        public StatPriArmour priArm;
         /// <summary>
         /// Details of animal's or vehicle's defenses (note riden horses do not have a separate defence)
         /// </summary>
-        public StatSecArmour secondaryArmour;
+        public StatSecArmour secArmr;
         /// <summary>
         /// Extra fatigue suffered by the unit in hot climates
         /// </summary>
@@ -146,7 +146,7 @@ namespace RTWLib.Objects
         /// <summary>
         /// distance from the enemy that the unit will start charging
         /// </summary>
-        public int chargeDistance;
+        public int chargeDist;
         /// <summary>
         /// delay between volleys, on top of the animation delay
         /// </summary>
@@ -181,10 +181,10 @@ namespace RTWLib.Objects
             soldier = new Soldier();
             mountEffect = new MountEffect();
             formation = new Formation();
-            primaryWeapon = new StatWeapons();
-            secondaryWeapon = new StatWeapons();
-            primaryArmour = new StatPriArmour();
-            secondaryArmour = new StatSecArmour();
+            priWep = new StatWeapons();
+            secWep = new StatWeapons();
+            priArm = new StatPriArmour();
+            secArmr = new StatSecArmour();
             mental = new Mentality();
             officer = new List<string>();
             ownership = new List<string>();
@@ -211,17 +211,17 @@ namespace RTWLib.Objects
 
             unitString += LineOutput(type,
                 "type");
-            unitString += LineOutput(dictionary,
+            unitString += LineOutput(dic,
                 "dictionary");
             unitString += LineOutput(category,
                 "category");
             unitString += LineOutput(uClass,
                 "class");
-            unitString += LineOutput(voiceType,
+            unitString += LineOutput(voice,
                 "voice_type");
 
             unitString += SpecialOutput(new object[] { soldier.name, soldier.number,
-                soldier.extras, soldier.collisionMass.UniversalOutput()},
+                soldier.extras, soldier.collMass.UniversalOutput()},
                 "soldier");
 
             if (officer.Count > 0)
@@ -269,10 +269,10 @@ namespace RTWLib.Objects
             unitString += ListOutput(health,
                 "stat_health");
 
-            unitString += SpecialOutput(new object[] {primaryWeapon.attack[0], primaryWeapon.attack[1],
-            primaryWeapon.missileType, primaryWeapon.Missleattri[0], primaryWeapon.Missleattri[1],
-            primaryWeapon.WeaponFlags, primaryWeapon.TechFlags, primaryWeapon.DamageFlags,
-            primaryWeapon.SoundFlags, primaryWeapon.attackdelay[0], primaryWeapon.attackdelay[1] },
+            unitString += SpecialOutput(new object[] {priWep.atk[0], priWep.atk[1],
+            priWep.missType, priWep.missAttr[0], priWep.missAttr[1],
+            priWep.WepFlags, priWep.TechFlags, priWep.DmgFlags,
+            priWep.SoundFlags, priWep.atkDly[0], priWep.atkDly[1] },
             "stat_pri");
 
 
@@ -281,10 +281,10 @@ namespace RTWLib.Objects
             }),
                 "stat_pri_attr");
 
-            unitString += SpecialOutput(new object[] {secondaryWeapon.attack[0], secondaryWeapon.attack[1],
-            secondaryWeapon.missileType, secondaryWeapon.Missleattri[0], secondaryWeapon.Missleattri[1],
-            secondaryWeapon.WeaponFlags, secondaryWeapon.TechFlags, secondaryWeapon.DamageFlags,
-            secondaryWeapon.SoundFlags, secondaryWeapon.attackdelay[0], secondaryWeapon.attackdelay[1] },
+            unitString += SpecialOutput(new object[] {secWep.atk[0], secWep.atk[1],
+            secWep.missType, secWep.missAttr[0], secWep.missAttr[1],
+            secWep.WepFlags, secWep.TechFlags, secWep.DmgFlags,
+            secWep.SoundFlags, secWep.atkDly[0], secWep.atkDly[1] },
             "stat_sec");
 
             unitString += LineOutput(EnumFlagsToString(secAttri, false, new Dictionary<Enum, string>() {
@@ -292,12 +292,12 @@ namespace RTWLib.Objects
             }),
                 "stat_sec_attr");
 
-            unitString += SpecialOutput(new object[] { primaryArmour.stat_pri_armour[0], primaryArmour.stat_pri_armour[1],
-            primaryArmour.stat_pri_armour[2], primaryArmour.armour_sound},
+            unitString += SpecialOutput(new object[] { priArm.priArm[0], priArm.priArm[1],
+            priArm.priArm[2], priArm.armSound},
             "stat_pri_armour");
 
-            unitString += SpecialOutput(new object[] { secondaryArmour.stat_sec_armour[0], secondaryArmour.stat_sec_armour[1],
-                secondaryArmour.sec_armour_sound},
+            unitString += SpecialOutput(new object[] { secArmr.secArmour[0], secArmr.secArmour[1],
+                secArmr.secArmSound},
             "stat_sec_armour");
 
             unitString += LineOutput(heat,
@@ -309,7 +309,7 @@ namespace RTWLib.Objects
                 mental.training}, "stat_mental");
 
 
-            unitString += LineOutput(chargeDistance,
+            unitString += LineOutput(chargeDist,
                 "stat_charge_dist");
 
             unitString += LineOutput(fireDelay,
@@ -325,7 +325,7 @@ namespace RTWLib.Objects
             for (int i = 0; i < lines.Count(); i++)
             {
                 EDULineEnums identifier;
-                bool isIdentifier = Enum.TryParse<EDULineEnums>(Functions_General.GetFirstWord(lines[i]).Capitalise(), out identifier);
+                bool isIdentifier = Enum.TryParse<EDULineEnums>(LibFuncs.GetFirstWord(lines[i]).Capitalise(), out identifier);
 
                 if (isIdentifier)
                 {
@@ -469,29 +469,29 @@ namespace RTWLib.Objects
 
             points += health[0] * statWeights["health"];
             points += soldier.number * statWeights["soldierNumber"];
-            points += primaryArmour.stat_pri_armour[0] * statWeights["armourFactor"];
-            points += primaryArmour.stat_pri_armour[1] * statWeights["armourDefence"];
-            points += primaryArmour.stat_pri_armour[2] * statWeights["armourShield"];
+            points += priArm.priArm[0] * statWeights["armourFactor"];
+            points += priArm.priArm[1] * statWeights["armourDefence"];
+            points += priArm.priArm[2] * statWeights["armourShield"];
             points += mental.morale * statWeights["morale"];
 
             if (this.uClass == "missile")
             {
                 if (this.category != "siege")
                 {
-                    points += primaryWeapon.Missleattri[0] * statWeights["missileRange"];
-                    points += primaryWeapon.attack[0] * statWeights["missileAttack"];
+                    points += priWep.missAttr[0] * statWeights["missileRange"];
+                    points += priWep.atk[0] * statWeights["missileAttack"];
                 }
                 else
                 {
-                    points += secondaryWeapon.Missleattri[0] * statWeights["missileRange"];
-                    points += secondaryWeapon.attack[0] * statWeights["siegeAttack"];
+                    points += secWep.missAttr[0] * statWeights["missileRange"];
+                    points += secWep.atk[0] * statWeights["siegeAttack"];
                 }
             }
 
             else
             {
-                points += primaryWeapon.attack[0] * statWeights["attackFactor"];
-                points += primaryWeapon.attack[1] * statWeights["attackBonus"];
+                points += priWep.atk[0] * statWeights["attackFactor"];
+                points += priWep.atk[1] * statWeights["attackBonus"];
             }
 
             switch (mental.discipline)

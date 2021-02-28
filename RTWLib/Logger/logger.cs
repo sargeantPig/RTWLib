@@ -132,7 +132,7 @@ namespace RTWLib.Logger
 
 		public bool AdminCheck()
 		{
-			bool admin = Functions_General.IsAdministrator();
+			bool admin = LibFuncs.IsAdministrator();
 
 			if (admin) {
 				current = PLog(isAdmin);

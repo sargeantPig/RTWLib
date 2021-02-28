@@ -61,13 +61,13 @@ namespace RTWLib.Medieval2
             };
             unitString += LineOutput(type,
                 "type");
-            unitString += LineOutput(dictionary,
+            unitString += LineOutput(dic,
                 "dictionary");
             unitString += LineOutput(category,
                 "category");
             unitString += LineOutput(uClass,
                 "class");
-            unitString += LineOutput(voiceType,
+            unitString += LineOutput(voice,
                 "voice_type");
             unitString += LineOutput(accent,
                 "accent");
@@ -78,7 +78,7 @@ namespace RTWLib.Medieval2
             unitString += LineOutput(bannerHoly,
                 "banner holy");
             unitString += SpecialOutput(new object[] { soldier.name, soldier.number,
-                soldier.extras, soldier.collisionMass.UniversalOutput()},
+                soldier.extras, soldier.collMass.UniversalOutput()},
                 "soldier");
             if (officer.Count > 0)
                 unitString += LineOutput(officer[0],
@@ -120,10 +120,10 @@ namespace RTWLib.Medieval2
             "formation");
             unitString += ListOutput(health,
                 "stat_health");
-            unitString += SpecialOutput(new object[] {primaryWeapon.attack[0], primaryWeapon.attack[1],
-            primaryWeapon.missileType, primaryWeapon.Missleattri[0], primaryWeapon.Missleattri[1],
-            primaryWeapon.WeaponFlags, primaryWeapon.TechFlags, primaryWeapon.DamageFlags,
-            primaryWeapon.SoundFlags, primaryWeapon.musket_shot_set, primaryWeapon.attackdelay[0], primaryWeapon.attackdelay[1] },
+            unitString += SpecialOutput(new object[] {primaryWeapon.atk[0], primaryWeapon.atk[1],
+            primaryWeapon.missType, primaryWeapon.missAttr[0], primaryWeapon.missAttr[1],
+            primaryWeapon.WepFlags, primaryWeapon.TechFlags, primaryWeapon.DmgFlags,
+            primaryWeapon.SoundFlags, primaryWeapon.musket_shot_set, primaryWeapon.atkDly[0], primaryWeapon.atkDly[1] },
             "stat_pri");
             unitString += LineOutput(stat_pri_ex, 
                 "stat_pri_ex");
@@ -131,10 +131,10 @@ namespace RTWLib.Medieval2
                 {Stat_pri_attr.thrown_ap, "thrown ap" }
             }),
                 "stat_pri_attr");
-            unitString += SpecialOutput(new object[] {secondaryWeapon.attack[0], secondaryWeapon.attack[1],
-            secondaryWeapon.missileType, secondaryWeapon.Missleattri[0], secondaryWeapon.Missleattri[1],
-            secondaryWeapon.WeaponFlags, secondaryWeapon.TechFlags, secondaryWeapon.DamageFlags,
-            secondaryWeapon.SoundFlags, secondaryWeapon.attackdelay[0], secondaryWeapon.attackdelay[1] },
+            unitString += SpecialOutput(new object[] {secWep.atk[0], secWep.atk[1],
+            secWep.missType, secWep.missAttr[0], secWep.missAttr[1],
+            secWep.WepFlags, secWep.TechFlags, secWep.DmgFlags,
+            secWep.SoundFlags, secWep.atkDly[0], secWep.atkDly[1] },
             "stat_sec");
             unitString += LineOutput(stat_pri_ex, 
                 "stat_pri_ex");
@@ -142,12 +142,12 @@ namespace RTWLib.Medieval2
                 {Stat_pri_attr.thrown_ap, "thrown ap" }
             }),
                 "stat_sec_attr");
-            if (stat_ter.missileType != null)
+            if (stat_ter.missType != null)
             {
-                unitString += SpecialOutput(new object[] {stat_ter.attack[0], stat_ter.attack[1],
-                    stat_ter.missileType, stat_ter.Missleattri[0], stat_ter.Missleattri[1],
-                    stat_ter.WeaponFlags, stat_ter.TechFlags, stat_ter.DamageFlags,
-                    stat_ter.SoundFlags, stat_ter.musket_shot_set, stat_ter.attackdelay[0], stat_ter.attackdelay[1] },
+                unitString += SpecialOutput(new object[] {stat_ter.atk[0], stat_ter.atk[1],
+                    stat_ter.missType, stat_ter.missAttr[0], stat_ter.missAttr[1],
+                    stat_ter.WepFlags, stat_ter.TechFlags, stat_ter.DmgFlags,
+                    stat_ter.SoundFlags, stat_ter.musket_shot_set, stat_ter.atkDly[0], stat_ter.atkDly[1] },
                     "stat_ter");
             }
             unitString += LineOutput(stat_ter_ex, 
@@ -158,13 +158,13 @@ namespace RTWLib.Medieval2
                     "stat_ter_attr");
             }
 
-            unitString += SpecialOutput(new object[] { primaryArmour.stat_pri_armour[0], primaryArmour.stat_pri_armour[1],
-            primaryArmour.stat_pri_armour[2], primaryArmour.armour_sound},
+            unitString += SpecialOutput(new object[] { priArm.priArm[0], priArm.priArm[1],
+            priArm.priArm[2], priArm.armSound},
             "stat_pri_armour");
             unitString += LineOutput(stat_armour_ex,
                 "stat_armour_ex");
-            unitString += SpecialOutput(new object[] { secondaryArmour.stat_sec_armour[0], secondaryArmour.stat_sec_armour[1],
-                secondaryArmour.sec_armour_sound},
+            unitString += SpecialOutput(new object[] { secArmr.secArmour[0], secArmr.secArmour[1],
+                secArmr.secArmSound},
                 "stat_sec_armour");
             unitString += LineOutput(heat,
                 "stat_heat");
@@ -173,7 +173,7 @@ namespace RTWLib.Medieval2
             unitString += SpecialOutput(new object[] {mental.morale, mental.discipline,
                 mental.training}, 
                 "stat_mental");
-            unitString += LineOutput(chargeDistance,
+            unitString += LineOutput(chargeDist,
                 "stat_charge_dist");
             unitString += LineOutput(fireDelay,
                 "stat_fire_delay");
@@ -211,7 +211,7 @@ namespace RTWLib.Medieval2
             for (int i = 0; i < lines.Count(); i++)
             {
                 EDULineEnums identifier;
-                string strIdent = Functions_General.GetFirstWord(lines[i], null, 0, '\t').Capitalise();
+                string strIdent = LibFuncs.GetFirstWord(lines[i], null, 0, '\t').Capitalise();
                 bool isIdentifier = Enum.TryParse<EDULineEnums>(strIdent, out identifier);
 
                 if (isIdentifier )

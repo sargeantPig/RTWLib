@@ -12,15 +12,15 @@ namespace RTWLib.Objects
         /// [1] armour factor
         /// [2] defensive skill factor
         /// </summary>
-        public int[] stat_sec_armour;
+        public int[] secArmour;
         /// <summary>
         /// sound type when hit = flesh, leather, or metal
         /// </summary>
-        public ArmourSound sec_armour_sound;
+        public ArmourSound secArmSound;
 
         public StatSecArmour()
         {
-            stat_sec_armour = new int[2];
+            secArmour = new int[2];
         }
 
     }

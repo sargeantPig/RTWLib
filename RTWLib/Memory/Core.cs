@@ -31,7 +31,7 @@ namespace RTWLib.Memory
 
 		public void StartProcess(string[] args, string name)
 		{
-			p = Functions_General.ExecuteCommand(name, args);
+			p = LibFuncs.ExecuteCommand(name, args);
 			p.Start();
 			
 			pName = p.ProcessName;

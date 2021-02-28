@@ -49,7 +49,7 @@ namespace RTWLib.Functions
 
 				if (trimmedLine.StartsWith("hidden_resources"))
 				{
-					string modified = Functions_General.RemoveFirstWord(trimmedLine);
+					string modified = LibFuncs.RemoveFirstWord(trimmedLine);
 					string[] splitStr = modified.Split(' ');
 					foreach (string str in splitStr)
 					{
@@ -94,7 +94,7 @@ namespace RTWLib.Functions
 
 							if (line.Trim().StartsWith("levels"))
 							{
-								string firstWordRemoved = Functions_General.RemoveFirstWord(line.Trim());
+								string firstWordRemoved = LibFuncs.RemoveFirstWord(line.Trim());
 								string[] levelsSplit = firstWordRemoved.Split();
 
 								foreach (string str in levelsSplit)
@@ -129,10 +129,10 @@ namespace RTWLib.Functions
 										{
 											newBuilding.factionsRequired = new List<string>();
 
-											newBuilding.buildingName = Functions_General.GetFirstWord(line.Trim(), new string[0]);
+											newBuilding.buildingName = LibFuncs.GetFirstWord(line.Trim(), new string[0]);
 											//get factions
 											string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-											output = Functions_General.RemoveLastWord(output);
+											output = LibFuncs.RemoveLastWord(output);
 											List<string> factionSplit = output.Split(',').ToList();
 
 											factionSplit.Remove(factionSplit.Last());
@@ -189,7 +189,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "{")
+														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -221,7 +221,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "recruit" || Functions_General.GetFirstWord(line.Trim(), new string[0]) == "recruit_pool")
+														if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "recruit" || LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "recruit_pool")
 														{
 															Brecruit newRecruit = new Brecruit();
 
@@ -236,7 +236,7 @@ namespace RTWLib.Functions
 
 															//get factions
 															string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-															output = Functions_General.RemoveLastWord(output);
+															output = LibFuncs.RemoveLastWord(output);
 															List<string> factionSplit = output.Split(',').ToList();
 
 															factionSplit.Remove(factionSplit.Last());
@@ -249,12 +249,12 @@ namespace RTWLib.Functions
 															newCapa.canRecruit.Add(newRecruit);
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "agent")
+														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "agent")
 														{
 															newCapa.agentList.Add(line.Trim());
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim(), new string[0]) == "{")
+														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -268,7 +268,7 @@ namespace RTWLib.Functions
 
 												if (line.Trim().StartsWith("material"))
 												{
-													newBuilding.material = Functions_General.RemoveFirstWord(line.Trim()).Trim();
+													newBuilding.material = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
 
 
 												}
@@ -297,13 +297,13 @@ namespace RTWLib.Functions
 
 														if (line.Trim().StartsWith("cost"))
 														{
-															newConstruction.cost = Convert.ToInt32(Functions_General.RemoveFirstWord(line.Trim()).Trim());
+															newConstruction.cost = Convert.ToInt32(LibFuncs.RemoveFirstWord(line.Trim()).Trim());
 
 														}
 
 														if (line.Trim().StartsWith("settlement_min"))
 														{
-															newConstruction.settlement_min = Functions_General.RemoveFirstWord(line.Trim()).Trim();
+															newConstruction.settlement_min = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
 
 														}
 

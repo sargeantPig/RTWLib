@@ -45,6 +45,21 @@ namespace RTWLib.Objects.Buildings
 
         }
 
+        public bool ContainsUnit(string name)
+        {
+            foreach (var unit in canRecruit)
+            {
+                if (unit.name == name)
+                    return true;
+            }
+            return false;
+        }
+
+        public int GetIndexOfUnit(string name)
+        {
+            return canRecruit.FindIndex(x => x.name == name);
+        }
+
     }
 
 }

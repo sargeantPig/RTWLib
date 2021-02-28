@@ -80,33 +80,33 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("start_date"))
                 {
-                    string temp = Functions_General.RemoveFirstWord(line, '\t');
+                    string temp = LibFuncs.RemoveFirstWord(line, '\t');
                     startDate = temp.Trim();
 
                 }
 
                 if (line.StartsWith("end_date"))
                 {
-                    string temp = Functions_General.RemoveFirstWord(line, '\t');
+                    string temp = LibFuncs.RemoveFirstWord(line, '\t');
                     endDate = temp.Trim();
 
                 }
 
                 if (line.StartsWith("timescale"))
                 {
-                    string temp = Functions_General.RemoveFirstWord(line, '\t');
+                    string temp = LibFuncs.RemoveFirstWord(line, '\t');
                     timescale = (float)Convert.ToDouble(temp.Trim());
                 }
 
                 if (line.StartsWith("brigand_spawn_value"))
                 {
-                    string temp = Functions_General.RemoveFirstWord(line);
+                    string temp = LibFuncs.RemoveFirstWord(line);
                     brigand_spawn_value = Convert.ToInt32(temp.Trim());
                 }
 
                 if (line.StartsWith("pirate_spawn_value"))
                 {
-                    string temp = Functions_General.RemoveFirstWord(line);
+                    string temp = LibFuncs.RemoveFirstWord(line);
                     pirate_spawn_value = Convert.ToInt32(temp.Trim());
                 }
 
@@ -161,7 +161,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("superfaction"))
                 {
-                    string superfac = Functions_General.RemoveFirstWord(line);
+                    string superfac = LibFuncs.RemoveFirstWord(line);
                     newFaction.superFaction = superfac.Trim();
                 }
 
@@ -208,7 +208,7 @@ namespace RTWLib.Medieval2
                     {
                         if (line.Trim().StartsWith("level"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             s_level = trimmed;
@@ -217,7 +217,7 @@ namespace RTWLib.Medieval2
 
                         else if (line.Trim().StartsWith("region"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             region = trimmed;
@@ -225,7 +225,7 @@ namespace RTWLib.Medieval2
 
                         else if (line.Trim().StartsWith("year_founded"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             yearFounded = Convert.ToInt32(trimmed);
@@ -234,7 +234,7 @@ namespace RTWLib.Medieval2
 
                         else if (line.Trim().StartsWith("population"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             population = Convert.ToInt32(trimmed);
@@ -243,7 +243,7 @@ namespace RTWLib.Medieval2
 
                         else if (line.Trim().StartsWith("faction_creator"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             faction_creator = trimmed;
@@ -252,7 +252,7 @@ namespace RTWLib.Medieval2
 
                         else if (line.Trim().StartsWith("type"))
                         {
-                            string trimmed = Functions_General.RemoveFirstWord(line);
+                            string trimmed = LibFuncs.RemoveFirstWord(line);
                             trimmed = trimmed.Trim();
 
                             DSBuilding dsb = new DSBuilding();
@@ -300,7 +300,7 @@ namespace RTWLib.Medieval2
                         newCharacter.coords[1] = Convert.ToInt32(ysplit[2].Trim());
 
                         line = this.ContinueParseAndCountLine(ref strat, ref lineNumber); //move to traits
-                        string traits = Functions_General.RemoveFirstWord(line);
+                        string traits = LibFuncs.RemoveFirstWord(line);
                         newCharacter.traits = traits.Trim();
                     }
 
@@ -321,13 +321,13 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("traits"))
                 {
-                    string traits = Functions_General.RemoveFirstWord(line);
+                    string traits = LibFuncs.RemoveFirstWord(line);
                     newCharacter.traits = traits.Trim();
                 }
 
                 if (line.StartsWith("ancillaries"))
                 {
-                    string ancillaries = Functions_General.RemoveFirstWord(line);
+                    string ancillaries = LibFuncs.RemoveFirstWord(line);
                     newCharacter.ancillaries = ancillaries;
                 }
 
@@ -368,7 +368,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("character_record"))
                 {
-                    string record = Functions_General.RemoveFirstWord(line, '\t');//
+                    string record = LibFuncs.RemoveFirstWord(line, '\t');//
 
                     M2CharacterRecord cr = new M2CharacterRecord();
 
@@ -387,7 +387,7 @@ namespace RTWLib.Medieval2
 
                 if (line.StartsWith("relative"))
                 {
-                    string relative = Functions_General.RemoveFirstWord(line, '\t');
+                    string relative = LibFuncs.RemoveFirstWord(line, '\t');
                     newFaction.relatives.Add(relative);
                 }
 

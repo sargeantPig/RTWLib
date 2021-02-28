@@ -119,8 +119,34 @@ namespace RTWLib.Functions
 	}
 
 
-	static public class Functions_General
+	static public class LibFuncs
 	{
+		/// <summary>
+		/// Get a random percent eg. 0.5 
+		/// minpercent eg. 500 = (50%), 1000 = (100%) 100 = (10%) 10 = (1%)
+		/// </summary>
+		/// <returns></returns>
+		public static float RandPercent(this Random rnd, int minPercent, int maxPercent)
+		{
+			int randomInt = rnd.Next(minPercent, maxPercent + 1);
+			float rndPercent = (float)(randomInt / 1000f);
+			return rndPercent;
+		}
+		/// <summary>
+		/// Catches a divide by 0 and returns 1 or 0 according to optional param
+		/// </summary>
+		/// <returns></returns>
+		public static float SafeDivide(float a, float b)
+		{
+			float result;
+
+			if (a == 0 || b == 0)
+				return 0;
+
+			result = a / b;
+			return result;
+		}
+
 		public static string UniversalOutput(this float input)
 		{
 			return input.ToString().GetSafeRTWDoubleStr();	

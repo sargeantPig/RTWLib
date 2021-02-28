@@ -39,7 +39,7 @@ namespace RTWLib.Medieval2
 
 				if (trimmedLine.StartsWith("hidden_resources"))
 				{
-					string modified = Functions_General.RemoveFirstWord(trimmedLine);
+					string modified = LibFuncs.RemoveFirstWord(trimmedLine);
 					string[] splitStr = modified.Split(' ');
 					foreach (string str in splitStr)
 					{
@@ -84,7 +84,7 @@ namespace RTWLib.Medieval2
 
 							if (line.Trim().StartsWith("levels"))
 							{
-								string firstWordRemoved = Functions_General.RemoveFirstWord(line.Trim());
+								string firstWordRemoved = LibFuncs.RemoveFirstWord(line.Trim());
 								string[] levelsSplit = firstWordRemoved.Split();
 
 								foreach (string str in levelsSplit)
@@ -119,7 +119,7 @@ namespace RTWLib.Medieval2
 										{
 											newBuilding.factionsRequired = new List<string>();                  
 
-											newBuilding.buildingName = Functions_General.GetFirstWord(line.Trim());
+											newBuilding.buildingName = LibFuncs.GetFirstWord(line.Trim());
 											string[] completeSplit = line.TrimStart().Split(' ');
 											bool parseSuccess = Enum.TryParse(completeSplit[1].Capitalise(), out newBuilding.settlementType);
 
@@ -127,7 +127,7 @@ namespace RTWLib.Medieval2
 												newBuilding.settlementType = SettlementType.None;
 											//get factions
 											string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-											output = Functions_General.RemoveLastWord(output);
+											output = LibFuncs.RemoveLastWord(output);
 											List<string> factionSplit = output.Split(',').ToList();
 
 											factionSplit.Remove(factionSplit.Last());
@@ -184,7 +184,7 @@ namespace RTWLib.Medieval2
 															break;
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "{")
+														else if (LibFuncs.GetFirstWord(line.Trim()) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -216,7 +216,7 @@ namespace RTWLib.Medieval2
 															break;
 														}
 
-														if (Functions_General.GetFirstWord(line.Trim()) == "recruit" || Functions_General.GetFirstWord(line.Trim()) == "recruit_pool")
+														if (LibFuncs.GetFirstWord(line.Trim()) == "recruit" || LibFuncs.GetFirstWord(line.Trim()) == "recruit_pool")
 														{
 															M2Recruit newRecruit = new M2Recruit();
 
@@ -233,7 +233,7 @@ namespace RTWLib.Medieval2
 			
 															//get factions
 															string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-															output = Functions_General.RemoveLastWord(output);
+															output = LibFuncs.RemoveLastWord(output);
 															List<string> factionSplit = output.Split(',').ToList();
 
 															factionSplit.Remove(factionSplit.Last());
@@ -246,12 +246,12 @@ namespace RTWLib.Medieval2
 															newCapa.canRecruit.Add(newRecruit);
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "agent")
+														else if (LibFuncs.GetFirstWord(line.Trim()) == "agent")
 														{
 															newCapa.agentList.Add(line.Trim());
 														}
 
-														else if (Functions_General.GetFirstWord(line.Trim()) == "{")
+														else if (LibFuncs.GetFirstWord(line.Trim()) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -265,7 +265,7 @@ namespace RTWLib.Medieval2
 
 												if (line.Trim().StartsWith("material"))
 												{
-													newBuilding.material = Functions_General.RemoveFirstWord(line.Trim()).Trim();
+													newBuilding.material = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
 
 
 												}
@@ -294,13 +294,13 @@ namespace RTWLib.Medieval2
 
 														if (line.Trim().StartsWith("cost"))
 														{
-															newConstruction.cost = Convert.ToInt32(Functions_General.RemoveFirstWord(line.Trim()).Trim());
+															newConstruction.cost = Convert.ToInt32(LibFuncs.RemoveFirstWord(line.Trim()).Trim());
 
 														}
 
 														if (line.Trim().StartsWith("settlement_min"))
 														{
-															newConstruction.settlement_min = Functions_General.RemoveFirstWord(line.Trim()).Trim();
+															newConstruction.settlement_min = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
 
 														}
 
