@@ -595,6 +595,17 @@ namespace RTWLib.Functions
                 }
             }
         }
+
+        public void MoveFactionToTopOfStrat(string name)
+        {
+            int index = playableFactions.FindIndex(x => x == name);
+            var temp = playableFactions[index];
+            playableFactions.RemoveAt(index);
+            campaignNonPlayable = new List<string>(playableFactions);
+            playableFactions.Clear();
+            playableFactions.Add(temp);
+        }
+
         public int GetArmyCount(int facIndex)
         {
             int count = 0;

@@ -87,11 +87,11 @@ namespace RTWLib.Functions.EDU
 
 		public Unit FindUnit(string name)
 		{
-			Unit unit = units.Find(x => x.dic.Contains(name));
+			Unit unit = units.Find(x => x.dic == name);
 
 			if (unit == null)
 			{
-				unit = units.Find(x => x.type.Contains(name));
+				unit = units.Find(x => x.type == name);
 			}
 
 			return unit;
@@ -216,6 +216,12 @@ namespace RTWLib.Functions.EDU
 					}
 
 					if (arg == "missile" && unit.uClass == "missile" && !added)
+					{
+						selection.Add(unit);
+						added = true;
+					}
+
+					if (arg == "handler" && unit.category == "handler" && !added)
 					{
 						selection.Add(unit);
 						added = true;

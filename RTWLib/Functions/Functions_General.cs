@@ -147,6 +147,19 @@ namespace RTWLib.Functions
 			return result;
 		}
 
+		public static List<string> RemoveDuplicates(this List<string> a)
+		{
+			List<string> seen = new List<string>();
+
+			for (int i = 0; i < a.Count; i++)
+			{
+				if (seen.Contains(a[i]))
+					continue;
+				else seen.Add(a[i]);
+			}
+			return seen;
+		}
+
 		public static string UniversalOutput(this float input)
 		{
 			return input.ToString().GetSafeRTWDoubleStr();	
