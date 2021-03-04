@@ -259,9 +259,9 @@ namespace RTWLib.Objects
             unitString += LineOutput(EnumFlagsToString(attributes),
                 "attributes");
 
-            unitString += SpecialOutput(new object[] { formation.FormationTight[0],
-            formation.FormationTight[1],
-            formation.FormationSparse[0], formation.FormationSparse[1],
+            unitString += SpecialOutput(new object[] { formation.FormationTight[0].UniversalOutput(),
+            formation.FormationTight[1].UniversalOutput(),
+            formation.FormationSparse[0].UniversalOutput(), formation.FormationSparse[1].UniversalOutput(),
             formation.FormationRanks, EnumFlagsToString(formation.FormationFlags)},
             "formation");
 
@@ -424,7 +424,7 @@ namespace RTWLib.Objects
 
         int identifierLength(string ident)
         {
-            return 17 - ident.Length;
+            return 20 - ident.Length;
         }
 
         string identSpacing(int identifierLength)
@@ -534,7 +534,7 @@ namespace RTWLib.Objects
             if (attributes.HasFlag(Attributes.command))
                 points += statWeights["command"];
 
-            pointValue = points;
+            pointValue = points * ((health[0] + 1)/2);
         }
 
 

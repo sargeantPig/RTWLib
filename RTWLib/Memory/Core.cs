@@ -33,24 +33,15 @@ namespace RTWLib.Memory
 		{
 			p = LibFuncs.ExecuteCommand(name, args);
 			p.Start();
-			
-			pName = p.ProcessName;
-			arguments = args[0];
-			//p.ErrorDataReceived += DataRecieved;
-			output = p.StandardOutput;
-			//p.EnableRaisingEvents = true;
-			//p.Exited += RomeExited;
 		}
-
+		public void StartBat()
+		{
+			p = LibFuncs.ExecuteCommand("str_randomiser.bat", new string[] { });
+			p.Start();
+			pName = p.ProcessName;
+		}
 		public void Watch()
 		{
-		}
-
-		public void DataRecieved(object sender, EventArgs e)
-		{
-			Console.WriteLine(((Process)sender).StandardError.ReadToEnd());
-			Console.WriteLine(e.ToString());
-		
 		}
 
 		public void RomeExited(object sender, EventArgs e)

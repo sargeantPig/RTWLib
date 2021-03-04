@@ -29,8 +29,8 @@ namespace RTWLib.Functions.EDU
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
-			lineNumber = 0;
-			currentLine = "";
+			lineNumber = 0;  
+			currentLine = "";   
 			if (!FileCheck(paths[0]))
 			{
 				DisplayLog();
@@ -83,8 +83,6 @@ namespace RTWLib.Functions.EDU
 
 			return output;
 		}
-
-
 		public Unit FindUnit(string name)
 		{
 			Unit unit = units.Find(x => x.dic == name);

@@ -165,6 +165,25 @@ namespace RTWLib.Functions
 			return input.ToString().GetSafeRTWDoubleStr();	
 		}
 
+		public static string GetNewWhiteSpace(string ident, int def = 20)
+		{
+			int il = identifierLength(ident, def);
+			return identSpacing(il);
+		}
+
+		public static int identifierLength(string ident, int def = 20)
+		{
+			return def - ident.Length;
+		}
+		public static string identSpacing(int identifierLength)
+		{
+			string spaces = "";
+
+			for (int i = 0; i < identifierLength; i++)
+				spaces += " ";
+			return spaces;
+		}
+
 		public static int Clamp(this int value, int min, int max)
 		{
 			if (value < min)
@@ -497,7 +516,6 @@ namespace RTWLib.Functions
 			p.StartInfo.FileName = @filename;
 			p.StartInfo.CreateNoWindow = false;
 			p.StartInfo.Arguments = args[0];
-			p.StartInfo.RedirectStandardOutput = true;
 			p.StartInfo.UseShellExecute = false;
 
 			return p;
@@ -509,7 +527,62 @@ namespace RTWLib.Functions
 					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
-		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, int newLineCount = 1)
+		public static string CarriageReturnNewLine(this string str)
+		{
+			return str += "\r\n";
+		}
+
+		public static string ArrayToString(this float[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, string extension = "")
+		{
+			string value = "";
+			int i = 0;
+			foreach (float str in array)
+			{
+				if (idx)
+					value += i.ToString() + ": ";
+				value += str.ToString() + extension;
+
+				if (insertNewlines)
+					for (int nl = 0; nl < newLineCount; nl++)
+						value += "\r\n";
+				else value += ", ";
+
+
+				i++;
+			}
+
+			if (removeTrailingComma)
+				value = value.Trim().TrimEnd(',');
+
+			return value;
+		}
+
+		public static string ArrayToString(this int[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1)
+		{
+			string value = "";
+			int i = 0;
+			foreach (int str in array)
+			{
+				if (idx)
+					value += i.ToString() + ": ";
+				value += str.ToString();
+
+				if (insertNewlines)
+					for (int nl = 0; nl < newLineCount; nl++)
+						value += "\r\n";
+				else value += ", ";
+
+
+				i++;
+			}
+
+			if (removeTrailingComma)
+				value = value.Trim().TrimEnd(',');
+
+			return value;
+		}
+
+		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1)
 		{
 			string value = "";
 			int i = 0;
@@ -527,6 +600,9 @@ namespace RTWLib.Functions
 
 				i++;
 			}
+
+			if (removeTrailingComma)
+				value = value.Trim().TrimEnd(',');
 
 			return value;
 		}

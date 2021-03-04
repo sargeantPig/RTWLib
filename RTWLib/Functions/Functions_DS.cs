@@ -7,6 +7,9 @@ using System.IO;
 using RTWLib.Objects;
 using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
+using System.Security.Cryptography;
+using System.Data.OleDb;
+
 namespace RTWLib.Functions
 {
     public class Descr_Strat : FileBase, IFile
@@ -595,15 +598,29 @@ namespace RTWLib.Functions
                 }
             }
         }
-
         public void MoveFactionToTopOfStrat(string name)
         {
+            UnlockFactions();
+
             int index = playableFactions.FindIndex(x => x == name);
             var temp = playableFactions[index];
             playableFactions.RemoveAt(index);
             campaignNonPlayable = new List<string>(playableFactions);
             playableFactions.Clear();
             playableFactions.Add(temp);
+        }
+
+        public void UnlockFactions()
+        {
+            foreach (string p in unlockableFactions)
+               playableFactions.Add(p);
+       
+            unlockableFactions.Clear();
+
+            foreach (string p in campaignNonPlayable)
+                playableFactions.Add(p);
+            
+            campaignNonPlayable.Clear();
         }
 
         public int GetArmyCount(int facIndex)
@@ -659,6 +676,21 @@ namespace RTWLib.Functions
 
             return count;
 
+        }
+        public void CleanUp()
+        {
+            foreach (Faction faction in factions)
+            {
+                for (int c = 0; c < faction.characters.Count; c++)
+                {
+                    if (faction.characters.Count > 0)
+                    {
+                        var character = ((DSCharacter)faction.characters[c]);
+                        if (character.name == null || character.type == null)
+                            faction.characters.RemoveAt(c);
+                    }
+                }
+            }
         }
 	}
 }

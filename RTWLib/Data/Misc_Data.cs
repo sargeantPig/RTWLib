@@ -60,6 +60,24 @@ namespace RTWLib.Data
             return newArray.ToArray();
         }
 
+		public static string[] RemoveThenOutWhiteSpace(this string[] data, out string whitespace)
+		{
+			List<string> newArray = new List<string>();
+			bool nonWhitespace = false;
+			whitespace = "";
+			foreach (string str in data)
+			{
+				if (str != "" && str != " ")
+				{
+					newArray.Add(str.Trim());
+					nonWhitespace = true;
+				}
+				else if ((str == "" || str == "\t") && !nonWhitespace)
+					whitespace += " ";
+			}
+			return newArray.ToArray();
+		}
+
 	}
 
 	public static class FilePaths
@@ -76,6 +94,7 @@ namespace RTWLib.Data
 		readonly public static string MAP_REGIONS = @"\map_regions.tga";
 		readonly public static string RADAR_MAP1 = @"\radar_map1.tga";
 		readonly public static string DESCR_SM_FACTION = @"\descr_sm_factions.txt";
+		readonly public static string DESCR_MODEL_BATTLE = @"\descr_model_battle.txt";
 		
 
 

@@ -45,14 +45,9 @@ namespace RTWLib.Functions
 			{
 				var fpixels = fullFactionMap.GetPixels(); //set up both maps
 				MagickImage factionMap = new MagickImage(radarMapLocation);
-				var fmag = new MagickGeometry(fullFactionMap.Width, fullFactionMap.Height);
-				fmag.FillArea = true;
-				fmag.IgnoreAspectRatio = true;
 
 				factionMap.Alpha(AlphaOption.Remove);
-
-				factionMap.AdaptiveResize(fmag);
-
+				factionMap.AdaptiveResize(mag);
 
 				using (IPixelCollection fmPixels = factionMap.GetPixels())
 				{
@@ -124,9 +119,6 @@ namespace RTWLib.Functions
 			}
 
 			full_map = fullFactionMap;
-			mag.Width = 277;
-			mag.Height = 196;
-			fullFactionMap.Resize(mag);
 			return fullFactionMap.ToBitmap();
 		}
 		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf, string factionName, string savepath)
@@ -230,15 +222,12 @@ namespace RTWLib.Functions
 					}
 				}
 			}
-
-
-
 			return factionMap;
 		}
 		private void Save(MagickImage map, string name, string filepath)
 		{
 			string fileType = ".tga";
-			map.Scale(384, 237);
+			//map.Scale(384, 237);
 			map.Write(filepath + "map_" + name + fileType);
 			map.Dispose();
 		}
