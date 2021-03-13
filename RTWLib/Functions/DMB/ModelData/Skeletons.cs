@@ -56,23 +56,18 @@ namespace RTWLib.Functions.DMB
             switch (ident)
             {
                 case tag:
-                    skeleton = new List<string>();
                     AddSkeletons(data, ref skeleton);
                     break;
                 case tag + horse:
-                    skeleHorse = new List<string>();
                     AddSkeletons(data, ref skeleHorse);
                     break;
                 case tag + elephant:
-                    skeleElephant = new List<string>();
                     AddSkeletons(data, ref skeleElephant);
                     break;
                 case tag + chariot:
-                    skeleChariot = new List<string>();
                     AddSkeletons(data, ref skeleChariot);
                     break;
                 case tag + camel:
-                    skeleCamel = new List<string>();
                     AddSkeletons(data, ref skeleCamel);
                     break;
 
@@ -81,6 +76,8 @@ namespace RTWLib.Functions.DMB
 
         void AddSkeletons(string[] data, ref List<string> skellies)
         {
+            if (skellies == null)
+                skellies = new List<string>();
             foreach (var d in data)
                 skellies.Add(d);
         
@@ -88,25 +85,25 @@ namespace RTWLib.Functions.DMB
 
         public string Output()
         {
-            string str = "";
+            string str = ""; 
 
             if (skeleton != null)
-                str = string.Format("{0}{1}{2}", tag, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0));
+                str += string.Format("{0}{1}{2}", tag, LibFuncs.GetNewWhiteSpace(tag),
+                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0)).CarriageReturnNewLine();
             if(skeleHorse != null)
-                str = string.Format("{0}{1}{2}{3}", tag, horse, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0));
+                str += string.Format("{0}{1}{2}{3}", tag, horse, LibFuncs.GetNewWhiteSpace(tag + horse),
+                    LibFuncs.ArrayToString(skeleHorse.ToArray(), false, false, true, 0)).CarriageReturnNewLine();
             if (skeleElephant != null)
-                str = string.Format("{0}{1}{2}{3}", tag, elephant, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0));
+                str += string.Format("{0}{1}{2}{3}", tag, elephant, LibFuncs.GetNewWhiteSpace(tag + elephant),
+                    LibFuncs.ArrayToString(skeleElephant.ToArray(), false, false, true, 0)).CarriageReturnNewLine();
             if(skeleChariot != null)
-                str = string.Format("{0}{1}{2}{3}", tag, chariot, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0));
+                str += string.Format("{0}{1}{2}{3}", tag, chariot, LibFuncs.GetNewWhiteSpace(tag + chariot),
+                    LibFuncs.ArrayToString(skeleChariot.ToArray(), false, false, true, 0)).CarriageReturnNewLine();
             if (skeleCamel != null)
-                str = string.Format("{0}{1}{2}{3}", tag, camel, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0));
+                str += string.Format("{0}{1}{2}{3}", tag, camel, LibFuncs.GetNewWhiteSpace(tag + camel),
+                    LibFuncs.ArrayToString(skeleCamel.ToArray(), false, false, true, 0)).CarriageReturnNewLine();
 
-            return str.CarriageReturnNewLine();
+            return str;
         
         }
 

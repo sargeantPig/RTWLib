@@ -10,13 +10,14 @@ namespace RTWLib.Functions.DMB.ModelData
     {
         string tag = "model_tri";
         int val;
-        float[] modelTri = new float[3];
+        float[] modelTri;
 
         public ModelTri()
         { }
 
         public void ProcessLine(string[] data)
         {
+            modelTri = new float[3];
             val = Convert.ToInt32(data[0]);
             for(int i = 1; i < data.Count(); i++)
             {
@@ -30,11 +31,14 @@ namespace RTWLib.Functions.DMB.ModelData
         {
             string str = "";
 
-            str = String.Format("{0}{1}{2}{3}", 
-                tag, 
-                LibFuncs.GetNewWhiteSpace(tag),
-                val.ToString() + ", ",
-                LibFuncs.ArrayToString(modelTri, false, false, true, 0, "f"));
+            if (modelTri != null)
+            {
+                str = String.Format("{0}{1}{2}{3}",
+                    tag,
+                    LibFuncs.GetNewWhiteSpace(tag),
+                    val.ToString() + ", ",
+                    LibFuncs.ArrayToString(modelTri, false, false, true, 0, "f"));
+            }
             return str.CarriageReturnNewLine();
         }
     }

@@ -24,6 +24,10 @@ namespace RTWLib.Functions.DMB
                     battleModels.Last().modelType.ProcessLine(data);
                     break;
                 case "skeleton":
+                case "skeleton_horse":
+                case "skeleton_elephant":
+                case "skeleton_camel":
+                case "skeleton_chariot":
                     battleModels.Last().skeletons.ProcessLine(firstWord, data);
                     break;
                 case "scale":

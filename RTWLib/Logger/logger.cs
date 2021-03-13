@@ -31,6 +31,7 @@ namespace RTWLib.Logger
 		static string isNotAdmin = "Not running as administrator ";
 
         public bool is_on = true;
+		static public bool isAdministrator = false;
 		public string fileName = "";
 		static public string lineText = "";
 		static public int lineNumber = 0;
@@ -140,6 +141,8 @@ namespace RTWLib.Logger
 			}
 			else
 				current = PLog(isNotAdmin);
+
+			Logger.isAdministrator = admin;
 
 			return false;
 		}

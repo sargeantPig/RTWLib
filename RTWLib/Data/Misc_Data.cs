@@ -110,7 +110,8 @@ namespace RTWLib.Data
         descr_sm_faction,
         names,
 		preferences,
-		battle_models
+		battle_models,
+		export_units
     }
 
 }

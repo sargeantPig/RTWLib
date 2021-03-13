@@ -514,10 +514,11 @@ namespace RTWLib.Functions
 
 			Process p = new Process();
 			p.StartInfo.FileName = @filename;
-			p.StartInfo.CreateNoWindow = false;
+			//p.StartInfo.CreateNoWindow = false;
 			p.StartInfo.Arguments = args[0];
-			p.StartInfo.UseShellExecute = false;
-
+			//p.StartInfo.UseShellExecute = false;
+			//p.StartInfo.RedirectStandardError = true;
+			//p.StartInfo.RedirectStandardOutput = true;
 			return p;
 		}
 
@@ -527,9 +528,13 @@ namespace RTWLib.Functions
 					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
-		public static string CarriageReturnNewLine(this string str)
+		public static string CarriageReturnNewLine(this string str, int amount = 1)
 		{
-			return str += "\r\n";
+			for (int i = 0; i < amount; i++)
+			{
+				str += "\r\n";
+			}
+			return str;
 		}
 
 		public static string ArrayToString(this float[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, string extension = "")

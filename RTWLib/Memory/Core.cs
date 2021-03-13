@@ -25,6 +25,7 @@ namespace RTWLib.Memory
 		string pName;
 		string arguments;
 		StreamReader output;
+		StreamReader error;
 
 		Process p;
 		public Core() { }
@@ -32,13 +33,44 @@ namespace RTWLib.Memory
 		public void StartProcess(string[] args, string name)
 		{
 			p = LibFuncs.ExecuteCommand(name, args);
+			//output = p.StandardOutput;
+			//error = p.StandardError;
+			//p.EnableRaisingEvents = true;
+			//p.OutputDataReceived += P_OutputDataReceived;
+			//p.ErrorDataReceived += P_ErrorDataReceived;
+			p.Exited += P_Exited;
 			p.Start();
+
+			if (Logger.Logger.isAdministrator)
+			{
+				p.ProcessorAffinity = (IntPtr)0x0001;
+				p.PriorityClass = ProcessPriorityClass.High;
+			}
+			
+			p.WaitForExit();
 		}
+
+		private void P_Exited(object sender, EventArgs e)
+		{
+			this.PLog(String.Format("Exit Code: {0}", p.ExitCode));
+		}
+
+		private void P_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+		{
+			this.PLog(e.Data);
+			this.DisplayLog();
+		}
+
+		private void P_OutputDataReceived(object sender, DataReceivedEventArgs e)
+		{
+			this.PLog(e.Data);
+		}
+
 		public void StartBat()
 		{
 			p = LibFuncs.ExecuteCommand("str_randomiser.bat", new string[] { });
 			p.Start();
-			pName = p.ProcessName;
+			
 		}
 		public void Watch()
 		{
