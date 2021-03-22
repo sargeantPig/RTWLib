@@ -27,7 +27,7 @@ namespace RTWLib.Functions
 		}
 
 
-		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf)
+		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SMFactions smf)
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
 			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
@@ -56,8 +56,8 @@ namespace RTWLib.Functions
 						int[] regColour = dr.GetRGBValue(s.region); //get the colour of a region
 						MagickColor regCol = MagickColor.FromRgb((byte)regColour[0], (byte)regColour[1], (byte)regColour[2]);
 
-						Color facCol1 = smf.factionColours[f.name][0]; //get the faction colour primary
-						Color facCol2 = smf.factionColours[f.name][1]; // secondary colour
+						Color facCol1 = smf.GetFactionColour(f.name, 0); //get the faction colour primary
+						Color facCol2 = smf.GetFactionColour(f.name, 1); // secondary colour
 
 						MagickColor priCol = MagickColor.FromRgb(facCol1.R, facCol1.G, facCol1.B); //convert the colours to magickcolour
 						MagickColor secCol = MagickColor.FromRgb(facCol2.R, facCol2.G, facCol2.B);
@@ -121,7 +121,7 @@ namespace RTWLib.Functions
 			full_map = fullFactionMap;
 			return fullFactionMap.ToBitmap();
 		}
-		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SM_Factions smf, string factionName, string savepath)
+		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SMFactions smf, string factionName, string savepath)
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
 

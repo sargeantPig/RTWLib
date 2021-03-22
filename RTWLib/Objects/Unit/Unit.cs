@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
@@ -176,6 +177,8 @@ namespace RTWLib.Objects
         /// comments written by a user in the file loaded
         /// </summary>
         public Dictionary<EDULineEnums, object> comments = new Dictionary<EDULineEnums, object>();
+
+        bool pointsCalculated = false;
         public Unit(int costValues = 6)
         {
             soldier = new Soldier();
@@ -436,39 +439,42 @@ namespace RTWLib.Objects
             return spaces;
         }
 
-        public virtual void CalculatePointValue()
+        public virtual void CalculatePointValue(bool forceUpdate = false)
         {
+            if (pointsCalculated && !forceUpdate)
+                return;
+
             float points = 0f;
 
             Dictionary<string, float> statWeights = new Dictionary<string, float>()
             {
                 {"health", 2f },
-                {"attackFactor", 2f },
+                {"attackFactor", 1f },
                 {"attackBonus", 0.8f },
                 {"attackDelay", 1f},
-                {"siegeAttack", 0.5f},
-                {"missileAttack", 2f },
-                {"missileRange", 1f},
-                {"soldierNumber", 0.2f},
-                {"armourFactor", 1.5f},
-                {"armourShield", 1.5f},
-                {"armourDefence", 1.5f},
-                {"morale", 2f},
-                {"berserker", 4f},
+                {"siegeAttack", 0.2f},
+                {"missileAttack", 0.8f },
+                {"missileRange", 0.1f},
+                {"soldierNumber", 1f},
+                {"armourFactor", 1f},
+                {"armourShield", 1f},
+                {"armourDefence", 1f},
+                {"morale", 1.2f},
+                {"berserker", 1.7f},
                 {"impetuous", 1f},
-                {"disciplined", 2f},
-                {"low", 0f},
+                {"disciplined", 1.4f},
+                {"low", 0.8f},
                 {"normal", 1f},
-                {"highlyTrained", 2f},
+                {"highlyTrained", 1.4f},
                 {"trained", 1f},
-                {"untrained", 0f},
-                {"frightenFoot", 0.2f},
-                {"frightenMounted", 0.2f},
-                {"command", 0.2f},
+                {"untrained", 0.8f},
+                {"frightenFoot", 1.1f},
+                {"frightenMounted", 1.1f},
+                {"command", 1.1f},
             };
 
             points += health[0] * statWeights["health"];
-            points += soldier.number * statWeights["soldierNumber"];
+            //points += soldier.number * statWeights["soldierNumber"];
             points += priArm.priArm[0] * statWeights["armourFactor"];
             points += priArm.priArm[1] * statWeights["armourDefence"];
             points += priArm.priArm[2] * statWeights["armourShield"];
@@ -497,44 +503,46 @@ namespace RTWLib.Objects
             switch (mental.discipline)
             {
                 case Statmental_discipline.berserker:
-                    points += statWeights["berserker"];
+                    points *= statWeights["berserker"];
                     break;
                 case Statmental_discipline.disciplined:
-                    points += statWeights["disciplined"];
+                    points *= statWeights["disciplined"];
                     break;
                 case Statmental_discipline.impetuous:
-                    points += statWeights["impetuous"];
+                    points *= statWeights["impetuous"];
                     break;
                 case Statmental_discipline.low:
-                    points += statWeights["low"];
+                    points *= statWeights["low"];
                     break;
                 case Statmental_discipline.normal:
-                    points += statWeights["normal"];
+                    points *= statWeights["normal"];
                     break;
 
             }
             switch (mental.training)
             {
                 case Statmental_training.highly_trained:
-                    points += statWeights["highlyTrained"];
+                    points *= statWeights["highlyTrained"];
                     break;
                 case Statmental_training.trained:
-                    points += statWeights["trained"];
+                    points *= statWeights["trained"];
                     break;
                 case Statmental_training.untrained:
-                    points += statWeights["untrained"];
+                    points *= statWeights["untrained"];
                     break;
 
             }
 
             if (attributes.HasFlag(Attributes.frighten_foot))
-                points += statWeights["frightenFoot"];
+                points *= statWeights["frightenFoot"];
             if (attributes.HasFlag(Attributes.frighten_mounted))
-                points += statWeights["frightenMounted"];
+                points *= statWeights["frightenMounted"];
             if (attributes.HasFlag(Attributes.command))
-                points += statWeights["command"];
+                points *= statWeights["command"];
 
-            pointValue = points * ((health[0] + 1)/2);
+            pointValue = points * (((health[0] + health[1]) + 1));
+
+            pointsCalculated = true;
         }
 
 

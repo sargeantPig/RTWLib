@@ -67,8 +67,5 @@ namespace RTWLib.Functions.DMB
 
             return str.CarriageReturnNewLine();
         }
-
-
-
     }
 }

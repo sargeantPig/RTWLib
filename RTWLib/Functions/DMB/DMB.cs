@@ -11,7 +11,7 @@ namespace RTWLib.Functions.DMB
 { 
     public partial class DMB : FileBase, IFile
     {
-		List<BattleModel> battleModels = new List<BattleModel>();
+		public List<BattleModel> battleModels = new List<BattleModel>();
 		public DMB(bool isLogOn) : base(FileNames.battle_models, "", "")
 		{
 			this.is_on = isLogOn;
@@ -25,6 +25,11 @@ namespace RTWLib.Functions.DMB
 			{
 				b.AddMercLine();
 			}
+		}
+
+		public BattleModel FindBattleModel(string name)
+		{
+			return battleModels.Find(x => x.modelType.type == name);
 		}
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)

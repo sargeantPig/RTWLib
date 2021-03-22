@@ -1,40 +1,14 @@
-﻿using System;
+﻿using RTWLib.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RTWLib.Functions.DMB
 {
-    public class Skeleton : IdmbOutput
-    {
-        string tag = "skeleton";
-        List<string> names;
-
-        public Skeleton()
-        { }
-
-        public void ProcessLine(string[] data)
-        {
-            names = new List<string>();
-            foreach (var d in data)
-                names.Add(d);
-        }
-
-        public string Output()
-        {
-            string str = "";
-
-            if (names != null)
-                str = string.Format("{0}{1}{2}", tag, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(names.ToArray()));
-
-            return str.CarriageReturnNewLine();
-        
-        }
-    }
-
     public class Skeletons : IdmbOutput
     {
         const string tag = "skeleton";
@@ -72,6 +46,50 @@ namespace RTWLib.Functions.DMB
                     break;
 
             }
+        }
+
+        public string GetWeaponType(Unit unit, bool isPrimary, bool isHandler, string engine = "")
+        {
+            int index = 0;
+            if (!isPrimary) index = 1;
+
+            if (index >= skeleton.Count())
+            {
+                if (skeleton[index - 1].Contains("chariot"))
+                    return "Chariot";
+                else if (isHandler)
+                    return "Animal";
+                else if (engine != null)
+                    return engine.Capitalise();
+                else if (skeleton[index-1].Contains("elephant"))
+                    return "Elephant";
+                else return "";
+            }
+
+            if (skeleton[index].Contains("sword")) return "Sword";
+            else if (skeleton[index].Contains("spear")) return "Spear";
+            else if (skeleton[index].Contains("dagger")) return "Dagger";
+            else if (skeleton[index].Contains("javelin")) return "Javelin";
+            else if (skeleton[index].Contains("sling")) return "Sling";
+            else if (skeleton[index].Contains("archer")) return "Bow";
+            else if (skeleton[index].Contains("berserker")) return "Spiked Club";
+            else if (skeleton[index].Contains("2handed")) return "2h Melee";
+            else if (unit.priWep.TechFlags == Data.TechType.archery) return "Bow";
+            else return "";
+        }
+
+        public string GetSpeed(bool isPrimary)
+        {
+            int index = 0;
+            if (!isPrimary) index = 1;
+
+            if (index >= skeleton.Count())
+                return "";
+
+            if (skeleton[index].Contains("slow"))
+                return "slow";
+            else if (skeleton[index].Contains("fast")) return "fast";
+            else return "";
         }
 
         void AddSkeletons(string[] data, ref List<string> skellies)

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RTWLib.Functions.DMB;
+using RTWLib.Functions.EDU;
+using RTWLib.Objects;
 
 namespace RTWLib.Functions.UnitDescriptions
 {
@@ -16,6 +20,21 @@ namespace RTWLib.Functions.UnitDescriptions
 
 
 		}
+
+		public void ApplyHiddenStats(EDU.EDU edu, DMB.DMB dmb)
+		{
+			foreach (var descr in unitDescriptions)
+			{
+				Unit unit = edu.FindUnit(descr.internalName);
+				BattleModel bm = dmb.FindBattleModel(unit.soldier.name);
+				int percentile = edu.GetUnitPercentile(unit.type);
+
+				
+				descr.AddHiddenStats(unit, bm, percentile);
+			}
+		}
+
+		
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
@@ -34,17 +53,14 @@ namespace RTWLib.Functions.UnitDescriptions
 				bool success = ParseSegment(currentLine, unitDescriptions, du);
 				lineNumber++;
 			}
-
 		}
 		public override string Output()
 		{
 			string str = "";
-
 			foreach (UnitDescription ud in unitDescriptions)
 			{
 				str += ud.Output();
 			}
-
 			return str;
 		}
 

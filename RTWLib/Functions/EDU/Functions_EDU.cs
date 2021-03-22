@@ -19,18 +19,18 @@ namespace RTWLib.Functions.EDU
 
 		Dictionary<int, string> fileComments = new Dictionary<int, string>();
 
-		public EDU(bool log_on) 
+		public EDU(bool log_on)
 			: base(FileNames.export_descr_unit, @"data\export_descr_unit.txt", "Unit details and stats")
 		{
-            is_on = log_on;
+			is_on = log_on;
 			units = new List<Unit>();
 
 		}
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
-			lineNumber = 0;  
-			currentLine = "";   
+			lineNumber = 0;
+			currentLine = "";
 			if (!FileCheck(paths[0]))
 			{
 				DisplayLog();
@@ -62,7 +62,7 @@ namespace RTWLib.Functions.EDU
 						{
 							string temp = (string)units[counter].comments[comment.Key];
 							units[counter].comments[comment.Key] = new List<string>() { temp, (string)comment.Value };
-						}						
+						}
 					}
 					else units[counter].comments.Add(comment.Key, comment.Value);
 				}
@@ -94,6 +94,31 @@ namespace RTWLib.Functions.EDU
 
 			return unit;
 		}
+
+		public int FindUnitIndex(string name, List<Unit> unitArray = null)
+		{
+			int index;
+			if (unitArray == null)
+			{
+				index = units.FindIndex(x => x.dic == name);
+
+				if (index == -1)
+				{
+					index = units.FindIndex(x => x.type == name);
+				}
+				return index;
+			}
+
+			index = unitArray.FindIndex(x => x.dic == name);
+
+			if (index == -1)
+			{
+				index = unitArray.FindIndex(x => x.type == name);
+			}
+			return index;
+
+		}
+
 		public List<Unit> FindUnits(string name)
 		{
 			List<Unit> unit = units.FindAll(x => x.dic.Contains(name));
@@ -132,7 +157,7 @@ namespace RTWLib.Functions.EDU
 
 				return unit;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Output(ex.ToString());
 				Output("\r\nFaction is likely wrong");
@@ -233,7 +258,7 @@ namespace RTWLib.Functions.EDU
 				}
 
 				added = false;
-				
+
 			}
 
 			return selection;
@@ -273,7 +298,65 @@ namespace RTWLib.Functions.EDU
 
 			mid = (max - min) / units.Count;
 
-			return new float[4] {min, mid, max, total};
+			return new float[4] { min, mid, max, total };
+		}
+
+		public int GetUnitPercentile(string name)
+		{
+			Unit unit = FindUnit(name);
+			
+			var ps = GetUnitPercentiles();
+			var values = ps.Values.ToList();
+			var keys = ps.Keys.ToList();
+			var sorted = SortedByPointsValue();
+			int index = FindUnitIndex(name, sorted.ToList());
+			bool isGreater = false;
+			int counter = 0;
+			int percentile = 0;
+			while (!isGreater)
+			{
+				if (counter >= values.Count())
+				{
+					isGreater = true;
+					percentile = 100;
+					break;
+				}
+
+				if (index > values[counter])
+				{
+					percentile = (int)(keys[counter] * 100);
+					isGreater = true;
+				}
+				counter++;
+			}
+			return percentile;
+		}
+
+		public Dictionary<float, float> GetUnitPercentiles()
+		{
+			Dictionary<float, float> tiers = new Dictionary<float, float>()
+			{
+				{0.01f, 0 },
+				{0.05f, 0 },
+				{0.10f, 0 },
+				{0.25f, 0 },
+				{0.50f, 0 },
+				{0.75f, 0 },
+				{0.99f, 0 }
+			};
+
+			foreach (var k in tiers.Keys.ToList()) {
+				tiers[k] = units.Count() - (units.Count() * k);
+			}
+
+			return tiers;
+		}
+
+		public Unit[] SortedByPointsValue()
+		{
+			var sorted = units.ToArray();
+			Array.Sort(sorted, Unit.ComparePoints());
+			return sorted;
 		}
 
 		public string[] GetUnitNameList()

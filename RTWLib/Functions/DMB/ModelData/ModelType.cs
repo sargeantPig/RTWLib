@@ -9,7 +9,7 @@ namespace RTWLib.Functions.DMB.ModelData
     public class ModelType : IdmbOutput
     {
         string tag = "type";
-        string type;
+        public string type { get; set; }
 
         public ModelType()
         { }

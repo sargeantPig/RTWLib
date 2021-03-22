@@ -165,6 +165,12 @@ namespace RTWLib.Functions
 			return input.ToString().GetSafeRTWDoubleStr();	
 		}
 
+		public static string GetTabSpacing(string ident, int maxtabs, int lettersPerTab = 4)
+		{
+			int tabs = maxtabs - (ident.Length / lettersPerTab);
+			return identSpacing(tabs, '\t');		
+		}
+
 		public static string GetNewWhiteSpace(string ident, int def = 20)
 		{
 			int il = identifierLength(ident, def);
@@ -175,12 +181,12 @@ namespace RTWLib.Functions
 		{
 			return def - ident.Length;
 		}
-		public static string identSpacing(int identifierLength)
+		public static string identSpacing(int identifierLength, char spacingChar = ' ')
 		{
 			string spaces = "";
 
 			for (int i = 0; i < identifierLength; i++)
-				spaces += " ";
+				spaces += spacingChar;
 			return spaces;
 		}
 

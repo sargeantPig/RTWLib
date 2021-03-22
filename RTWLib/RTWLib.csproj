@@ -147,8 +147,12 @@
     <Compile Include="Functions\Functions_Names.cs" />
     <Compile Include="Functions\Functions_Preferences.cs" />
     <Compile Include="Functions\Functions_SelectMaps.cs" />
-    <Compile Include="Functions\Functions_SMF.cs" />
+    <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
     <Compile Include="Functions\Functions_DR.cs" />
+    <Compile Include="Functions\SMFactions\SMData\MapColour.cs" />
+    <Compile Include="Functions\SMFactions\SMData\SMFBase.cs" />
+    <Compile Include="Functions\SMFactions\SMFaction.cs" />
+    <Compile Include="Functions\SMFactions\SMFLineParser.cs" />
     <Compile Include="Functions\UnitDescriptions\UDParseLine.cs" />
     <Compile Include="Functions\UnitDescriptions\UnitDescr.cs" />
     <Compile Include="Functions\UnitDescriptions\UnitDescription.cs" />
