@@ -112,12 +112,12 @@ namespace RTWLib.Functions.UnitDescriptions
         }
         public string Output()
         {
-            string str = "¬".CarriageReturnNewLine();
+            string str = "¬".CRL();
             str += string.Format(@"{0}{1}{2}{3}{4}{5}{6}",
-                nameTag + "\t", externalName.CarriageReturnNewLine(2),
-                LDTag.CarriageReturnNewLine(), longDescr.CarriageReturnNewLine(2),
-                SDTag.CarriageReturnNewLine(), shortDescr.CarriageReturnNewLine(2),
-                div.CarriageReturnNewLine(2));
+                nameTag + "\t", externalName.CRL(2),
+                LDTag.CRL(), longDescr.CRL(2),
+                SDTag.CRL(), shortDescr.CRL(2),
+                div.CRL(2));
 
             return str;
         }

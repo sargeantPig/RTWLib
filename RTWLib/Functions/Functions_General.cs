@@ -17,6 +17,7 @@ using System.IO;
 using System.CodeDom;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 
 namespace RTWLib.Functions
 {
@@ -145,6 +146,20 @@ namespace RTWLib.Functions
 
 			result = a / b;
 			return result;
+		}
+		/// <summary>
+		/// Converts an array of numbers as strings to an array of ints.
+		/// </summary>
+		/// <returns></returns>
+		public static int[] ConvertToIntArray(this string[] data)
+		{
+			int[] ints = new int[data.Count()];
+
+			for (int i = 0; i < data.Count(); i++)
+				ints[i] = Convert.ToInt32(data[i]);
+
+			return ints;
+
 		}
 
 		public static List<string> RemoveDuplicates(this List<string> a)
@@ -534,7 +549,7 @@ namespace RTWLib.Functions
 					  .IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
-		public static string CarriageReturnNewLine(this string str, int amount = 1)
+		public static string CRL(this string str, int amount = 1)
 		{
 			for (int i = 0; i < amount; i++)
 			{
@@ -620,7 +635,7 @@ namespace RTWLib.Functions
 
 		public static string[] StringToArray(this string str, char delimeter = ',')
 		{
-			var split = str.Split(',').CleanStringArray();
+			var split = str.Split(delimeter).CleanStringArray();
 			return split;
 		}
 

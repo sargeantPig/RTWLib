@@ -73,7 +73,7 @@ namespace RTWLib.Functions.DMB.ModelData
                    value,
                    filepath );
 
-            return str.CarriageReturnNewLine();
+            return str.CRL();
 
         }
     }

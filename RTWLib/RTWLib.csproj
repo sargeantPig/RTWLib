@@ -137,6 +137,9 @@
     <Compile Include="Functions\DMB\ModelData\Textures.cs" />
     <Compile Include="Functions\DMB\ParseDMBLine.cs" />
     <Compile Include="Functions\DMB\StaticDMB.cs" />
+    <Compile Include="Functions\DR\PassDRLine.cs" />
+    <Compile Include="Functions\DR\RegionData\Region.cs" />
+    <Compile Include="Functions\DR\StaticDR.cs" />
     <Compile Include="Functions\EDU\EDULineEnums.cs" />
     <Compile Include="Functions\EDU\ParseEduLine.cs" />
     <Compile Include="Functions\EDU\StaticEDU.cs" />
@@ -148,7 +151,7 @@
     <Compile Include="Functions\Functions_Preferences.cs" />
     <Compile Include="Functions\Functions_SelectMaps.cs" />
     <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
-    <Compile Include="Functions\Functions_DR.cs" />
+    <Compile Include="Functions\DR\Functions_DR.cs" />
     <Compile Include="Functions\SMFactions\SMData\MapColour.cs" />
     <Compile Include="Functions\SMFactions\SMData\SMFBase.cs" />
     <Compile Include="Functions\SMFactions\SMFaction.cs" />

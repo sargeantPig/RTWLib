@@ -65,7 +65,7 @@ namespace RTWLib.Functions.DMB
                 DMB.IdmbArrayToString(modelSprite.ToArray()),
                 modelTri.Output());
 
-            return str.CarriageReturnNewLine();
+            return str.CRL();
         }
     }
 }

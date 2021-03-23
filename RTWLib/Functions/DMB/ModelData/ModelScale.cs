@@ -32,7 +32,7 @@ namespace RTWLib.Functions.DMB.ModelData
                 LibFuncs.GetNewWhiteSpace(tag),
                 scale);
 
-            return str.CarriageReturnNewLine();
+            return str.CRL();
         }
     }
 }

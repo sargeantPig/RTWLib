@@ -12,11 +12,11 @@ using System.Runtime.CompilerServices;
 
 namespace RTWLib.Functions
 {
-	public class Descr_Region : FileBase,  IFile
+	public partial class Descr_Region : FileBase,  IFile
 	{
 		public string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
 		public  string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
-		public Dictionary<string, Objects.Region> rgbRegions = new Dictionary<string, Objects.Region>();
+		public Dictionary<string, Region> regions = new Dictionary<string, Region>();
 
 		public Descr_Region(bool log_on, string filePathImage, string filePathDR) 
 			: base(FileNames.descr_regions, filePathDR, "handles region colours and locations" )
@@ -25,6 +25,15 @@ namespace RTWLib.Functions
 			FILEPATH_DR = filePathDR;
             is_on = log_on;
         }
+
+		public override string Output()
+		{
+			string str = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;".CRL();
+			foreach (var region in regions)
+				str += region.Value.Output();
+
+			return str;
+		}
 
 		override public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
@@ -40,58 +49,13 @@ namespace RTWLib.Functions
 				DisplayLog();
 				return;
 			}
-			//add an output for this in the tool section
-			string line;
 
 			StreamReader reg = new StreamReader(paths[0]);
 
-			int counter = -1;
-			string name = "";
-			string cityName = "";
-			string faction_creator = "";
-			
-			while ((line = reg.ReadLine()) != null)
+			while ((currentLine = reg.ReadLine()) != null)
 			{
+				bool success = ParseLine(currentLine, regions);
 				lineNumber++;
-				currentLine = line;
-				if (!line.Contains("\t") && !line.Contains(";") && !line.Contains(" ") && line != "")
-				{
-					counter++;
-					name = line.Trim();
-					rgbRegions.Add(name, new Objects.Region());
-					rgbRegions[name].name = name;
-
-					line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
-					cityName = line.Trim();
-					rgbRegions[name].cityName = cityName;
-					line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
-					faction_creator = line.Trim();
-					rgbRegions[name].faction_creator = faction_creator;
-				}
-
-				else if (line.Split(' ').Count() == 3 && !line.Contains("religions"))
-				{
-					decimal num;
-
-					string[] split = line.Split(' ');
-
-					var result = Decimal.TryParse(split[0].Trim(), out num);
-					if (result)
-					{
-						rgbRegions[name].rgb[0] = Convert.ToInt32(split[0].Trim());
-						rgbRegions[name].rgb[1] = Convert.ToInt32(split[1].Trim());
-						rgbRegions[name].rgb[2] = Convert.ToInt32(split[2].Trim());
-
-						line = this.ContinueParseAndCountLine(ref reg, ref lineNumber);
-						string res = line.Trim();
-						string[] resArr = res.Split(',');
-
-						resArr.CleanStrings();
-
-						rgbRegions[name].resources = resArr;
-
-					}
-				}
 			}
 
 			reg.Close();
@@ -100,7 +64,7 @@ namespace RTWLib.Functions
 		}
 		private string FindRegionByColour(int[] colour)
 		{
-			foreach (KeyValuePair<string, Objects.Region> kv in rgbRegions)
+			foreach (KeyValuePair<string, Region> kv in regions)
 			{
 				MagickColor mg = MagickColor.FromRgb((byte)kv.Value.rgb[0], (byte)kv.Value.rgb[1], (byte)kv.Value.rgb[2]);
 				if (CompareColour(colour, mg))
@@ -144,8 +108,8 @@ namespace RTWLib.Functions
 						}
 
 						string index = FindRegionByColour(new int[] { tr, tg, tb });
-						rgbRegions[index].x = x;
-						rgbRegions[index].y = (img.Height - y) -1;
+						regions[index].x = x;
+						regions[index].y = (img.Height - y) -1;
 						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
 
 					}
@@ -187,15 +151,15 @@ namespace RTWLib.Functions
 		}
 		public int[] GetCityCoords(string name)
 		{
-			return new int[] {rgbRegions[name].x, rgbRegions[name].y };
+			return new int[] {regions[name].x, regions[name].y };
 		}
 		public int[] GetRGBValue(string name)
 		{
-			return new int[] { rgbRegions[name].rgb[0], rgbRegions[name].rgb[1], rgbRegions[name].rgb[2] };
+			return new int[] { regions[name].rgb[0], regions[name].rgb[1], regions[name].rgb[2] };
 		}
 		public string GetFactoinCreator(string name)
 		{
-			return rgbRegions[name].faction_creator;
+			return regions[name].factionCreator;
 		}
 		public string FilePathRegions
 		{

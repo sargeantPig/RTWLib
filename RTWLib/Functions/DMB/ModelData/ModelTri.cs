@@ -39,7 +39,7 @@ namespace RTWLib.Functions.DMB.ModelData
                     val.ToString() + ", ",
                     LibFuncs.ArrayToString(modelTri, false, false, true, 0, "f"));
             }
-            return str.CarriageReturnNewLine();
+            return str.CRL();
         }
     }
 }

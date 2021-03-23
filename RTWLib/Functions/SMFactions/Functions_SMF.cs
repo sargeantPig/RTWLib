@@ -34,6 +34,8 @@ namespace RTWLib.Functions
 				bool success = ParseLine(currentLine, facDetails);
 				lineNumber++;
 			}
+
+			dmb.Close();
 		}
 
 		public Color GetFactionColour(string faction, int index)

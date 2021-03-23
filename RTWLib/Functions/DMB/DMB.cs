@@ -49,6 +49,8 @@ namespace RTWLib.Functions.DMB
 				bool success = ParseLine(currentLine, battleModels);
 				lineNumber++;
 			}
+
+			dmb.Close();
 		}
 
 		public override string Output()
