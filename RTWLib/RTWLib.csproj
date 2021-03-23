@@ -137,7 +137,7 @@
     <Compile Include="Functions\DMB\ModelData\Textures.cs" />
     <Compile Include="Functions\DMB\ParseDMBLine.cs" />
     <Compile Include="Functions\DMB\StaticDMB.cs" />
-    <Compile Include="Functions\DR\PassDRLine.cs" />
+    <Compile Include="Functions\DR\ParseDRLine.cs" />
     <Compile Include="Functions\DR\RegionData\Region.cs" />
     <Compile Include="Functions\DR\StaticDR.cs" />
     <Compile Include="Functions\EDU\EDULineEnums.cs" />
