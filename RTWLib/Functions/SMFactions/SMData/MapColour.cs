@@ -26,8 +26,8 @@ namespace RTWLib.Functions
 
         public string Output()
         {
-            return string.Format("primary_colour{0}red {1}, green {2}, blue {3}\n" +
-                "secondary_colour{4}red {5}, green {6}, blue {7}\n",
+            return string.Format("primary_colour{0}red {1}, green {2}, blue {3}\r\n" +
+                "secondary_colour{4}red {5}, green {6}, blue {7}\r\n",
                 LibFuncs.GetTabSpacing(priTag, 7), colours[0].R, colours[0].G, colours[0].B,
                 LibFuncs.GetTabSpacing(secTag, 7), colours[1].R, colours[1].G, colours[1].B);  
          }

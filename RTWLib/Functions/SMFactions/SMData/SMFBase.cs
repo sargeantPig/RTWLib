@@ -24,16 +24,16 @@ namespace RTWLib.Functions
 
                 if ((bool)(object)value == true)
                 {
-                    return string.Format("{0}{1}{2}\n",
+                    return string.Format("{0}{1}{2}\r\n",
                         tag, LibFuncs.GetTabSpacing(tag, 7), "yes");
                 }
                 else
                 {
-                    return string.Format("{0}{1}{2}\n",
+                    return string.Format("{0}{1}{2}\r\n",
                         tag, LibFuncs.GetTabSpacing(tag, 7), "no");
                 }     
             }
-            return string.Format("{0}{1}{2}\n",
+            return string.Format("{0}{1}{2}\r\n",
                 tag, LibFuncs.GetTabSpacing(tag, 7), value);
         }
 

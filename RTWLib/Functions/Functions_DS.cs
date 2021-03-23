@@ -609,6 +609,19 @@ namespace RTWLib.Functions
             playableFactions.Clear();
             playableFactions.Add(temp);
         }
+        /// <summary>
+        /// Make all cities level 1 with basic buildings
+        /// </summary>
+        public void CleanDS()
+        {
+            foreach (var fac in factions)
+                foreach (var settlement in fac.settlements)
+                {
+                    settlement.s_level = "village";
+                    settlement.population = 1000;
+                    settlement.b_types.Clear();
+                }
+        }
 
         public void UnlockFactions()
         {
