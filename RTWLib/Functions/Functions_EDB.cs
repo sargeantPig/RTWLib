@@ -8,6 +8,8 @@ using RTWLib.Objects;
 using System.IO;
 using RTWLib.Data;
 using RTWLib.Objects.Buildings;
+using RTWLib.Extensions;
+
 namespace RTWLib.Functions
 {
 	static class Helpers_EDB
@@ -49,7 +51,7 @@ namespace RTWLib.Functions
 
 				if (trimmedLine.StartsWith("hidden_resources"))
 				{
-					string modified = LibFuncs.RemoveFirstWord(trimmedLine);
+					string modified = trimmedLine.RemoveFirstWord();
 					string[] splitStr = modified.Split(' ');
 					foreach (string str in splitStr)
 					{
@@ -94,7 +96,7 @@ namespace RTWLib.Functions
 
 							if (line.Trim().StartsWith("levels"))
 							{
-								string firstWordRemoved = LibFuncs.RemoveFirstWord(line.Trim());
+								string firstWordRemoved = line.Trim().RemoveFirstWord();
 								string[] levelsSplit = firstWordRemoved.Split();
 
 								foreach (string str in levelsSplit)
@@ -129,10 +131,10 @@ namespace RTWLib.Functions
 										{
 											newBuilding.factionsRequired = new List<string>();
 
-											newBuilding.buildingName = LibFuncs.GetFirstWord(line.Trim(), new string[0]);
+											newBuilding.buildingName = line.GetFirstWord();
 											//get factions
 											string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-											output = LibFuncs.RemoveLastWord(output);
+											output = output.RemoveLastWord();
 											List<string> factionSplit = output.Split(',').ToList();
 
 											factionSplit.Remove(factionSplit.Last());
@@ -189,7 +191,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "{")
+														else if (line.GetFirstWord( new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -221,7 +223,7 @@ namespace RTWLib.Functions
 															break;
 														}
 
-														if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "recruit" || LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "recruit_pool")
+														if (line.GetFirstWord( new string[0]) == "recruit" || line.GetFirstWord( new string[0]) == "recruit_pool")
 														{
 															Brecruit newRecruit = new Brecruit();
 
@@ -236,7 +238,7 @@ namespace RTWLib.Functions
 
 															//get factions
 															string output = line.Trim().Substring(line.Trim().IndexOf('{') + 1);
-															output = LibFuncs.RemoveLastWord(output);
+															output = output.RemoveFirstWord();
 															List<string> factionSplit = output.Split(',').ToList();
 
 															factionSplit.Remove(factionSplit.Last());
@@ -249,12 +251,12 @@ namespace RTWLib.Functions
 															newCapa.canRecruit.Add(newRecruit);
 														}
 
-														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "agent")
+														else if (line.GetFirstWord( new string[0]) == "agent")
 														{
 															newCapa.agentList.Add(line.Trim());
 														}
 
-														else if (LibFuncs.GetFirstWord(line.Trim(), new string[0]) == "{")
+														else if (line.GetFirstWord( new string[0]) == "{")
 														{ }
 
 														else if (!line.Trim().StartsWith("}"))
@@ -268,7 +270,7 @@ namespace RTWLib.Functions
 
 												if (line.Trim().StartsWith("material"))
 												{
-													newBuilding.material = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
+													newBuilding.material =line.RemoveFirstWord().Trim();
 
 
 												}
@@ -297,13 +299,13 @@ namespace RTWLib.Functions
 
 														if (line.Trim().StartsWith("cost"))
 														{
-															newConstruction.cost = Convert.ToInt32(LibFuncs.RemoveFirstWord(line.Trim()).Trim());
+															newConstruction.cost = Convert.ToInt32(line.RemoveFirstWord().Trim());
 
 														}
 
 														if (line.Trim().StartsWith("settlement_min"))
 														{
-															newConstruction.settlement_min = LibFuncs.RemoveFirstWord(line.Trim()).Trim();
+															newConstruction.settlement_min =line.RemoveFirstWord().Trim();
 
 														}
 

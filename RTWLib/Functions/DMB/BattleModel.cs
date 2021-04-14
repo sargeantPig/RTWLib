@@ -1,4 +1,5 @@
-﻿using RTWLib.Functions.DMB.ModelData;
+﻿using RTWLib.Extensions;
+using RTWLib.Functions.DMB.ModelData;
 using System;
 using System.Collections.Generic;
 using System.Linq;

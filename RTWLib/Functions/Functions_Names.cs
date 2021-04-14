@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using RTWLib.Data;
+using RTWLib.Extensions;
+
 namespace RTWLib.Functions
 {
 	public class NamesFile : FileBase, IFile
@@ -35,7 +37,7 @@ namespace RTWLib.Functions
 					names.Add(faction, new List<string>());
 				}
 
-				if (LibFuncs.GetFirstWord(line) == "characters" && !line.StartsWith(";"))
+				if (line.GetFirstWord() == "characters" && !line.StartsWith(";"))
 				{
 					line = sr.ReadLine();
 					while (!line.Contains("women") && !line.Contains("faction") && !line.Contains("surnames"))

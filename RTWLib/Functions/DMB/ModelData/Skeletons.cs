@@ -1,4 +1,5 @@
-﻿using RTWLib.Objects;
+﻿using RTWLib.Extensions;
+using RTWLib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,20 +107,20 @@ namespace RTWLib.Functions.DMB
             string str = ""; 
 
             if (skeleton != null)
-                str += string.Format("{0}{1}{2}", tag, LibFuncs.GetNewWhiteSpace(tag),
-                    LibFuncs.ArrayToString(skeleton.ToArray(), false, false, true, 0)).CRL();
+                str += string.Format("{0}{1}{2}", tag, StrFormat.GetNewWhiteSpace(tag),
+                    skeleton.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if(skeleHorse != null)
-                str += string.Format("{0}{1}{2}{3}", tag, horse, LibFuncs.GetNewWhiteSpace(tag + horse),
-                    LibFuncs.ArrayToString(skeleHorse.ToArray(), false, false, true, 0)).CRL();
+                str += string.Format("{0}{1}{2}{3}", tag, horse, StrFormat.GetNewWhiteSpace(tag + horse),
+                    skeleHorse.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if (skeleElephant != null)
-                str += string.Format("{0}{1}{2}{3}", tag, elephant, LibFuncs.GetNewWhiteSpace(tag + elephant),
-                    LibFuncs.ArrayToString(skeleElephant.ToArray(), false, false, true, 0)).CRL();
+                str += string.Format("{0}{1}{2}{3}", tag, elephant, StrFormat.GetNewWhiteSpace(tag + elephant),
+                   skeleElephant.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if(skeleChariot != null)
-                str += string.Format("{0}{1}{2}{3}", tag, chariot, LibFuncs.GetNewWhiteSpace(tag + chariot),
-                    LibFuncs.ArrayToString(skeleChariot.ToArray(), false, false, true, 0)).CRL();
+                str += string.Format("{0}{1}{2}{3}", tag, chariot, StrFormat.GetNewWhiteSpace(tag + chariot),
+                    skeleChariot.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if (skeleCamel != null)
-                str += string.Format("{0}{1}{2}{3}", tag, camel, LibFuncs.GetNewWhiteSpace(tag + camel),
-                    LibFuncs.ArrayToString(skeleCamel.ToArray(), false, false, true, 0)).CRL();
+                str += string.Format("{0}{1}{2}{3}", tag, camel, StrFormat.GetNewWhiteSpace(tag + camel),
+                    skeleCamel.ToArray().ArrayToString(false, false, true, 0)).CRL();
 
             return str;
         

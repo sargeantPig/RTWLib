@@ -1,4 +1,5 @@
 ﻿using RTWLib.Data;
+using RTWLib.Extensions;
 using RTWLib.Objects;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace RTWLib.Functions.UnitDescriptions
         protected bool ParseSegment(string line, List<UnitDescription> unitDescr, StreamReader sr)
         {
 
-            string[] data = LibFuncs.RemoveFirstWord(line, '\t').Trim().TrimEnd(',').Split('\t', ',').CleanStringArray();
-            string firstWord = LibFuncs.GetFirstWord(line, null, 0, '\t').Trim();
+            string[] data = line.RemoveFirstWord('\t').Trim().TrimEnd(',').Split('\t', ',').CleanStringArray();
+            string firstWord = line.GetFirstWord(null, 0, '\t').Trim();
 
 
             if (!firstWord.Contains("{"))

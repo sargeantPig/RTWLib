@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Functions;
+using RTWLib.Extensions;
 namespace RTWLib.Data
 {
 	public static class Misc_Data
@@ -20,7 +21,7 @@ namespace RTWLib.Data
 			{
 				for (int y = 0; y < 156; y++)
 				{
-					int temp = (int)LibFuncs.DistanceTo(new int[] { x, y }, coords);
+					int temp = (int)new int[] { x, y }.DistanceTo(coords);
 					if (temp < distance && editRegionWater[x, y])
 					{
 						distance = temp;
@@ -46,19 +47,6 @@ namespace RTWLib.Data
 			}
 
 		}
-
-        public static string[] CleanStringArray(this string[] data)
-        {
-            List<string> newArray = new List<string>(); 
-            foreach (string str in data)
-            {
-                if (str != "" && str != " ")
-                {
-                    newArray.Add(str.Trim());
-                }
-            }
-            return newArray.ToArray();
-        }
 
 		public static string[] RemoveThenOutWhiteSpace(this string[] data, out string whitespace)
 		{

@@ -9,6 +9,8 @@ using System.IO;
 using RTWLib.Logger;
 using RTWLib.Functions;
 using System.Threading;
+using RTWLib.Extensions;
+
 namespace RTWLib.Memory
 {
 
@@ -32,7 +34,7 @@ namespace RTWLib.Memory
 
 		public void StartProcess(string[] args, string name)
 		{
-			p = LibFuncs.ExecuteCommand(name, args);
+			p = ProcessHelper.ExecuteCommand(name, args);
 			//output = p.StandardOutput;
 			//error = p.StandardError;
 			//p.EnableRaisingEvents = true;
@@ -68,7 +70,7 @@ namespace RTWLib.Memory
 
 		public void StartBat()
 		{
-			p = LibFuncs.ExecuteCommand("str_randomiser.bat", new string[] { });
+			p = ProcessHelper.ExecuteCommand("str_randomiser.bat", new string[] { });
 			p.Start();
 			
 		}

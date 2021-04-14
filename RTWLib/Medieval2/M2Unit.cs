@@ -1,4 +1,5 @@
 ﻿using RTWLib.Data;
+using RTWLib.Extensions;
 using RTWLib.Functions;
 using RTWLib.Objects;
 using System;
@@ -211,7 +212,7 @@ namespace RTWLib.Medieval2
             for (int i = 0; i < lines.Count(); i++)
             {
                 EDULineEnums identifier;
-                string strIdent = LibFuncs.GetFirstWord(lines[i], null, 0, '\t').Capitalise();
+                string strIdent = lines[i].GetFirstWord(null, 0, '\t').Capitalise();
                 bool isIdentifier = Enum.TryParse<EDULineEnums>(strIdent, out identifier);
 
                 if (isIdentifier )

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Data;
+using RTWLib.Extensions;
+
 namespace RTWLib.Functions
 {
     public class SMFBase<T>
@@ -25,16 +27,16 @@ namespace RTWLib.Functions
                 if ((bool)(object)value == true)
                 {
                     return string.Format("{0}{1}{2}\r\n",
-                        tag, LibFuncs.GetTabSpacing(tag, 7), "yes");
+                        tag, StrFormat.GetTabSpacing(tag, 7), "yes");
                 }
                 else
                 {
                     return string.Format("{0}{1}{2}\r\n",
-                        tag, LibFuncs.GetTabSpacing(tag, 7), "no");
+                        tag, StrFormat.GetTabSpacing(tag, 7), "no");
                 }     
             }
             return string.Format("{0}{1}{2}\r\n",
-                tag, LibFuncs.GetTabSpacing(tag, 7), value);
+                tag, StrFormat.GetTabSpacing(tag, 7), value);
         }
 
         public void ProcessLine(string tag, string[] data)

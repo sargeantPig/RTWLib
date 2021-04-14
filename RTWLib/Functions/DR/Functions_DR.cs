@@ -9,7 +9,7 @@ using ImageMagick;
 using System.Drawing;
 using RTWLib.Data;
 using System.Runtime.CompilerServices;
-
+using RTWLib.Extensions;
 namespace RTWLib.Functions
 {
 	public partial class Descr_Region : FileBase,  IFile

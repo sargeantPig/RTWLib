@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTWLib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -29,7 +30,7 @@ namespace RTWLib.Functions.DMB.ModelData
 
             str = String.Format("{0}{1}{2}",
                 tag,
-                LibFuncs.GetNewWhiteSpace(tag),
+                StrFormat.GetNewWhiteSpace(tag),
                 scale);
 
             return str.CRL();

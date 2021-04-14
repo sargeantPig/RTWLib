@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Data;
 using RTWLib.Functions;
-
+using RTWLib.Extensions;
 namespace RTWLib.Objects
 {
     public class Unit : IComparable
@@ -328,7 +328,7 @@ namespace RTWLib.Objects
             for (int i = 0; i < lines.Count(); i++)
             {
                 EDULineEnums identifier;
-                bool isIdentifier = Enum.TryParse<EDULineEnums>(LibFuncs.GetFirstWord(lines[i]).Capitalise(), out identifier);
+                bool isIdentifier = Enum.TryParse<EDULineEnums>(lines[i].GetFirstWord().Capitalise(), out identifier);
 
                 if (isIdentifier)
                 {

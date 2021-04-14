@@ -1,4 +1,5 @@
 ﻿using RTWLib.Data;
+using RTWLib.Extensions;
 using RTWLib.Medieval2;
 using RTWLib.Objects;
 using System;
@@ -20,9 +21,9 @@ namespace RTWLib.Functions.EDU
             EDULineEnums identifier;
             string comment = "";
             commentPair = new KeyValuePair<EDULineEnums, object>();
-            string[] data = LibFuncs.RemoveFirstWord(line, new string[] { "era", "banner" }, 1).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
+            string[] data = line.RemoveFirstWord(new string[] { "era", "banner" }, 1).Trim().DropAndOutComments(out comment).TrimEnd(',').Split(';', ',').CleanStringArray();
             string ident; 
-               ident = LibFuncs.GetFirstWord(line, new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
+               ident = line.GetFirstWord(new string[] {"era", "banner"} , 1).Capitalise(true).RemoveSpaces();
             bool isIdentifier = Enum.TryParse<EDULineEnums>(ident, out identifier);
              
             if (!isIdentifier)

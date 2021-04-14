@@ -104,6 +104,9 @@
     <Reference Include="Costura">
       <HintPath>packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="LibNoise, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\RTWRandomiser\packages\LibNoise.0.2\lib\NET45\LibNoise.dll</HintPath>
+    </Reference>
     <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.6.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Magick.NET-Q16-AnyCPU.7.14.5\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
@@ -124,6 +127,18 @@
     <Compile Include="Data\enums.cs" />
     <Compile Include="Data\LookUpTables.cs" />
     <Compile Include="Data\Misc_Data.cs" />
+    <Compile Include="Extensions\Comparisons.cs" />
+    <Compile Include="Extensions\ExtArray.cs" />
+    <Compile Include="Extensions\ExtControl.cs" />
+    <Compile Include="Extensions\ExtFloat.cs" />
+    <Compile Include="Extensions\ExtInt.cs" />
+    <Compile Include="Extensions\ExtList.cs" />
+    <Compile Include="Extensions\ExtMagick.cs" />
+    <Compile Include="Extensions\ExtRandom.cs" />
+    <Compile Include="Extensions\ExtString.cs" />
+    <Compile Include="Extensions\FileHelper.cs" />
+    <Compile Include="Extensions\ProcessHelper.cs" />
+    <Compile Include="Extensions\StringFormatHelper.cs" />
     <Compile Include="Functions\DMB\BattleModel.cs" />
     <Compile Include="Functions\DMB\DMB.cs" />
     <Compile Include="Functions\DMB\Idmb.cs" />
@@ -160,6 +175,17 @@
     <Compile Include="Functions\UnitDescriptions\UnitDescr.cs" />
     <Compile Include="Functions\UnitDescriptions\UnitDescription.cs" />
     <Compile Include="Logger\logger.cs" />
+    <Compile Include="MapGen\Generation\GenClimates.cs" />
+    <Compile Include="MapGen\Generation\GenFeatures.cs" />
+    <Compile Include="MapGen\Generation\GenGroundTypes.cs" />
+    <Compile Include="MapGen\Generation\GenHeightMap.cs" />
+    <Compile Include="MapGen\Generation\GenRegions.cs" />
+    <Compile Include="MapGen\Generation\MapParameters.cs" />
+    <Compile Include="MapGen\MapColours\ColoursData.cs" />
+    <Compile Include="MapGen\MapGenerator.cs" />
+    <Compile Include="MapGen\Map\Map.cs" />
+    <Compile Include="MapGen\Map\MapTile.cs" />
+    <Compile Include="MapGen\Voronoi\VoronoiHelper.cs" />
     <Compile Include="Medieval2\M2Building.cs" />
     <Compile Include="Medieval2\M2CharacterRecord.cs" />
     <Compile Include="Medieval2\M2CityEnum.cs" />
@@ -173,6 +199,8 @@
     <Compile Include="Medieval2\M2Settlement.cs" />
     <Compile Include="Medieval2\M2StatWeapons.cs" />
     <Compile Include="Memory\Core.cs" />
+    <Compile Include="Memory\LThreadManager.cs" />
+    <Compile Include="Memory\LThreadWrapper.cs" />
     <Compile Include="Objects\Buildings\BCapability.cs" />
     <Compile Include="Objects\Buildings\BConstruction.cs" />
     <Compile Include="Objects\Buildings\BRecruit.cs" />

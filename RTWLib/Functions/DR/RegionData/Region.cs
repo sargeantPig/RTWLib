@@ -1,4 +1,5 @@
-﻿using RTWLib.Objects.Descr_strat;
+﻿using RTWLib.Extensions;
+using RTWLib.Objects.Descr_strat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +38,8 @@ namespace RTWLib.Functions
 				"\t{5}".CRL() +
 				"\t{6}".CRL() +
 				"\t{7}".CRL(), name, cityName, factionCreator, rebelTribe, 
-				LibFuncs.ArrayToString(rgb, false, false, true, 0),
-				LibFuncs.ArrayToString(resources, false, false, true, 0),
+				rgb.ArrayToString(false, false, true, 0),
+				resources.ArrayToString(false, false, true, 0),
 				triumphVal,
 				farmLevel);
 		}

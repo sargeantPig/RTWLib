@@ -1,4 +1,5 @@
 ﻿using RTWLib.Data;
+using RTWLib.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace RTWLib.Functions
     {
         protected bool ParseLine(string line, Dictionary<string, SMFaction> details)
         {
-            string[] data = LibFuncs.RemoveFirstWord(line, '\t').Trim().TrimEnd(',').Split('\t', ',').CleanStringArray();
-            string firstWord = LibFuncs.GetFirstWord(line, null, 0, '\t').Trim();
+            string[] data = line.RemoveFirstWord('\t').Trim().TrimEnd(',').Split('\t', ',').CleanStringArray();
+            string firstWord = line.GetFirstWord(null, 0, '\t').Trim();
 
             switch (firstWord)
             {

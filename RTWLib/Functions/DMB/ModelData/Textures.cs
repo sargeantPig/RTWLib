@@ -1,4 +1,5 @@
-﻿using RTWLib.Objects.Descr_strat;
+﻿using RTWLib.Extensions;
+using RTWLib.Objects.Descr_strat;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,15 +48,15 @@ namespace RTWLib.Functions.DMB.ModelData
 
             if (factions != null)
                 str = String.Format("{0}{1}{2}{3}", 
-                    tag, 
-                    LibFuncs.GetNewWhiteSpace(tag), 
-                    LibFuncs.ArrayToString(factions.ToArray(), false, false, false, 0),
+                    tag,
+                    StrFormat.GetNewWhiteSpace(tag),
+                   factions.ToArray().ArrayToString( false, false, false, 0),
                     filepath);
             else
             {
                 str = String.Format("{0}{1}{2}", 
-                    tag, 
-                    LibFuncs.GetNewWhiteSpace(tag),
+                    tag,
+                    StrFormat.GetNewWhiteSpace(tag),
                     filepath);
             }
 

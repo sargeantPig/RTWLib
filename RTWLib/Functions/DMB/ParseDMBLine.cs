@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Functions;
 using RTWLib.Functions.DMB.ModelData;
+using RTWLib.Extensions;
 
 namespace RTWLib.Functions.DMB
 {
@@ -14,8 +15,8 @@ namespace RTWLib.Functions.DMB
     {
         protected bool ParseLine(string line, List<BattleModel> battleModels)
         {
-            string[] data = LibFuncs.RemoveFirstWord(line, '\t').Trim().TrimEnd(',').Split('\t',',').CleanStringArray();
-            string firstWord = LibFuncs.GetFirstWord(line, null, 0, '\t').Trim();
+            string[] data = line.RemoveFirstWord('\t').Trim().TrimEnd(',').Split('\t',',').CleanStringArray();
+            string firstWord = line.GetFirstWord(null, 0, '\t').Trim();
 
             switch (firstWord)
             {

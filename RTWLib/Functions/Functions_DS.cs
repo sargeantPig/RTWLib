@@ -9,6 +9,7 @@ using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
 using System.Security.Cryptography;
 using System.Data.OleDb;
+using RTWLib.Extensions;
 
 namespace RTWLib.Functions
 {
@@ -95,27 +96,27 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("start_date"))
                 {
-                    string temp = LibFuncs.RemoveFirstWord(line, '\t');
+                    string temp = line.RemoveFirstWord('\t');
                     startDate = temp.Trim();
 
                 }
 
                 if (line.StartsWith("end_date"))
                 {
-                    string temp = LibFuncs.RemoveFirstWord(line, '\t');
+                    string temp = line.RemoveFirstWord('\t');
                     endDate = temp.Trim();
 
                 }
 
                 if (line.StartsWith("brigand_spawn_value"))
                 {
-                    string temp = LibFuncs.RemoveFirstWord(line);
+                    string temp = line.RemoveFirstWord();
                     brigand_spawn_value = Convert.ToInt32(temp.Trim());
                 }
 
                 if (line.StartsWith("pirate_spawn_value"))
                 {
-                    string temp = LibFuncs.RemoveFirstWord(line);
+                    string temp = line.RemoveFirstWord();
                     pirate_spawn_value = Convert.ToInt32(temp.Trim());
                 }
 
@@ -167,7 +168,7 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("superfaction"))
                 {
-                    string superfac = LibFuncs.RemoveFirstWord(line);
+                    string superfac = line.RemoveFirstWord();
                     newFaction.superFaction = superfac.Trim();
                 }
 
@@ -190,7 +191,7 @@ namespace RTWLib.Functions
                     {
                         if (line.Trim().StartsWith("level"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             s_level = trimmed;
@@ -199,7 +200,7 @@ namespace RTWLib.Functions
 
                         else if (line.Trim().StartsWith("region"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             region = trimmed;
@@ -207,7 +208,7 @@ namespace RTWLib.Functions
 
                         else if (line.Trim().StartsWith("year_founded"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             yearFounded = Convert.ToInt32(trimmed);
@@ -216,7 +217,7 @@ namespace RTWLib.Functions
 
                         else if (line.Trim().StartsWith("population"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             population = Convert.ToInt32(trimmed);
@@ -225,7 +226,7 @@ namespace RTWLib.Functions
 
                         else if (line.Trim().StartsWith("faction_creator"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             faction_creator = trimmed;
@@ -234,7 +235,7 @@ namespace RTWLib.Functions
 
                         else if (line.Trim().StartsWith("type"))
                         {
-                            string trimmed = LibFuncs.RemoveFirstWord(line);
+                            string trimmed = line.RemoveFirstWord();
                             trimmed = trimmed.Trim();
 
                             DSBuilding dsb = new DSBuilding();
@@ -281,7 +282,7 @@ namespace RTWLib.Functions
                         newCharacter.coords[1] = Convert.ToInt32(ysplit[2].Trim());
 
                         line = strat.ReadLine(); //move to traits
-                        string traits = LibFuncs.RemoveFirstWord(line);
+                        string traits = line.RemoveFirstWord();
                         newCharacter.traits = traits.Trim();
                     }
 
@@ -301,13 +302,13 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("traits"))
                 {
-                    string traits = LibFuncs.RemoveFirstWord(line);
+                    string traits = line.RemoveFirstWord();
                     newCharacter.traits = traits.Trim();
                 }
 
                 if (line.StartsWith("ancillaries"))
                 {
-                    string ancillaries = LibFuncs.RemoveFirstWord(line);
+                    string ancillaries = line.RemoveFirstWord();
                     newCharacter.ancillaries = ancillaries;
                 }
 
@@ -348,7 +349,7 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("character_record"))
                 {
-                    string record = LibFuncs.RemoveFirstWord(line, '\t');//
+                    string record = line.RemoveFirstWord('\t');//
 
                     CharacterRecord cr = new CharacterRecord();
 
@@ -380,7 +381,7 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("relative"))
                 {
-                    string relative = LibFuncs.RemoveFirstWord(line, '\t');
+                    string relative = line.RemoveFirstWord('\t');
                     newFaction.relatives.Add(relative);
                 }
 
@@ -388,7 +389,7 @@ namespace RTWLib.Functions
                 {
                     string[] split = line.Split('\t', ',');
 
-                    split = Misc_Data.CleanStringArray(split);
+                    split = split.CleanStringArray();
                     
                     int count = split.Count();
                     count -= 3; //amount of faction entries required
@@ -431,7 +432,7 @@ namespace RTWLib.Functions
                 {
                     string[] split = line.Split('\t', ',');
 
-                    split = Misc_Data.CleanStringArray(split);
+                    split = split.CleanStringArray();
 
                     int count = split.Count();
                     count -= 3; //amount of faction entries required

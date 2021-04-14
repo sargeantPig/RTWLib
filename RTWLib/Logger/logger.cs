@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using RTWLib.Functions;
 using System.Net.Http.Headers;
 using System.Diagnostics;
+using RTWLib.Extensions;
 
 namespace RTWLib.Logger
 {
@@ -133,7 +134,7 @@ namespace RTWLib.Logger
 
 		public bool AdminCheck()
 		{
-			bool admin = LibFuncs.IsAdministrator();
+			bool admin = ProcessHelper.IsAdministrator();
 
 			if (admin) {
 				current = PLog(isAdmin);
