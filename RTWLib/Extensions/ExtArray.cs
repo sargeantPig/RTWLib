@@ -34,6 +34,19 @@ namespace RTWLib.Extensions
 			}
 		}
 
+		public static void MinMax(this int[,] data, out float min, out float max)
+		{
+			min = int.MaxValue;
+			max = 0;
+			foreach (var item in data)
+			{
+				if (item < min)
+					min = item;
+				if (item > max)
+					max = item;
+			}
+		}
+
 		public static MagickImage ToImage(this float[,] data)
 		{
 			MagickImage mi = new MagickImage(MagickColor.FromRgb(0, 0, 0), data.GetLength(0), data.GetLength(1));
@@ -45,14 +58,22 @@ namespace RTWLib.Extensions
 				{
 					for (int x = 0; x < mi.Width; x++)
 					{
-						//int norm = data[x, y].NormaliseToRange(min, max);
-						//pi.ModifyPixel()
+						float norm = 0;
+						byte bnorm = 0;
+						if (data[x, y] != 0)
+						{
+							norm = (data[x, y].NormaliseToRange(min, max));
+							bnorm = (byte)(norm * 255);
+						}
+
+						pi.ModifyPixel(x, y, MagickColor.FromRgb(bnorm, bnorm,bnorm));
 					}
 				}
 			}
 
 			return mi;
 		}
+
 
 		public static int[] ClampValues(this int[] a, int[] indexToClamp, int min, int max)
 		{
@@ -222,6 +243,22 @@ namespace RTWLib.Extensions
 				}
 			}
 			return newArray.ToArray();
+		}
+
+		public static float[,] NormaliseArray(this float[,] arr)
+		{
+			float min;
+			float max;
+			arr.MinMax(out min, out max);
+
+			for (int x = 0; x < arr.GetLength(0); x++)
+				for(int y = 0; y < arr.GetLength(1); y++)
+				{
+					arr[x,y] =  arr[x,y].NormaliseToRange(min, max);
+				}
+
+			return arr;
+
 		}
 	}
 }

@@ -127,7 +127,7 @@ namespace RTWLib.MapGen
                         col = MapColours.mapWaterColours[WaterColours.HeightsWater];
                     else
                         col = MagickColor.FromRgb(bval, bval, bval);
-
+                    this.map.mapTiles[p[0], p[1]].height = bval;
                     pixels.ModifyPixel(p[0], p[1], col);
                 }
             }

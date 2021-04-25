@@ -26,7 +26,6 @@ namespace RTWLib.Functions
 			this.radarMapLocation = radarMapLocation;
 		}
 
-
 		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, SMFactions smf)
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions

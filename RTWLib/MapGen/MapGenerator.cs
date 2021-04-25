@@ -1,5 +1,6 @@
 ﻿using ImageMagick;
 using LibNoise.Primitive;
+using RTWLib.Extensions;
 using RTWLib.Memory;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,6 @@ namespace RTWLib.MapGen
         LThreadManager threadManager;
 
         Map map;
-
-        MagickImage mapHeights, mapFeatures, mapRegions,
-            mapGroundTypes, mapClimate;
 
         public List<MagickImage> images { get; } = new List<MagickImage>();
 
@@ -76,11 +74,15 @@ namespace RTWLib.MapGen
             threadManager.Wait(10000);
             threadManager.ClearThreads();
 
-            images.Add(mapHeights);
-            images.Add(mapRegions);
+            images.Add(map.mapHeights);
+            images.Add(map.mapRegions);
+            images.Add(map.mapTemperature);
+            images.Add(map.mapRainfall);
+            images.Add(map.mapClimates);
 
-            mapHeights.Write("map_heights.tga");
-            mapRegions.Write("map_regions.tga");
+            map.mapHeights.Write("map_heights.tga");
+            map.mapRegions.Write("map_regions.tga");
+
 
         }
 
@@ -91,7 +93,8 @@ namespace RTWLib.MapGen
 
             for (int s = 0; s < passes; s++)
             {
-                simplex[s] = new SimplexPerlin();
+                simplex[s] = new SimplexPerlin(rnd.Next(-int.MaxValue, int.MaxValue), LibNoise.NoiseQuality.Best);
+                
             }
 
 
@@ -129,7 +132,7 @@ namespace RTWLib.MapGen
 
             }
 
-            return noise;
+            return noise.NormaliseArray();
         }
 
 

@@ -25,10 +25,6 @@ namespace RTWLib.MapGen
 
             Descr_Region dr = new Descr_Region(true, regionsImagePath, descrRegionPath);
             dr.Parse(new string[] { descrRegionPath, regionsImagePath }, out lineNumber, out currentLine);
-            Region reg = dr.regions["Britannia_Inferior"];
-            reg.cityName = "asfsg";
-            dr.ToFile("path");
-
             map.mapRegions = new MagickImage(MapColours.mapWaterColours[WaterColours.RegionWater], width / 2, height / 2);
             int maxRegions = dr.regions.Count();
             int[,] regionstga = new int[width/2, height/2];
@@ -131,6 +127,7 @@ namespace RTWLib.MapGen
                     else if (pixel.value == -2)
                         col = MagickColor.FromRgb(0, 0, 0);
                     else col = MagickColor.FromRgb((byte)regList[pixel.value].rgb[0], (byte)regList[pixel.value].rgb[1], (byte)regList[pixel.value].rgb[2]);
+                    this.map.mapTiles[pixel.x, pixel.y].region = pixel.value;
                     pix.ModifyPixel(pixel.x, pixel.y, col);
                 }
             }

@@ -79,6 +79,7 @@ namespace RTWLib.MapGen
             {Climates.DeepTemperateForest, MagickColor.FromRgb(0,64,0) },
             {Climates.LightTemperateForest, MagickColor.FromRgb(0,128,0) },
             {Climates.InfertileTermperateGrassland, MagickColor.FromRgb(0,255,128) },
+            {Climates.FertileTemperateGrassland, MagickColor.FromRgb(237, 20, 91) },
             {Climates.Mediterranean, MagickColor.FromRgb(128,128,64) },
             {Climates.RockyDesert, MagickColor.FromRgb(196,128,128) },
             {Climates.SandyDesert, MagickColor.FromRgb(98,65,65) },

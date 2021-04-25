@@ -1,4 +1,5 @@
-﻿using RTWLib.MapGen.Voronoi;
+﻿using RTWLib.MapGen.Generation;
+using RTWLib.MapGen.Voronoi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,28 @@ namespace RTWLib.MapGen
 {
     public class MapTile
     {
-        public int height, ground, feature, region;
+        public int region;
+        public float height, ground, feature;
         public Climates climate;
         public float moisture, temperature;
         public VoronoiPoint pos;
 
 
         public MapTile()
+        { }
+
+        public MapTile(int region, float height, float ground, float feature, float moisture, float temperature, VoronoiPoint position)
+        {
+            this.region = region;
+            this.height = height;
+            this.ground = ground;
+            this.feature = feature;
+            this.moisture = feature;
+            this.temperature = temperature;
+            this.pos = position;
+        }
+
+        public virtual void UpdateTile(float moisture)
         { }
 
         public VoronoiPoint GetRegionPos
@@ -28,7 +44,24 @@ namespace RTWLib.MapGen
 
     public class PolarTile : MapTile
     {
-        public void UpdateTile(float moisture)
+
+        public PolarTile(int region, float height, float ground, float feature, float moisture, float temperature, VoronoiPoint position) :
+        base(region, height, ground, feature, moisture, temperature, position)
+        {
+            this.region = region;
+            this.height = height;
+            this.ground = ground;
+            this.feature = feature;
+            this.moisture = feature;
+            this.temperature = temperature;
+            this.pos = position;
+
+        }
+
+        public PolarTile(MapTile tile)
+            : base(tile.region, tile.height, tile.ground, tile.feature, tile.moisture, tile.temperature, tile.pos)
+        { }
+        public override void UpdateTile(float moisture)
         {
             this.moisture += moisture;
 
@@ -47,7 +80,23 @@ namespace RTWLib.MapGen
 
     public class PlainsTile : MapTile
     {
-        public void UpdateTile(float moisture)
+        public PlainsTile(int region, float height, float ground, float feature, float moisture, float temperature, VoronoiPoint position) :
+       base(region, height, ground, feature, moisture, temperature, position)
+        {
+            this.region = region;
+            this.height = height;
+            this.ground = ground;
+            this.feature = feature;
+            this.moisture = feature;
+            this.temperature = temperature;
+            this.pos = position;
+
+        }
+
+        public PlainsTile(MapTile tile)
+            : base(tile.region, tile.height, tile.ground, tile.feature, tile.moisture, tile.temperature, tile.pos)
+        { }
+        public override void  UpdateTile(float moisture)
         {
             this.moisture += moisture;
 
@@ -73,7 +122,23 @@ namespace RTWLib.MapGen
 
     public class ForestTile : MapTile
     {
-        public void UpdateTile(float moisture)
+        public ForestTile(MapTile tile)
+            : base(tile.region, tile.height, tile.ground, tile.feature, tile.moisture, tile.temperature, tile.pos)
+        { }
+
+        public ForestTile(int region, float height, float ground, float feature, float moisture, float temperature, VoronoiPoint position) :
+       base(region, height, ground, feature, moisture, temperature, position)
+        {
+            this.region = region;
+            this.height = height;
+            this.ground = ground;
+            this.feature = feature;
+            this.moisture = feature;
+            this.temperature = temperature;
+            this.pos = position;
+
+        }
+        public override void UpdateTile(float moisture)
         {
             this.moisture += moisture;
 
@@ -92,9 +157,26 @@ namespace RTWLib.MapGen
 
 
     }
+
+
     public class DesertTile : MapTile
     {
-        public void UpdateTile(float moisture)
+        public DesertTile(MapTile tile)
+            : base(tile.region, tile.height, tile.ground, tile.feature, tile.moisture, tile.temperature, tile.pos)
+        { }
+        public DesertTile(int region, float height, float ground, float feature, float moisture, float temperature, VoronoiPoint position) :
+       base(region, height, ground, feature, moisture, temperature, position)
+        {
+            this.region = region;
+            this.height = height;
+            this.ground = ground;
+            this.feature = feature;
+            this.moisture = feature;
+            this.temperature = temperature;
+            this.pos = position;
+
+        }
+        public override void UpdateTile(float moisture)
         {
             this.moisture += moisture;
 

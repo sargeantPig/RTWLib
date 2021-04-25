@@ -13,7 +13,7 @@ namespace RTWLib.MapGen
         public void GenerateTerrain(int[,] heights, Random rnd)
         {
             int[,] groundTypes = new int[width, height]; 
-            mapGroundTypes = new MagickImage(MapColours.mapWaterColours[WaterColours.HeightsWater], width, height);
+            map.mapGround = new MagickImage(MapColours.mapWaterColours[WaterColours.HeightsWater], width, height);
 
 
 
