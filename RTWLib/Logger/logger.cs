@@ -45,6 +45,12 @@ namespace RTWLib.Logger
 			Console.WriteLine("\r\n" + logtxt);
 		}
 
+		public void LoadError()
+		{
+			PLog("Load failed - Check log for details.");
+			DisplayLog();
+		}
+
 		public string PLog(string logtxt)
 		{
             if (!is_on)
@@ -127,7 +133,7 @@ namespace RTWLib.Logger
 				return true;
 			}
 			else
-				current = PLog(fileNotFound + file);
+				current = PLog(fileNotFound + Directory.GetCurrentDirectory() + "\\" + file);
 
 			return false;
 		}

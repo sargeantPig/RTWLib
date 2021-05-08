@@ -42,6 +42,34 @@ namespace RTWLib.Functions
 
 	}
 
+	public interface IDescrStrat
+	{
+		void ShuffleFactions(Random rnd);
+		void MoveFactionToTopOfStrat(string name);
+		void CleanUp();
+		void Parse(string[] path, out int lineNumber, out string currentLine);
+		string Log(string txt);
+		string Output();
+		FileNames Name
+		{
+			get;
+		}
+		List<string> GetAllPlayableFactions
+		{
+			get;
+		}
+		string FilePath
+		{
+			get;
+		}
+		string Description
+		{
+			get;
+		}
+		void ToFile(string filepath);
+	}
+
+
 	public class FileBase : Logger.Logger, IFile
 	{
 		FileNames name;
@@ -118,6 +146,9 @@ namespace RTWLib.Functions
 		}
 			
 	}
+
+
+
 
 
 	static public class LibFuncs

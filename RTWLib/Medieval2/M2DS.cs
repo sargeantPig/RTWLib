@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Medieval2
 {
-    public class M2DS : Descr_Strat
+    public class M2DS : Descr_Strat, IFile, IDescrStrat
     {
         float timescale;
         CoreAttitudes<float> m2twAttitudes = new CoreAttitudes<float>("faction_standings");

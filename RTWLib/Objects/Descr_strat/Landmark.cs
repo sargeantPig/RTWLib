@@ -21,7 +21,7 @@ namespace RTWLib.Objects.Descr_strat
         {
             string output = "";
 
-            output += "landmark\t" + name + ",\t" + coordinates[0].ToString() + ",\t" + coordinates[1] + "\r\n";
+            output += "landmark\t" + name + "\t" + coordinates[0].ToString() + ",\t" + coordinates[1] + "\r\n";
 
             return output;
         }

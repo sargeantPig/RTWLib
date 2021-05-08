@@ -310,4 +310,12 @@ namespace RTWLib.Data
 		SpearmenInfantry,
 	}
 
+	public enum Game
+	{
+		OGRome,
+		MED2,
+		REMASTER,
+		Missing
+	}
+
 }

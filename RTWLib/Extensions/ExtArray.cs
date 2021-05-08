@@ -21,6 +21,33 @@ namespace RTWLib.Extensions
 			return a;
 		}
 
+		public static bool ContainsKeyExt(this Dictionary<int[,], int> a, int[,] b)
+		{
+			foreach (var key in a.Keys)
+			{
+				bool match = true;
+				for (int x = 0; x < key.GetLength(0); x++)
+				{
+					for (int y = 0; y < key.GetLength(1); y++)
+					{
+
+						if (key[x, y] != b[x, y])
+							match = false;
+
+						if (!match)
+							break;
+					}
+					if (!match)
+						break;
+				}
+
+				if (match)
+					return true;
+			}
+
+			return false;
+		}
+
 		public static void MinMax(this float[,] data, out float min, out float max)
 		{
 			min = int.MaxValue;

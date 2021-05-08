@@ -8,8 +8,8 @@ namespace RTWLib.Objects.Descr_strat
 {
     public class Resource
     {
-        string name = "";
-        int[] coordinates = new int[2];
+        public string name = "";
+        public int[] coordinates = new int[2];
 
         public Resource(string Rname, int[] coords)
         {
@@ -18,7 +18,7 @@ namespace RTWLib.Objects.Descr_strat
 
         }
 
-        public string Output()
+        public virtual string Output()
         {
             string output = "";
 

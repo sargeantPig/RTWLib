@@ -61,8 +61,8 @@ namespace RTWLib.Objects.Descr_strat
                         {
                             output += ", ";
                         }
-                        else output += "\r\n";
                     }
+                    output += "\r\n";
                 }
             }
 

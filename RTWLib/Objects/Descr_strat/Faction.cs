@@ -38,8 +38,6 @@ namespace RTWLib.Objects.Descr_strat
             characters = new List<object>();
             characterRecords = new List<ICharacterRecord>();
             relatives = new List<string>();
-
-        
         }
 
         public Faction(Faction faction)
@@ -77,7 +75,7 @@ namespace RTWLib.Objects.Descr_strat
             string output = "";
 
             output +=
-                "faction\t" + name + ", " + ai[0] + " " + ai[1] + "\r\n" +
+                "faction\t" + name + ", " + ai[0] + "\r\n" +
                 "superfaction " + superFaction + "\r\n" +
                 "denari\t" + denari.ToString() + "\r\n";
 
@@ -86,7 +84,6 @@ namespace RTWLib.Objects.Descr_strat
                 output += settlement.outputSettlement();
 
                 output += "\r\n";
-
             }
 
             output += "\r\n";
@@ -102,7 +99,6 @@ namespace RTWLib.Objects.Descr_strat
             {
 
                 output += rec.Output();
-                output += "\r\n\r\n";
             }
             
             

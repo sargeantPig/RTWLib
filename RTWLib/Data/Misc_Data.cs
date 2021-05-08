@@ -99,7 +99,8 @@ namespace RTWLib.Data
         names,
 		preferences,
 		battle_models,
-		export_units
+		export_units,
+		radar_map1
     }
 
 }

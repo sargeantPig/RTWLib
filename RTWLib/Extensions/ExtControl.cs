@@ -19,5 +19,16 @@ namespace RTWLib.Extensions
 			box.AppendText(text);
 			box.SelectionColor = box.ForeColor;
 		}
+
+		public static List<Control> ToList(this Control.ControlCollection coll)
+		{
+			List<Control> controls = new List<Control>();
+			foreach (Control control in coll)
+			{
+
+				controls.Add(control);
+			}
+			return controls;
+		}
 	}
 }

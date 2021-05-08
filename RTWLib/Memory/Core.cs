@@ -32,7 +32,7 @@ namespace RTWLib.Memory
 		Process p;
 		public Core() { }
 
-		public void StartProcess(string[] args, string name)
+		public void StartProcess(string[] args, string name, bool ogRome = false)
 		{
 			p = ProcessHelper.ExecuteCommand(name, args);
 			//output = p.StandardOutput;
@@ -43,7 +43,7 @@ namespace RTWLib.Memory
 			p.Exited += P_Exited;
 			p.Start();
 
-			if (Logger.Logger.isAdministrator)
+			if (Logger.Logger.isAdministrator && ogRome)
 			{
 				p.ProcessorAffinity = (IntPtr)0x0001;
 				p.PriorityClass = ProcessPriorityClass.High;

@@ -10,27 +10,16 @@ using RTWLib.Objects.Descr_strat;
 using System.Security.Cryptography;
 using System.Data.OleDb;
 using RTWLib.Extensions;
+using RTWLib.Remaster;
 
 namespace RTWLib.Functions
 {
-    public class Descr_Strat : FileBase, IFile, IDescrStrat
+    public class RemasterDescr_Strat : Descr_Strat, IFile, IDescrStrat
     {
-        public List<string> ds_data = new List<string>();
-        public string campaign = "";
-        public List<string> playableFactions = new List<string>();
-        public List<string> campaignNonPlayable = new List<string>();
-        public List<string> unlockableFactions = new List<string>();
-        public string startDate = "";
-        public string endDate = "";
-        public int brigand_spawn_value = 0;
-        public int pirate_spawn_value = 0;
-        public List<Landmark> landmarks = new List<Landmark>();
-        public List<Resource> resources = new List<Resource>();
-        public List<IFaction> factions = new List<IFaction>();
-        public CoreAttitudes<int> coreAttitudes;
-        public CoreAttitudes<int> factionRelationships;
-        public Descr_Strat() 
-            : base(FileNames.descr_strat, @"data\world\maps\campaign\imperial_campaign\descr_strat.txt", "Campaign Info and Setup")
+        new public List<RemasterResource> resources = new List<RemasterResource>();
+
+        public RemasterDescr_Strat()
+            : base()
         {
             coreAttitudes = new CoreAttitudes<int>("core_attitudes");
             factionRelationships = new CoreAttitudes<int>("faction_relationships");
@@ -57,7 +46,7 @@ namespace RTWLib.Functions
             bool newfactionReady = false;
             bool newcharacterReady = false;
             //get factions
-            
+
             while ((line = strat.ReadLine()) != null)
             {
                 lineNumber++;
@@ -132,13 +121,13 @@ namespace RTWLib.Functions
 
                 if (line.StartsWith("resource"))
                 {
-                    string[] split = line.Split('\t');
+                    string[] split = line.Split('\t', ' ').CleanStringArray();
                     string name = split[1].Trim();
-					name = name.Replace(",", "");
-                    string x = split[2].Replace(",", "").Trim();
-
-                    int[] coords = new int[] { Convert.ToInt32(x), Convert.ToInt32(split[3].Trim()) };
-                    Resource res = new Resource(name, coords);
+                    name = name.Replace(",", "");
+                    string x = split[3].Replace(",", "").Trim();
+                    int quantity = Convert.ToInt32(split[2].Trim(','));
+                    int[] coords = new int[] { Convert.ToInt32(x), Convert.ToInt32(split[4].Trim()) };
+                    RemasterResource res = new RemasterResource(name, quantity, coords);
                     resources.Add(res);
                 }
 
@@ -156,12 +145,11 @@ namespace RTWLib.Functions
                     newfactionReady = true;
 
                     newFaction.Clear();
-                    string[] split = line.Split(',', ' ', '\t');
+                    string[] split = line.Split(',', ' ', '\t').CleanStringArray();
                     faction = split[1];
 
                     newFaction.name = faction;
-                    newFaction.ai[0] = split[3].Trim();
-                    newFaction.ai[1] = split[4].Trim();
+                    newFaction.ai[0] = split[2].Trim();
                     //FactionRosters.AddFactionKey(tb.LookUpKey<FactionOwnership>(split[1]));
 
                 }
@@ -390,17 +378,17 @@ namespace RTWLib.Functions
                     string[] split = line.Split('\t', ',');
 
                     split = split.CleanStringArray();
-                    
+
                     int count = split.Count();
                     count -= 3; //amount of faction entries required
 
                     string fo = split[1];
 
-                    Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>(); 
+                    Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
-                        string f =split[i + 3];
+                        string f = split[i + 3];
                         if (!f_a.ContainsKey(temp))
                             f_a.Add(temp, new List<string> { f });
                         else f_a[temp].Add(f);
@@ -410,7 +398,7 @@ namespace RTWLib.Functions
                     {
                         coreAttitudes.attitudes.Add(fo, new Dictionary<object, List<string>>(f_a));
                     }
-                    
+
                     else
                     {
                         foreach (var cf in f_a)
@@ -443,7 +431,7 @@ namespace RTWLib.Functions
                     for (int i = 0; i < count; i++)
                     {
                         int temp = Convert.ToInt32(split[2]);
-                        string f =split[i + 3];
+                        string f = split[i + 3];
                         if (!f_a.ContainsKey(temp))
                             f_a.Add(temp, new List<string> { f });
                         else f_a[temp].Add(f);
@@ -533,7 +521,7 @@ namespace RTWLib.Functions
 
             output += "\r\n\r\n";
 
-            foreach (Resource res in resources)
+            foreach (RemasterResource res in resources)
             {
                 output += res.Output();
             }
@@ -627,21 +615,14 @@ namespace RTWLib.Functions
         public void UnlockFactions()
         {
             foreach (string p in unlockableFactions)
-            {
-                if (p != "romans_senate")
-                    playableFactions.Add(p);
-            }
+                playableFactions.Add(p);
 
             unlockableFactions.Clear();
 
             foreach (string p in campaignNonPlayable)
-            {
-                if(p != "romans_senate")
-                    playableFactions.Add(p);
-            }
-            
+                playableFactions.Add(p);
+
             campaignNonPlayable.Clear();
-            campaignNonPlayable.Add("romans_senate");
         }
 
         public int GetArmyCount(int facIndex)
@@ -713,15 +694,5 @@ namespace RTWLib.Functions
                 }
             }
         }
-
-        public List<string> GetAllPlayableFactions
-        {
-            get {
-                UnlockFactions();
-                return playableFactions; 
-            }
-        }
-
-	}
+    }
 }
- 

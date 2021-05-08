@@ -217,6 +217,7 @@
     <Compile Include="Objects\Descr_strat\Landmark.cs" />
     <Compile Include="Objects\Descr_strat\Resource.cs" />
     <Compile Include="Objects\Descr_strat\Settlement.cs" />
+    <Compile Include="Objects\Unit\Ethnicity.cs" />
     <Compile Include="Objects\Unit\Formation.cs" />
     <Compile Include="Medieval2\M2Unit.cs" />
     <Compile Include="Objects\Unit\Mentality.cs" />
@@ -228,6 +229,9 @@
     <Compile Include="Objects\Unit\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\RTWObjects.cs" />
+    <Compile Include="Remaster\RemasterDescrStrat.cs" />
+    <Compile Include="Remaster\RemasterResource.cs" />
+    <Compile Include="Remaster\RemasterUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
