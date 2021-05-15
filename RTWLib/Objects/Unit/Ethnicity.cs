@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RTWLib.Objects.Unit
+namespace RTWLib.Objects
 {
     class Ethnicity
     {

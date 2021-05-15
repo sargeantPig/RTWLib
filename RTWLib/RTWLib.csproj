@@ -139,6 +139,7 @@
     <Compile Include="Extensions\FileHelper.cs" />
     <Compile Include="Extensions\ProcessHelper.cs" />
     <Compile Include="Extensions\StringFormatHelper.cs" />
+    <Compile Include="Functions\DataString.cs" />
     <Compile Include="Functions\DMB\BattleModel.cs" />
     <Compile Include="Functions\DMB\DMB.cs" />
     <Compile Include="Functions\DMB\Idmb.cs" />
@@ -165,6 +166,8 @@
     <Compile Include="Functions\Functions_Names.cs" />
     <Compile Include="Functions\Functions_Preferences.cs" />
     <Compile Include="Functions\Functions_SelectMaps.cs" />
+    <Compile Include="Functions\GenericFile.cs" />
+    <Compile Include="Functions\GenericLineParser.cs" />
     <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
     <Compile Include="Functions\DR\Functions_DR.cs" />
     <Compile Include="Functions\SMFactions\SMData\MapColour.cs" />

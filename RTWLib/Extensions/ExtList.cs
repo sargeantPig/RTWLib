@@ -136,6 +136,16 @@ namespace RTWLib.Extensions
 			return false;
 		}
 
+		public static string[] PigsToArray(this List<string> data)
+		{
+			string[] array = new string[data.Count];
+			for (int i = 0; i < data.Count; i++)
+			{
+				array[i] = data[i];
+			}
+			return array;
+		}
+
 		public static bool ContainsItem(this VoronoiPoint[] a, VoronoiPoint b)
 		{
 			if (a[0] == null)

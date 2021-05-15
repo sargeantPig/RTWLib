@@ -39,6 +39,7 @@ namespace RTWLib.Functions
 			get;
 		}
 		void ToFile(string filepath);
+		void ToFile(string filepath, Encoding encoder);
 
 	}
 
@@ -75,6 +76,8 @@ namespace RTWLib.Functions
 		FileNames name;
 		string FILEPATH;
 		string DESCRIPTION;
+		public DataString data = new DataString();
+		
 
 		public FileBase(FileNames name, string filePath, string description)
 		{
@@ -86,22 +89,37 @@ namespace RTWLib.Functions
 
 		virtual public void Parse(string[] paths, out int lineNumber, out string currentLine)
 		{
-			lineNumber = 0;
-			currentLine = "base not implemented";
+			string tempdata = string.Empty;
+			lineNumber = -1;
+			currentLine = string.Empty;
+			using (var stream = new StreamReader(paths[0]))
+			{
+				tempdata = stream.ReadToEnd();
+			}
+
+			data = new DataString(tempdata, data);
+			data.CombineDataPoints();
 		}
 
 		virtual public string Output()
 		{
-			string output = "base not implemented";
+			return data.Output();
+		}
 
-			return output;
+		virtual public void ToFile(string filepath, Encoding encoder)
+		{
+			using (StreamWriter sw = new StreamWriter(filepath, false, encoder))
+			{
+				sw.Write(Output());
+			}
 		}
 
 		virtual public void ToFile(string filepath)
 		{
-			StreamWriter sw = new StreamWriter(filepath);
-			sw.Write(Output());
-			sw.Close();
+			using (StreamWriter sw = new StreamWriter(filepath))
+			{
+				sw.Write(Output());
+			}
 		}
 
 		public FileNames Name

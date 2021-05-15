@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RTWLib.Extensions
 {
     public static class ExtString
     {
+		public static readonly string NewLine = "\r\n";
 		public static string GetSafeRTWDoubleStr(this string input)
 		{
 			//trim excess
@@ -217,6 +219,17 @@ namespace RTWLib.Extensions
 		public static bool Contains(this string str, List<string> list)
 		{
 			foreach (string s in list)
+			{
+				if (str.Contains(s))
+					return true;
+			}
+
+			return false;
+		}
+
+		public static bool Contains(this string str, List<char> list)
+		{
+			foreach (char s in list)
 			{
 				if (str.Contains(s))
 					return true;

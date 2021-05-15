@@ -209,7 +209,7 @@ namespace RTWLib.Extensions
 
 			return value;
 		}
-		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1)
+		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, bool insertSeperator = true)
 		{
 			string value = "";
 			int i = 0;
@@ -222,7 +222,7 @@ namespace RTWLib.Extensions
 				if (insertNewlines)
 					for (int nl = 0; nl < newLineCount; nl++)
 						value += "\r\n";
-				else value += ", ";
+				else if(insertSeperator) value += ", ";
 
 
 				i++;
@@ -259,14 +259,16 @@ namespace RTWLib.Extensions
 
 			return b;
 		}
-		public static string[] CleanStringArray(this string[] data)
+		public static string[] CleanStringArray(this string[] data, bool trim = true)
 		{
 			List<string> newArray = new List<string>();
 			foreach (string str in data)
 			{
 				if (str != "" && str != " ")
 				{
-					newArray.Add(str.Trim());
+					if(trim)
+						newArray.Add(str.Trim());
+					else newArray.Add(str);
 				}
 			}
 			return newArray.ToArray();

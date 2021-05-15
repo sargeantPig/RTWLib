@@ -100,7 +100,10 @@ namespace RTWLib.Data
 		preferences,
 		battle_models,
 		export_units,
-		radar_map1
+		radar_map1,
+		campaign_descr,
+		provincial_descr,
+		none
     }
 
 }
