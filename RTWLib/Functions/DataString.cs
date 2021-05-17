@@ -21,17 +21,24 @@ namespace RTWLib.Functions
         public string Format { get; set; }
 
         public char commentTag;
-
+        public int newLineAmount = 1;
         int locX;
         int locY;
-        public DataString(string data, char[] tags, string[] tagnames, char commentTag = '¬')
+        public DataString(string data, char[] tags, string[] tagnames, char commentTag = '¬', int newLineAmount = 1)
         {
             this.dataTags = tags;
             this.dataNames = tagnames;
             this.commentTag = commentTag;
+            this.newLineAmount = newLineAmount;
             lines = data.Split('\n');
         }
-
+        public DataString(char[] tags, string[] tagnames, char commentTag = '¬', int newLineAmount = 1)
+        {
+            this.dataTags = tags;
+            this.dataNames = tagnames;
+            this.commentTag = commentTag;
+            this.newLineAmount = newLineAmount;
+        }
         public DataString()
         {
         }
@@ -41,6 +48,7 @@ namespace RTWLib.Functions
             this.dataTags = meta.dataTags;
             this.dataNames = meta.dataNames;
             this.commentTag = meta.commentTag;
+            this.newLineAmount = meta.newLineAmount;
             lines = data.Split('\n','\r');
         }
 
@@ -55,7 +63,7 @@ namespace RTWLib.Functions
             int index = -1;
             foreach (string str in lines)
             {
-                if (str.Contains(dataNames.ToList())
+                if (str.Contains(dataNames)
                     || str.Contains(dataTags.ToList())
                     || str.Contains(commentTag))
                 {
@@ -82,7 +90,7 @@ namespace RTWLib.Functions
             foreach (string str in lines)
             {
                 index++;
-                if (str.Contains(dataNames.ToList())
+                if (str.Contains(dataNames)
                     || str.Contains(dataTags.ToList()))
                 {
                     string[] split = str.Split(splitChars);
@@ -147,7 +155,7 @@ namespace RTWLib.Functions
 
         public string Output()
         {
-            return lines.ArrayToString(false, true, false, 1, false);
+            return lines.ArrayToString(false, true, false, newLineAmount, false);
         }
 
         public void RemoveAttribute(string name)

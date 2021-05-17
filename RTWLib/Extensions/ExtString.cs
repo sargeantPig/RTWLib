@@ -216,7 +216,7 @@ namespace RTWLib.Extensions
 			return newString;
 		}
 
-		public static bool Contains(this string str, List<string> list)
+		public static bool Contains(this string str, params string[] list)
 		{
 			foreach (string s in list)
 			{

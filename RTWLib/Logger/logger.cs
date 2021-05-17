@@ -39,7 +39,11 @@ namespace RTWLib.Logger
 		public Logger()
 		{
 		}
-
+		public Logger(string assemblyPrefix, params string[] assemblyWatchList)
+		{
+			Logger.AssemblyPrefix = assemblyPrefix;
+			Logger.AssemblyWatchList = assemblyWatchList;
+		}
 		private void OutputToConsole(string logtxt)
 		{
 			Console.WriteLine("\r\n" + logtxt);
@@ -219,6 +223,12 @@ namespace RTWLib.Logger
 			var lastFrame = stackTrace.GetFrames();
 
 			string methodName = "";
+
+			if (lastFrame == null)
+			{
+				type = "null";
+				return "null";
+			}
 
 			foreach (StackFrame sf in lastFrame)
 			{

@@ -235,6 +235,7 @@
     <Compile Include="Remaster\RemasterDescrStrat.cs" />
     <Compile Include="Remaster\RemasterResource.cs" />
     <Compile Include="Remaster\RemasterUnit.cs" />
+    <Compile Include="RTWLIB.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Functions;
 using RTWLib.Extensions;
+using System.Security.Permissions;
+
 namespace RTWLib.Data
 {
 	public static class Misc_Data
@@ -67,6 +69,7 @@ namespace RTWLib.Data
 		}
 
 	}
+	
 
 	public static class FilePaths
 	{
@@ -103,6 +106,9 @@ namespace RTWLib.Data
 		radar_map1,
 		campaign_descr,
 		provincial_descr,
+		override_export_descr_buildings,
+		override_descr_strat,
+		feral_export_descr_unit,
 		none
     }
 
