@@ -17,6 +17,7 @@ namespace RTWLib.Objects.Descr_strat
         List<ICharacterRecord> characterRecords { get; set; }
         List<string> relatives { get; set; }
         int denari { get; set; }
+        bool dead_until_resurrected { get; set; }
     }
 
 
@@ -29,7 +30,9 @@ namespace RTWLib.Objects.Descr_strat
         public List<object> characters { get; set; }
         public List<ICharacterRecord> characterRecords { get; set; }
         public List<string> relatives { get; set; }
-        public int denari { get; set; }
+        public int denari { get; set; } 
+
+        public bool dead_until_resurrected { get; set; } = false;
 
         public Faction()
         {
@@ -48,7 +51,7 @@ namespace RTWLib.Objects.Descr_strat
             ai[1] = faction.ai[1];
             superFaction = faction.superFaction;
             settlements = new List<ISettlement>(faction.settlements);
-
+            dead_until_resurrected = faction.dead_until_resurrected;
             characters = new List<object>(faction.characters);
 
             characterRecords = new List<ICharacterRecord>(faction.characterRecords);
@@ -75,9 +78,17 @@ namespace RTWLib.Objects.Descr_strat
             string output = "";
 
             output +=
-                "faction\t" + name + ", " + ai[0] + "\r\n" +
-                "superfaction " + superFaction + "\r\n" +
-                "denari\t" + denari.ToString() + "\r\n";
+                "faction\t" + name + ", " + ai[0] + "\r\n";
+
+            if(superFaction != "")
+               output += "superfaction " + superFaction + "\r\n";
+            if (dead_until_resurrected)
+                output += "dead_until_resurrected" + "\r\n";
+
+            output += "denari\t" + denari.ToString() + "\r\n";
+
+            if (dead_until_resurrected)
+                return output;
 
             foreach (Settlement settlement in settlements)
             {
@@ -91,6 +102,8 @@ namespace RTWLib.Objects.Descr_strat
             
             foreach (DSCharacter character in characters)
             {
+                if (character.age == 0)
+                    continue;
                 output += character.Output();
                 output += "\r\n";
             }

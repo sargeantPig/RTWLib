@@ -120,6 +120,105 @@ namespace RTWLib.Functions
 			full_map = fullFactionMap;
 			return fullFactionMap.ToBitmap();
 		}
+
+		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, FileBase smf)
+		{
+			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
+			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
+
+			var mag = new MagickGeometry(fullFactionMap.Width, fullFactionMap.Height);
+			mag.FillArea = true;
+			mag.IgnoreAspectRatio = true;
+
+			regionMap.Alpha(AlphaOption.Remove);
+
+			regionMap.AdaptiveResize(mag);
+			var rpixels = regionMap.GetPixels();
+
+			foreach (Faction f in ds.factions) // loop through faction
+			{
+				var fpixels = fullFactionMap.GetPixels(); //set up both maps
+				MagickImage factionMap = new MagickImage(radarMapLocation);
+
+				factionMap.Alpha(AlphaOption.Remove);
+				factionMap.AdaptiveResize(mag);
+
+				using (IPixelCollection fmPixels = factionMap.GetPixels())
+				{
+					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
+					{
+						int[] regColour = dr.GetRGBValue(s.region); //get the colour of a region
+						MagickColor regCol = MagickColor.FromRgb((byte)regColour[0], (byte)regColour[1], (byte)regColour[2]);
+
+						var colourParamPri = smf.data[f.name]["primary_colour"];
+						var colourParamSec = smf.data[f.name]["secondary_colour"];
+
+
+						Color facCol1 = Color.FromArgb((int)colourParamPri.GetValue(0, true), (int)colourParamPri.GetValue(1, true), (int)colourParamPri.GetValue(2, true)); //get the faction colour primary
+						Color facCol2 = Color.FromArgb((int)colourParamSec.GetValue(0, true), (int)colourParamSec.GetValue(1, true), (int)colourParamSec.GetValue(2, true));   // secondary colour
+
+						MagickColor priCol = MagickColor.FromRgb(facCol1.R, facCol1.G, facCol1.B); //convert the colours to magickcolour
+						MagickColor secCol = MagickColor.FromRgb(facCol2.R, facCol2.G, facCol2.B);
+
+
+						int channelsCount = fmPixels.Channels;
+						for (int y = 0; y < factionMap.Height; y++)
+						{
+							List<ushort[]> regVert = new List<ushort[]>(); //create lists to store each pixel along the width of the image
+							List<ushort[]> facVert = new List<ushort[]>();
+
+							if (y - 1 >= 0)
+							{
+								regVert.Add(rpixels.GetArea(0, y - 1, regionMap.Width, 1));// get string of pixels across the image at current y value
+								facVert.Add(fmPixels.GetArea(0, y - 1, factionMap.Width, 1));
+							}
+
+							regVert.Add(rpixels.GetArea(0, y, regionMap.Width, 1));
+							facVert.Add(fmPixels.GetArea(0, y, factionMap.Width, 1));
+
+							if (y + 1 < regionMap.Height)
+							{
+								facVert.Add(fmPixels.GetArea(0, y + 1, factionMap.Width, 1));
+								regVert.Add(rpixels.GetArea(0, y + 1, regionMap.Width, 1));
+
+							}
+
+							int i = 0;
+
+							if (regVert.Count == 2)
+								i = 0;
+							else i = 1;
+
+							for (int x = 0; x < regVert[i].Length; x += channelsCount) // traverse each pixel across the image at the current y value
+							{
+								MagickColor pixCol = new MagickColor(regVert[i][x], regVert[i][x + 1], regVert[i][x + 2]);//create magickcolour using 
+								MagickColor fCol = new MagickColor(facVert[i][x], facVert[i][x + 1], facVert[i][x + 2]);
+								if (pixCol == regCol) //compare region colour
+								{
+									int bc = BorderCheck(x, i, regVert, regCol); //check if region is a border
+									if (bc > 1 && bc < 4)
+									{
+										fpixels.SetPixel(x == 0 ? x : x / 3, y, Blend(secCol, fCol, 0.6)); ///divide x by 3 to account for the other channels
+										fmPixels.SetPixel(x == 0 ? x : x / 3, y, Blend(secCol, fCol, 0.6));
+									}
+
+									else
+									{
+										fpixels.SetPixel(x == 0 ? x : x / 3, y, Blend(priCol, fCol, 0.6));
+										fmPixels.SetPixel(x == 0 ? x : x / 3, y, Blend(priCol, fCol, 0.6));
+									}
+								}
+							}
+						}
+					}
+				}
+
+				Save(factionMap, f.name, saveLocation);
+			}
+
+			full_map = fullFactionMap;
+			return fullFactionMap.ToBitmap();
+		}
 		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SMFactions smf, string factionName, string savepath)
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions

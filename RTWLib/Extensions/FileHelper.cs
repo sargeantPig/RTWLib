@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,24 @@ namespace RTWLib.Extensions
 
 				File.Move(newFile, old);
 			}
+		}
+
+		public static void RenameDirectory(string dir, string newName)
+		{
+			if (Directory.Exists(dir))
+			{
+				Directory.Move(dir, newName);
+			}
+				
+		}
+
+		public static bool FolderExists(string folder)
+		{
+			if (Directory.Exists(folder))
+				return true;
+			else return false;
+
+
 		}
 	}
 }

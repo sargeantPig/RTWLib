@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -161,6 +162,39 @@ namespace RTWLib.Extensions
 
 			return dis;
 		}
+
+		public static string OutputArrayAsLine(this object[] array, string seperator, params int[] ignoreElements)
+		{
+			string value = "";
+			for (int i = 0; i < array.Count(); i++)
+			{
+				if (!ignoreElements.Contains(i))
+				{
+					value += string.Format("{0}{1}", ((string)array[i]).Trim(), seperator);
+				}
+			}
+			value = value.Trim().TrimEnd(seperator.ToArray());
+
+			return value;
+		}
+
+		public static object[] RemoveElementsAt(this object[] array, params int[] indexes)
+		{
+			object[] newArr = new object[array.Count() - indexes.Count()];
+
+			int index = 0;
+			for (int i = 0; i < array.Count(); i++)
+			{
+				if (!indexes.Contains(i))
+				{
+					newArr[index] = array[i];
+					index++;
+				}
+			}
+
+			return newArr;
+		}
+
 		public static string ArrayToString(this float[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, string extension = "")
 		{
 			string value = "";
@@ -288,6 +322,17 @@ namespace RTWLib.Extensions
 
 			return arr;
 
+		}
+
+		public static bool ContainsEquals(this string str, string[] array)
+		{
+			foreach (var s in array)
+			{
+				if (s == str)
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

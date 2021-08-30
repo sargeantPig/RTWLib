@@ -46,7 +46,7 @@ namespace RTWLib.Objects.Descr_strat
                 "character\t" + name + ", " + type;
 
 
-            if (type == "spy" || type == "diplomat" || rank == null || type == "admiral")
+            if (type == "spy" || type == "diplomat" || rank == null || type == "admiral" || type == "assassin")
             {
                 output += ", age " + age.ToString() + ", , x " + coords[0].ToString() + ", y " + coords[1].ToString() + "\r\n";
 

@@ -12,17 +12,13 @@ using System.Runtime.CompilerServices;
 using RTWLib.Extensions;
 namespace RTWLib.Functions
 {
-	public partial class Descr_Region : FileBase,  IFile
+	public partial class BIDescr_Region : Descr_Region,  IFile
 	{
-		public string FILEPATH_REGIONS = @"data\world\maps\base\map_regions.tga";
-		public  string FILEPATH_DR = @"data\world\maps\base\descr_regions.txt";
-		public Dictionary<string, Region> regions { get; set; } = new Dictionary<string, Region>();
+		new public Dictionary<string, BIRegion> regions = new Dictionary<string, BIRegion>();
 
-		public Descr_Region(bool log_on, string filePathImage, string filePathDR) 
-			: base(FileNames.descr_regions, filePathDR, "handles region colours and locations" )
+		public BIDescr_Region(bool log_on, string filePathImage, string filePathDR) 
+			: base(log_on, filePathImage, filePathDR )
 		{
-			FILEPATH_REGIONS = filePathImage;
-			FILEPATH_DR = filePathDR;
             is_on = log_on;
         }
 
@@ -54,17 +50,22 @@ namespace RTWLib.Functions
 
 			while ((currentLine = reg.ReadLine()) != null)
 			{
-				bool success = ParseLine(currentLine, regions);
+				bool success = this.ParseLine(currentLine, regions);
 				lineNumber++;
 			}
 
 			reg.Close();
 
 			GetCityCoordinates(paths[1]);
+			
+			foreach(KeyValuePair<string, BIRegion> r in regions)
+			{
+				base.regions.Add(r.Key, r.Value);
+			}
 		}
 		private string FindRegionByColour(int[] colour)
 		{
-			foreach (KeyValuePair<string, Region> kv in regions)
+			foreach (KeyValuePair<string, BIRegion> kv in regions)
 			{
 				MagickColor mg = MagickColor.FromRgb((byte)kv.Value.rgb[0], (byte)kv.Value.rgb[1], (byte)kv.Value.rgb[2]);
 				if (CompareColour(colour, mg))
@@ -149,11 +150,11 @@ namespace RTWLib.Functions
 			else return false;
 
 		}
-		virtual public int[] GetCityCoords(string name)
+		override public int[] GetCityCoords(string name)
 		{
 			return new int[] {regions[name].x, regions[name].y };
 		}
-		virtual public int[] GetRGBValue(string name)
+		override public int[] GetRGBValue(string name)
 		{
 			return new int[] { regions[name].rgb[0], regions[name].rgb[1], regions[name].rgb[2] };
 		}
@@ -165,8 +166,8 @@ namespace RTWLib.Functions
 		{
 			get { return FILEPATH_REGIONS; }
 		}
-		 
-		virtual public Dictionary<string, Region> Regions
+
+		public Dictionary<string, BIRegion> BIRegions
 		{
 			get { return regions; }
 		}

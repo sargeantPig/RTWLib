@@ -139,6 +139,7 @@
     <Compile Include="Extensions\FileHelper.cs" />
     <Compile Include="Extensions\ProcessHelper.cs" />
     <Compile Include="Extensions\StringFormatHelper.cs" />
+    <Compile Include="Functions\Attribute.cs" />
     <Compile Include="Functions\DataString.cs" />
     <Compile Include="Functions\DMB\BattleModel.cs" />
     <Compile Include="Functions\DMB\DMB.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Functions\EDU\EDULineEnums.cs" />
     <Compile Include="Functions\EDU\ParseEduLine.cs" />
     <Compile Include="Functions\EDU\StaticEDU.cs" />
+    <Compile Include="Functions\FileBase\FileBase.cs" />
     <Compile Include="Functions\Functions_DS.cs" />
     <Compile Include="Functions\Functions_EDB.cs" />
     <Compile Include="Functions\EDU\Functions_EDU.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Functions\Functions_SelectMaps.cs" />
     <Compile Include="Functions\GenericFile.cs" />
     <Compile Include="Functions\GenericLineParser.cs" />
+    <Compile Include="Functions\SimpleParser.cs" />
     <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
     <Compile Include="Functions\DR\Functions_DR.cs" />
     <Compile Include="Functions\SMFactions\SMData\MapColour.cs" />
@@ -232,6 +235,11 @@
     <Compile Include="Objects\Unit\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\RTWObjects.cs" />
+    <Compile Include="Functions\BIDR\Functions_DR.cs" />
+    <Compile Include="Functions\BIDR\ParseDRLine.cs" />
+    <Compile Include="Functions\BIDR\BIRegionData\BIRegion.cs" />
+    <Compile Include="Functions\BIDR\BIRegionData\Religion.cs" />
+    <Compile Include="Functions\BIDR\StaticDR.cs" />
     <Compile Include="Remaster\RemasterDescrStrat.cs" />
     <Compile Include="Remaster\RemasterResource.cs" />
     <Compile Include="Remaster\RemasterUnit.cs" />

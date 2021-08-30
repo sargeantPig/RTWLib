@@ -17,12 +17,13 @@ namespace RTWLib.Functions
     public class RemasterDescr_Strat : Descr_Strat, IFile, IDescrStrat
     {
         new public List<RemasterResource> resources = new List<RemasterResource>();
-
-        public RemasterDescr_Strat()
+        bool is_bi = false;
+        public RemasterDescr_Strat(bool is_bi = false)
             : base()
         {
             coreAttitudes = new CoreAttitudes<int>("core_attitudes");
             factionRelationships = new CoreAttitudes<int>("faction_relationships");
+            this.is_bi = is_bi;
         }
 
         override public void Parse(string[] filepath, out int lineNumber, out string currentLine)
@@ -150,6 +151,7 @@ namespace RTWLib.Functions
 
                     newFaction.name = faction;
                     newFaction.ai[0] = split[2].Trim();
+                    newFaction.dead_until_resurrected = false;
                     //FactionRosters.AddFactionKey(tb.LookUpKey<FactionOwnership>(split[1]));
 
                 }
@@ -160,13 +162,18 @@ namespace RTWLib.Functions
                     newFaction.superFaction = superfac.Trim();
                 }
 
+                if (line.StartsWith("dead_until_resurrected"))
+                {
+                    newFaction.dead_until_resurrected = true;
+                }
+
                 if (line.StartsWith("denari"))
                 {
                     string[] den = line.Split('\t');
                     newFaction.denari = Convert.ToInt32(den[1].Trim());
                 }
 
-                if (line.StartsWith("settlement"))
+                if (line.StartsWith("settlement") && !newFaction.dead_until_resurrected)
                 {
                     Settlement tempSettlement;
                     List<DSBuilding> b_types = new List<DSBuilding>();
@@ -245,7 +252,7 @@ namespace RTWLib.Functions
                 }
 
 
-                if (line.StartsWith("character") && !line.StartsWith("character_record"))
+                if (line.StartsWith("character") && !line.StartsWith("character_record") && !newFaction.dead_until_resurrected)
                 {
                     if (newcharacterReady)
                     {
@@ -288,19 +295,19 @@ namespace RTWLib.Functions
                     }
                 }
 
-                if (line.StartsWith("traits"))
+                if (line.StartsWith("traits") && !newFaction.dead_until_resurrected)
                 {
                     string traits = line.RemoveFirstWord();
                     newCharacter.traits = traits.Trim();
                 }
 
-                if (line.StartsWith("ancillaries"))
+                if (line.StartsWith("ancillaries") && !newFaction.dead_until_resurrected)
                 {
                     string ancillaries = line.RemoveFirstWord();
                     newCharacter.ancillaries = ancillaries;
                 }
 
-                if (line.StartsWith("unit"))
+                if (line.StartsWith("unit") && !newFaction.dead_until_resurrected)
                 {
                     string[] army = line.Split('\t', ' ');
                     bool nameFetched = false;
@@ -335,7 +342,7 @@ namespace RTWLib.Functions
                     newCharacter.army.Add(new DSUnit(name.Trim(), exp, armour, weapon));
                 }
 
-                if (line.StartsWith("character_record"))
+                if (line.StartsWith("character_record") && !newFaction.dead_until_resurrected)
                 {
                     string record = line.RemoveFirstWord('\t');//
 
@@ -367,13 +374,13 @@ namespace RTWLib.Functions
                     newFaction.characterRecords.Add(new CharacterRecord(cr));
                 }
 
-                if (line.StartsWith("relative"))
+                if (line.StartsWith("relative") && !newFaction.dead_until_resurrected)
                 {
                     string relative = line.RemoveFirstWord('\t');
                     newFaction.relatives.Add(relative);
                 }
 
-                if (line.StartsWith("core_attitudes"))
+                if (line.StartsWith("core_attitudes") && !newFaction.dead_until_resurrected)
                 {
                     string[] split = line.Split('\t', ',');
 
@@ -387,7 +394,12 @@ namespace RTWLib.Functions
                     Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
-                        int temp = Convert.ToInt32(split[2]);
+                        int temp = 0;
+                        if (split[2].Trim() == "at_war_with")
+                            temp = 600;
+                        else if (split[2].Trim() == "allied_to")
+                            temp = 0;
+                        else temp = Convert.ToInt32(split[2]);
                         string f = split[i + 3];
                         if (!f_a.ContainsKey(temp))
                             f_a.Add(temp, new List<string> { f });
@@ -416,7 +428,7 @@ namespace RTWLib.Functions
                     }
                 }
 
-                if (line.StartsWith("faction_relationships"))
+                if (line.StartsWith("faction_relationships") && !newFaction.dead_until_resurrected)
                 {
                     string[] split = line.Split('\t', ',');
 
@@ -430,7 +442,12 @@ namespace RTWLib.Functions
                     Dictionary<object, List<string>> f_a = new Dictionary<object, List<string>>();
                     for (int i = 0; i < count; i++)
                     {
-                        int temp = Convert.ToInt32(split[2]);
+                        int temp = 0;
+                        if (split[2].Trim() == "at_war_with")
+                            temp = 600;
+                        else if (split[2].Trim() == "allied_to")
+                            temp = 0;
+                        else temp = Convert.ToInt32(split[2]);
                         string f = split[i + 3];
                         if (!f_a.ContainsKey(temp))
                             f_a.Add(temp, new List<string> { f });
@@ -534,8 +551,10 @@ namespace RTWLib.Functions
             }
 
             output += "\r\n";
-            output += coreAttitudes.OutputMulti();
-            output += factionRelationships.OutputSingle();
+
+            
+            output += coreAttitudes.OutputMulti(is_bi);
+            output += factionRelationships.OutputSingle(is_bi);
             return output;
         }
         override public void ToFile(string filepath)

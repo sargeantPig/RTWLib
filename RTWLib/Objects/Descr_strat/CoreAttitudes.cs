@@ -39,7 +39,7 @@ namespace RTWLib.Objects.Descr_strat
             this.text = ca.text;
         }
 
-        public string OutputMulti()
+        public string OutputMulti(bool is_bi = false)
         {
             string output = "";
             output += "\r\n\r\n";
@@ -48,11 +48,27 @@ namespace RTWLib.Objects.Descr_strat
             {
                 foreach (var relation in faction.Value)
                 {
-                    output +=
+                    if (is_bi && (int)relation.Key == 600)
+                    {
+                        output +=
                         text + "\t"
                         + faction.Key + ",\t"
-                        + relation.Key.ToString() + "\t";
-
+                        + "at_war_with" + "\t";
+                    }
+                    else if (is_bi && (int)relation.Key == 0)
+                    {
+                        output +=
+                        text + "\t"
+                        + faction.Key + ",\t"
+                        + "allied_to" + "\t";
+                    }
+                    else
+                    {
+                        output +=
+                            text + "\t"
+                            + faction.Key + ",\t"
+                            + relation.Key.ToString() + "\t";
+                    }
                     for (int i = 0; i < relation.Value.Count; i++)
                     {
                         output += relation.Value[i];
@@ -70,7 +86,7 @@ namespace RTWLib.Objects.Descr_strat
 
         }
 
-        public string OutputSingle()
+        public string OutputSingle(bool is_bi = false)
         {
             string output = "";
             output += "\r\n\r\n";
@@ -81,10 +97,27 @@ namespace RTWLib.Objects.Descr_strat
                 {
                     foreach (var rel in relation.Value)
                     {
-                        output +=
+                        if (is_bi && (int)relation.Key == 600)
+                        {
+                            output +=
                             text + "\t"
                             + faction.Key + ",\t"
-                            + relation.Key.ToString() + "\t" + rel + "\r\n";
+                            + "at_war_with" + "\t";
+                        }
+                        else if (is_bi && (int)relation.Key == 0)
+                        {
+                            output +=
+                            text + "\t"
+                            + faction.Key + ",\t"
+                            + "allied_to" + "\t";
+                        }
+                        else
+                        {
+                            output +=
+                                text + "\t"
+                                + faction.Key + ",\t"
+                                + relation.Key.ToString() + "\t";
+                        }
                     }
                 }
             }

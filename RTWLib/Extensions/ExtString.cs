@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -7,9 +8,21 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Extensions
 {
-    public static class ExtString
+	public static class EString
     {
+
 		public static readonly string NewLine = "\r\n";
+
+		public static string[] Array(params string[] strings)
+		{
+			return strings;
+		}
+
+		public static char[] Array(params char[] chars)
+		{
+			return chars;
+		}
+
 		public static string GetSafeRTWDoubleStr(this string input)
 		{
 			//trim excess
@@ -160,6 +173,23 @@ namespace RTWLib.Extensions
 			}
 		}
 
+		public static string[] SplitFirst(this string str, char tagDelim, char paramDelim)
+		{
+			
+
+			string[] split = str.Split(tagDelim).CleanStringArray();
+
+			if(split.Count() > 1)
+				split[1] = split.OutputArrayAsLine(" ", 0);
+			List<string> temp = new List<string>() {split[0]};
+
+			if(split.Count() > 1)
+				temp.AddRange(split[1].Split(paramDelim));
+
+			return temp.ToArray();
+
+		}
+
 		public static string Capitalise(this string input, bool allWords = false)
 		{
 			char[] characters = input.ToCharArray();
@@ -247,6 +277,11 @@ namespace RTWLib.Extensions
 			return str;
 		}
 
+		public static string CRL()
+		{
+			return "\r\n";
+		}
+
 		public static string[] StringToArray(this string str, char delimeter = ',')
 		{
 			var split = str.Split(delimeter).CleanStringArray();
@@ -285,5 +320,14 @@ namespace RTWLib.Extensions
 			return s;
 		}
 
+		public static bool StartsWithChar(this string s, char c)
+		{
+			char firstLetter = s.ToArray()[0];
+			if (firstLetter == c)
+				return true;
+
+			return false;
+
+		}
 	}
 }
