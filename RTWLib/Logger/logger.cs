@@ -16,9 +16,9 @@ namespace RTWLib.Logger
 	{
 		//Will handle logging any errors, outputs to RTWLlog.txt after every method completion
 		public static string AssemblyPrefix { get; set; }
-		public string ModulePrefix  { get; set; }
+		public string ModulePrefix { get; set; }
 		public string Type;
-		 
+
 		public static string[] AssemblyWatchList { get; set; }
 
 		static string LOGFILE = "RTWLlog.txt";
@@ -31,10 +31,10 @@ namespace RTWLib.Logger
 		static string isAdmin = "Running as administrator ";
 		static string isNotAdmin = "Not running as administrator ";
 
-        public bool is_on = true;
+		public bool is_on = true;
 		static public bool isAdministrator = false;
 		public string fileName = "";
-		static public string lineText = "";
+		static public string lineText  = "";
 		static public int lineNumber = 0;
 		public Logger()
 		{
@@ -57,8 +57,8 @@ namespace RTWLib.Logger
 
 		public string PLog(string logtxt)
 		{
-            if (!is_on)
-                return logtxt;
+			if (!is_on)
+				return logtxt;
 
 			StreamWriter SW = new StreamWriter(LOGFILE, true);
 			SW.WriteLine(AssemblyPrefix + ":" + ModulePrefix + ": " + logtxt + " -- " + DateTime.Now + "\r\n");
@@ -104,7 +104,7 @@ namespace RTWLib.Logger
 			{
 				return this.PLog(msg + newLine + ex.Message + newLine +
 					"Error in: " + Type + newLine +
-					"At Line: " +lineNumber.ToString() + newLine +
+					"At Line: " + lineNumber.ToString() + newLine +
 					"'" + lineText + "'" + newLine +
 					ex.InnerException);
 			}
@@ -185,9 +185,9 @@ namespace RTWLib.Logger
 
 		public DialogResult DisplayRetry()
 		{
-			DialogResult result = MessageBox.Show(current, 
-				"Warning", 
-				MessageBoxButtons.YesNo, 
+			DialogResult result = MessageBox.Show(current,
+				"Warning",
+				MessageBoxButtons.YesNo,
 				MessageBoxIcon.Warning);
 
 			return result;
@@ -214,7 +214,7 @@ namespace RTWLib.Logger
 		{
 			lineCounter++;
 			return sr.ReadLine();
-			
+
 		}
 
 		public static string GetLastCalledMethod<T>(Exception ex, out string type)
@@ -247,5 +247,6 @@ namespace RTWLib.Logger
 			type = "";
 			return methodName;
 		}
+
 	}
 }

@@ -10,6 +10,8 @@ using RTWLib.Data;
 using RTWLib.Objects.Descr_strat;
 using RTWLib.Logger;
 using System.Windows.Forms;
+using RTWLib.Extensions;
+using System.IO;
 
 namespace RTWLib.Functions
 {
@@ -331,12 +333,11 @@ namespace RTWLib.Functions
 		}
 		public void Save(string path)
 		{
-			if (FileCheck(@path))
-			{
-				full_map.Write(@path, MagickFormat.Png);
-				full_map.Dispose();
-			}
-			else PLog("Unable to write to " + path + " - does the directory exist?");
+			if (File.Exists(@path))
+				File.Delete(path);
+
+			full_map.Write(@path, MagickFormat.Png);
+			full_map.Dispose();
 		}
 		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)
 		{
