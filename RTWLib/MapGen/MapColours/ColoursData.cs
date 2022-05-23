@@ -46,7 +46,8 @@ namespace RTWLib.MapGen
     public enum WaterColours
     {
         RegionWater,
-        HeightsWater
+        HeightsWater,
+        HeightsGround
 
     }
 
@@ -90,7 +91,8 @@ namespace RTWLib.MapGen
         public static Dictionary<WaterColours, MagickColor> mapWaterColours = new Dictionary<WaterColours, MagickColor>()
         {
             {WaterColours.HeightsWater, MagickColor.FromRgb(0, 0, 253) },
-            {WaterColours.RegionWater, MagickColor.FromRgb(41, 140, 233) }
+            {WaterColours.RegionWater, MagickColor.FromRgb(41, 140, 233) },
+            {WaterColours.HeightsGround, MagickColor.FromRgb(1,1,1)} 
         };
 
     }

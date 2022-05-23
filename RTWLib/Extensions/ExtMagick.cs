@@ -10,13 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+
 namespace RTWLib.Extensions
 {
     public static class ExtMagick
     {
         public static object _lockObject = new object();
 
-        public static void ModifyPixel(this IPixelCollection pixels, int x, int y, MagickColor col)
+        public static void ModifyPixel(this IPixelCollection<UInt16> pixels, int x, int y, MagickColor col)
         {
 
               pixels.SetPixel(x, y, new ushort[] { col.R, col.G, col.B });
@@ -27,21 +29,21 @@ namespace RTWLib.Extensions
         {
             lock (_lockObject)
             {
-                using (IPixelCollection pixels = img.GetPixels())
+                using (IPixelCollection<UInt16> pixels = img.GetPixels())
                 {
                     pixels.SetPixel(x, y, new ushort[] { col.R, col.G, col.B });
                 }
             }
         }
 
-        public static int[,] ToIntArray(this IPixelCollection pixels, int width, int height, bool blackWhite = false)
+        public static int[,] ToIntArray(this IPixelCollection<UInt16> pixels, int width, int height, bool blackWhite = false)
         {
             int[,] pix = new int[width, height];
             foreach(var p in pixels)
             {
                 if (blackWhite)
                 {
-                    MagickColor col = p.ToColor();
+                    MagickColor col = (MagickColor)p.ToColor();
                     if (col.R == col.B && col.B == col.G)
                     {
                         pix[p.X, p.Y] = 1;

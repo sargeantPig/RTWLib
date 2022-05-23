@@ -22,6 +22,16 @@ namespace RTWLib.Extensions
 			return a;
 		}
 
+		public static float[,] InitiliseWithValue(this float[,] a, float value)
+		{
+			for (int x = 0; x < a.GetLength(0); x++)
+				for (int y = 0; y < a.GetLength(1); y++)
+					a[x, y] = value;
+
+			return a;
+		}
+
+
 		public static bool ContainsKeyExt(this Dictionary<int[,], int> a, int[,] b)
 		{
 			foreach (var key in a.Keys)
@@ -80,7 +90,7 @@ namespace RTWLib.Extensions
 			MagickImage mi = new MagickImage(MagickColor.FromRgb(0, 0, 0), data.GetLength(0), data.GetLength(1));
 			float min, max;
 			data.MinMax(out min, out max);
-			using(IPixelCollection pi = mi.GetPixels())
+			using(IPixelCollection<UInt16> pi = mi.GetPixels())
 			{
 				for (int y = 0; y < mi.Height; y++)
 				{
@@ -111,6 +121,19 @@ namespace RTWLib.Extensions
 			return a;
 		}
 		public static int CountValues(this int[,] a, int countIf =0)
+		{
+			int value = 0;
+			for (int x = 0; x < a.GetLength(0); x++)
+				for (int y = 0; y < a.GetLength(1); y++)
+				{
+					if (a[x, y] > countIf)
+						value += 1;
+				}
+
+			return value;
+		}
+
+		public static int CountValues(this float[,] a, float countIf = 0)
 		{
 			int value = 0;
 			for (int x = 0; x < a.GetLength(0); x++)

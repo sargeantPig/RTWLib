@@ -30,7 +30,7 @@ namespace RTWLib.MapGen
         protected void GenerateLandMasses(Random rng)
         {
             int tilesAvailable = width * height;
-            int[,] geographyArea = new int[width, height];
+            float[,] geographyArea = new float[width, height];
 
             int tileNeeded = (int)((elevation / 100) * tilesAvailable);
             int totalLandMass;
@@ -69,9 +69,9 @@ namespace RTWLib.MapGen
             //DrawMap(map.mapHeights, geographyArea);
         }
 
-        protected void DrawMap(MagickImage image, int[,] geog, int[] borders = null)
+        protected void DrawMap(MagickImage image, float[,] geog, int[] borders = null)
         {
-            using (IPixelCollection pixels = image.GetPixels())
+            using (IPixelCollection<UInt16> pixels = image.GetPixels())
             {
                 if(borders !=null)
                 {
@@ -113,9 +113,9 @@ namespace RTWLib.MapGen
             UpdateImage(image);
         }
 
-        protected void DrawPixels(MagickImage image, HashSet<int[]> pixelsCoords, int[,] geog)
+        protected void DrawPixels(MagickImage image, HashSet<int[]> pixelsCoords, float[,] geog)
         {
-            using (IPixelCollection pixels = image.GetPixels())
+            using (IPixelCollection<UInt16> pixels = image.GetPixels())
             {
 
                 foreach (var p in pixelsCoords)
@@ -135,7 +135,7 @@ namespace RTWLib.MapGen
             UpdateImage(image);
         }
 
-        protected void Combine(ref int[,] geog, int[,] chunk)
+        protected void Combine(ref float[,] geog, float[,] chunk)
         {
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
@@ -144,9 +144,9 @@ namespace RTWLib.MapGen
                 }
         } 
 
-        protected int[,] GenerateChunk(Random rng, int chunkLength, out int[] borders)
+        protected float[,] GenerateChunk(Random rng, int chunkLength, out int[] borders)
         {
-            int[,] stencilArea = new int[width, height];
+            float[,] stencilArea = new float[width, height];
             stencilArea = stencilArea.InitiliseWithValue(0);
             //start position
             int x, y, pathLength;
@@ -154,11 +154,18 @@ namespace RTWLib.MapGen
             y = rng.Next(0, height);
             borders = new int[4] { x, y, x, y };
             pathLength = rng.Next(1, chunkLength);
+
+            float previousStr = 2f;
             bool success = true;
             while (pathLength > 0 && success)
             {
-                success = PaintBrush(ref stencilArea, 1, x, y);
                 int dir = rng.Next(0, 4);
+                float str = (float)rng.NextDouble();
+                str += 0.2f;
+                str *= 10;
+                str += previousStr / pathLength;
+                previousStr = str;
+                success = PaintBrush(ref stencilArea, str, x, y);
                 switch (dir)
                 {
                     case 0: y -= 1;
@@ -192,7 +199,7 @@ namespace RTWLib.MapGen
             return stencilArea;
         }
 
-        protected bool PaintLand(ref int[,] stencil, int x, int y, int valToSet, bool ignoreOutOfBounds = false)
+        protected bool PaintLand(ref float[,] stencil, int x, int y, float valToSet, bool ignoreOutOfBounds = false)
         {
             if (!CheckOutOfBounds(x, y))
             {
@@ -204,7 +211,7 @@ namespace RTWLib.MapGen
             return true;
         }
 
-        protected bool PaintBrush(ref int[,] stencil, int valToSet, int x, int y)
+        protected bool PaintBrush(ref float[,] stencil, float valToSet, int x, int y)
         {
             if (!PaintLand(ref stencil, x, y, valToSet))
                 return false;
@@ -216,34 +223,64 @@ namespace RTWLib.MapGen
             return true;
         }
 
+        public void RemoveSeaBlur(MagickImage map)
+        {
+            using (IPixelCollection<UInt16> pixels = map.GetPixels())
+            {
+                for(int x =0; x < map.Width; x++)
+                {
+                    for (int y = 0; y < map.Height; y++)
+                    {
+                        ushort r, g, b;
+                        r = pixels.GetPixel(x, y).ToColor().R;
+                        g = pixels.GetPixel(x, y).ToColor().G;
+                        b = pixels.GetPixel(x, y).ToColor().B;
+                        if ((b > r || b > g ) && (r > 0 && g > 0) && b > 30 && b < 70)
+                        {
+                            pixels.ModifyPixel(x, y, MapColours.mapWaterColours[WaterColours.HeightsWater]);
+                        }
+
+                        else if((b > r || b > g) && (r > 0 && g > 0)) 
+                            pixels.ModifyPixel(x, y, MapColours.mapWaterColours[WaterColours.HeightsGround]);
+                    }
+
+                }
+            }
+        }
+
+
         private static object _lockObject1 = new object();
         private static object _lockObject2 = new object();
-        protected void NeatenHeights(ref int[,] geog, int maxSize, int[] bounds,  MagickImage map, string thread)
+        protected void NeatenHeights(ref float[,] geog, int maxSize, int[] bounds,  MagickImage map, string thread)
         {
             HashSet<int[]> ignore = new HashSet<int[]>();
             for (int x = bounds[0]; x < bounds[2]; x++)
                 for (int y = bounds[1]; y < bounds[3]; y++)
                 {
                     int[] vec = new int[] { x, y };
-                    if (!ignore.ContainsItem(vec) && geog[x, y] < sealevel) //GetSurroundingPoints(geog, new HashSet<int[]>(), vec, (s,d) => x >= y, 1).Count > 2)
-                    {
-                        int[] borders;
-                        var area = GetArea(geog, x, y, out borders, (a, b) => a <= b , 0, maxSize);
-                        
-                        if (area.Count < maxSize + 1 && area.Count > 0)
-                        {
-                            foreach (var p in area)
-                            {
-                                    int s = geog[p[0], p[1]];
-                                    geog[p[0], p[1]] = 1;
-                                
-                            }
-                        }
-                        ignore.AddElementsUnique(area);
 
-                        
-                        DrawPixels(map, area, geog);
-                        
+                    if (GetSurroundingPoints(geog, new HashSet<int[]>(), new int[] { x, y }, (a, b) => a >= b, 1).Count > 1)
+                    {
+                        if (!ignore.ContainsItem(vec) && geog[x, y] < sealevel) //GetSurroundingPoints(geog, new HashSet<int[]>(), vec, (s,d) => x >= y, 1).Count > 2)
+                        {
+                            int[] borders;
+                            var area = GetArea(geog, x, y, out borders, (a, b) => a <= b, 0, maxSize);
+
+                            if (area.Count < maxSize + 1 && area.Count > 0)
+                            {
+                                foreach (var p in area)
+                                {
+                                    float s = geog[p[0], p[1]];
+                                    geog[p[0], p[1]] = 1;
+
+                                }
+                            }
+                            ignore.AddElementsUnique(area);
+
+
+                            DrawPixels(map, area, geog);
+
+                        }
                     }
 
                 }
@@ -279,7 +316,7 @@ namespace RTWLib.MapGen
             else return true;
         }
 
-        protected HashSet<int[]> GetArea(int[,] mask, int xpos, int ypos, out int[] borders, Func<int, int, bool> op,  int valueToFind = 1, int stopSize = 50)
+        protected HashSet<int[]> GetArea(float[,] mask, int xpos, int ypos, out int[] borders, Func<int, int, bool> op,  int valueToFind = 1, int stopSize = 50)
         {
             HashSet<int[]> ignore = new HashSet<int[]>();
             //Loop and find value, trace all connected values and store them
@@ -298,13 +335,17 @@ namespace RTWLib.MapGen
                     borders = AdjustBorders(borders, last[0], last[1]);
                     toCheck.Remove(last);
                     toCheck.AddElementsUnique(newPoints);
+
+                    if (ignore.Count > stopSize)
+                        break;
+
                 }
             }
 
             return ignore;
         }
 
-        public HashSet<int[]> GetSurroundingPoints(int[,] mask, HashSet<int[]> ignore, int[] p, Func<int, int, bool> op, int valueToFind = 1)
+        public HashSet<int[]> GetSurroundingPoints(float[,] mask, HashSet<int[]> ignore, int[] p, Func<float, int, bool> op, int valueToFind = 1)
         {
             HashSet<int[]> found = new HashSet<int[]>();
             int xinc = 1;

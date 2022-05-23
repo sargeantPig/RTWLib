@@ -698,6 +698,101 @@ namespace RTWLib.Functions
             return count;
 
         }
+
+        public void RemoveGenerals()
+        {
+            foreach (Faction faction in factions)
+            {
+                for (int c = 0; c < faction.characters.Count; c++)
+                {
+                    if (((DSCharacter)faction.characters[c]).type == "general")
+                    {
+                        faction.characters.RemoveAt(c);
+                        c = 0;
+                    }
+                }
+            }
+        }
+
+
+        public void RemovePorts()
+        {
+            foreach (Faction faction in factions)
+            {
+                foreach (Settlement set in faction.settlements)
+                {
+                    for (int i = 0; i < set.b_types.Count; i++)
+                    {
+                        if (set.b_types[i].type == "port_buildings")
+                        {
+                            set.b_types.RemoveAt(i);
+                            break;
+                        }
+
+                    }
+                }
+            }
+            
+        }
+
+        public void RemoveNavies()
+        {
+            foreach (Faction faction in factions)
+            {
+                for (int c = 0; c < faction.characters.Count; c++)
+                {
+                    if (((DSCharacter)faction.characters[c]).type == "admiral")
+                    {
+                        faction.characters.RemoveAt(c);
+                        c = 0;
+                    }      
+                }
+            }
+
+        }
+
+        public void RemoveWonders()
+        {
+            landmarks.Clear();
+        }
+
+        public void RemoveResources()
+        {
+            resources.Clear();
+        }
+
+        public void CharacterCoordinateFix(Descr_Strat ds, Descr_Region dr)
+        {
+            foreach (Faction f in ds.factions)
+            {
+                List<int[]> coordList = new List<int[]>();
+
+                foreach (Settlement s in f.settlements)
+                {
+                    coordList.Add(dr.GetCityCoords(s.region));
+                }
+
+                int counter = 0;
+                foreach (DSCharacter c in f.characters)
+                {
+                    if (c.type == "admiral")
+                        c.coords = Misc_Data.GetClosestWater(coordList[0]);
+                    else if (c.type == "spy" || c.type == "diplomat")
+                        c.coords = coordList[0];
+                    else
+                    {
+                        c.coords = coordList[counter];
+                        counter++;
+
+                        if (counter >= coordList.Count)
+                            counter = 0;
+
+                    }
+                }
+
+                coordList.Clear();
+            }
+        }
         public void CleanUp()
         {
             foreach (Faction faction in factions)
@@ -712,6 +807,20 @@ namespace RTWLib.Functions
                     }
                 }
             }
+        }
+
+        private static bool CheckVoronoiPoints(Dictionary<int[], List<ISettlement>> dic)
+        {
+            foreach (KeyValuePair<int[], List<ISettlement>> kv in dic)
+            {
+                if (kv.Value.Count == 0)
+                    return false;
+            }
+
+            if (dic.Count == 0)
+                return false;
+
+            return true;
         }
 
         public List<string> GetAllPlayableFactions

@@ -18,7 +18,7 @@ namespace RTWLib.Data
 		{
 			int distance = 10000;
 			int[] waterCoords = new int[2];
-
+			editRegionWater = regionWater;
 			for (int x = 0; x < 255; x++)
 			{
 				for (int y = 0; y < 156; y++)

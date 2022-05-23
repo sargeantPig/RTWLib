@@ -12,7 +12,7 @@ using System.Data.OleDb;
 using RTWLib.Extensions;
 using RTWLib.Remaster;
 
-namespace RTWLib.Functions
+namespace RTWLib.Functions.Remaster
 {
     public class RemasterDescr_Strat : Descr_Strat, IFile, IDescrStrat
     {

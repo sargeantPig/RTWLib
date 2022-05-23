@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using RTWLib.Functions;
+using System.IO;
 
 namespace RTWLib.MapGen
 {
@@ -64,26 +66,52 @@ namespace RTWLib.MapGen
             threadManager.Wait(10000);
             threadManager.ClearThreads();
 
+            
+
             threadManager.CreateThread(() => GenerateRegions(rnd));
             threadManager.Start();
             threadManager.Wait(10000);
             threadManager.ClearThreads();
-
+           // map.mapHeights.AdaptiveResize(new MagickGeometry(511, 312));
+            map.mapHeights.InterpolativeResize(511, 313, PixelInterpolateMethod.Nearest);
+            //map.mapHeights.SetCompression(CompressionMethod.NoCompression);
+            //this.RemoveSeaBlur(map.mapHeights);
             threadManager.CreateThread(() => GenerateClimates(rnd));
+            threadManager.Start();
+            threadManager.Wait(10000);
+            threadManager.ClearThreads();
+
+            threadManager.CreateThread(() => GenerateTerrain(rnd));
             threadManager.Start();
             threadManager.Wait(10000);
             threadManager.ClearThreads();
 
             images.Add(map.mapHeights);
             images.Add(map.mapRegions);
-            images.Add(map.mapTemperature);
-            images.Add(map.mapRainfall);
             images.Add(map.mapClimates);
+            images.Add(map.mapGround);
 
-            map.mapHeights.Write("map_heights.tga");
-            map.mapRegions.Write("map_regions.tga");
+            map.mapClimates.AdaptiveResize(new MagickGeometry(511, 313));
+            map.mapClimates.SetCompression(CompressionMethod.NoCompression);
+            map.mapHeights.Write(@"randomiser\data\world\maps\campaign\custom\gen\map_heights.tga");
+            map.mapRegions.Write(@"randomiser\data\world\maps\campaign\custom\gen\map_regions.tga", MagickFormat.Tga);
+            map.mapClimates.Write(@"randomiser\data\world\maps\campaign\custom\gen\map_climates.tga", MagickFormat.Tga);
+            map.mapGround.Write(@"randomiser\data\world\maps\campaign\custom\gen\map_ground_types.tga", MagickFormat.Tga);
 
-
+            Descr_Strat ds = new Descr_Strat();
+            Descr_Region dr = new Descr_Region(true, @"randomiser\data\world\maps\campaign\custom\gen\map_regions.tga", @"randomiser\data\world\maps\campaign\custom\gen\descr_regions.txt");
+            int linenumber;
+            string line;
+            dr.Parse(new string[] { descrRegionPath, @"randomiser\data\world\maps\campaign\custom\gen\map_regions.tga" }, out linenumber, out line);
+            ds.Parse(new string[] { @"randomiser\van_data\world\maps\campaign\imperial_campaign\descr_strat.txt" }, out linenumber, out line);
+            LibRandom.RandomSettlements(ds, dr, new Random(), 3, 6);
+            ds.CharacterCoordinateFix(ds, dr);
+            ds.RemovePorts();
+            ds.RemoveNavies();
+            ds.RemoveResources();
+            ds.RemoveWonders();
+            ds.ToFile(@"randomiser\data\world\maps\campaign\custom\gen\descr_strat.txt");
+            File.Delete(@"randomiser\data\world\maps\campaign\custom\gen\map.rwm");
         }
 
         public float[,] GenerateNoise(int passes, float frequency, float elevation, Func<float, int[], float> manipulator = null)

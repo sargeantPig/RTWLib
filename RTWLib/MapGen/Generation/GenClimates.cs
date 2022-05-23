@@ -8,6 +8,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using RTWLib.MapGen;
+using RTWLib.MapGen.Voronoi;
 
 namespace RTWLib.MapGen
 {
@@ -15,12 +17,20 @@ namespace RTWLib.MapGen
     {
         public void GenerateClimates(Random rnd)
         {
-            map.mapClimates = new MagickImage(MapColours.mapClimates[Climates.Alpine],  width, height);
+            map.mapClimates = new MagickImage(MapColours.mapClimates[Climates.FertileTemperateGrassland],  width, height);
             int[,] climate = new int[width, height];
             int[,] mask = map.GetHeightMask;
-            float[,] temperature = GenerateNoise(4, 0.001f, 1.3f, 
-                (x, y) => (x*(height/2)) - ((float)Math.Abs(map.DistanceToEquator(y))));
-            map.ImportTemperatures(temperature);
+
+            LibVoronoi climates = new LibVoronoi(rnd);
+            LibVoronoi fuzz = new LibVoronoi(rnd);
+            climates.GeneratePoints(0, width, 0, height, 100, 20, mask, 1, 1, (x, y) => x >= y, true);
+            fuzz.GeneratePoints(0, width, 0, height, 50, (int)frequency, mask, 1, 1, (x, y) => x >= y);
+            climates.LinkVoronoiGrid(fuzz);
+
+
+            // float[,] temperature = GenerateNoise(4, 0.001f, 1.3f, 
+            //  (x, y) => (x*(height/2)) - ((float)Math.Abs(map.DistanceToEquator(y))));
+            /*map.ImportTemperatures(temperature);
             float[,] initialMoisture = GenerateNoise(4, 0.001f, 1.3f,
                 (x, y) => (x * (height / 2)) + ((float)Math.Abs(map.DistanceToEquator(y))));
             DiscernClimates(temperature, initialMoisture);
@@ -30,47 +40,28 @@ namespace RTWLib.MapGen
             map.mapRainfall = initialMoisture.ToImage();
             map.mapTemperature = temperature.ToImage();
             map.RefreshClimateImage();
+            */
 
-            
         }
 
-        void DiscernClimates(float[,] temperature, float[,] moisture)
+        void DiscernClimates(LibVoronoi climate, LibVoronoi fuzz)
         {
+            HashSet<VoronoiPoint> pixels = new HashSet<VoronoiPoint>();
 
-            float tempMin, tempMax, moistMin, moistMax;
+            foreach (var point in climate.points)
+            {
+                point.value = rnd.Next(0, MapColours.mapClimates.Count);
 
-            temperature.MinMax(out tempMin, out tempMax);
-            temperature.MinMax(out moistMin, out moistMax);
+
+
+            }
+
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {
-                    float temp = temperature[x, y];
-                    float moist = moisture[x, y];
-                    
 
-                    if (temp < tempMax / 5)
-                    {
-                        map.mapTiles[x, y] = new PolarTile(map.mapTiles[x, y]);
-                    }
 
-                    else if (temp < tempMax / 4 && moist < moistMax / 2)
-                    {
-                        map.mapTiles[x, y] = new PlainsTile(map.mapTiles[x, y]);
-                    }
-
-                    else if (temp < tempMax / 2 && moist < moistMax)
-                    {
-                        map.mapTiles[x, y] = new ForestTile(map.mapTiles[x, y]);
-                    }
-                    else if (temp < tempMax && moist < moistMax / 9)
-                    {
-                        map.mapTiles[x, y] = new DesertTile(map.mapTiles[x, y]);
-                    }
-
-                    else map.mapTiles[x, y] = new PlainsTile(map.mapTiles[x, y]);
                 }
-
-            
         }
 
         protected float[,] SimulateRainfall(int[,] heights, float[,] temperature, Random rnd)

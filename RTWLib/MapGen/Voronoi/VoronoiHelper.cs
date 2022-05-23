@@ -115,23 +115,23 @@ namespace RTWLib.MapGen.Voronoi
         /// moves (b) points away by distanceFromClosest
         /// </summary>
         /// <param name="b"></param>
-        public void LinkVoronoiGrid(LibVoronoi b, int distanceFromClosest)
+        public void LinkVoronoiGrid(LibVoronoi b, int distanceFromClosest = 0)
         {
             for(int i = 0; i < b.points.Count(); i++)
             {
                 int ind = ClosestIndex(b.points[i].GetXY);
                 double dis;
-                while((dis = this.points[ind].GetXY.DistanceTo(b.points[i].GetXY)) < distanceFromClosest)
-                {
-                    double dirTo = b.points[i].GetXY.DirectionTo(this.points[ind].GetXY);
-                    int move = (int)(10 * -dirTo);
-                    int xdif = this.points[ind].x - b.points[i].x;
-                    int ydif = this.points[ind].y - b.points[i].y;
-                    int mx = (distanceFromClosest) - xdif;
-                    int my = (distanceFromClosest) - ydif;
-                    b.points[i].x = b.points[i].x +  (int)((mx * -dirTo) * 100);
-                    b.points[i].y = b.points[i].y + (int)((my * -dirTo) * 100);
-                }
+                /* while((dis = this.points[ind].GetXY.DistanceTo(b.points[i].GetXY)) < distanceFromClosest)
+                 {
+                     double dirTo = b.points[i].GetXY.DirectionTo(this.points[ind].GetXY);
+                     int move = (int)(10 * -dirTo);
+                     int xdif = this.points[ind].x - b.points[i].x;
+                     int ydif = this.points[ind].y - b.points[i].y;
+                     int mx = (distanceFromClosest) - xdif;
+                     int my = (distanceFromClosest) - ydif;
+                     b.points[i].x = b.points[i].x +  (int)((mx * -dirTo) * 100);
+                     b.points[i].y = b.points[i].y + (int)((my * -dirTo) * 100);
+                 }*/
                 b.points[i].value = ind;
             }
         }

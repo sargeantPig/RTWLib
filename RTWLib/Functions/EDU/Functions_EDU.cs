@@ -49,6 +49,7 @@ namespace RTWLib.Functions.EDU
 				KeyValuePair<EDULineEnums, object> comment;
 				currentLine = line;
 				lineNumber++;
+
 				ParseLine(line, ref counter, lineNumber, out comment);
 				if (counter > -1 && comment.Value != null)
 				{

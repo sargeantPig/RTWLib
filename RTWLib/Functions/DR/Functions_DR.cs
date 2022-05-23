@@ -76,6 +76,20 @@ namespace RTWLib.Functions
 			return null;
 
 		}
+		private string FindRegionByColour(MagickColor colour)
+		{
+			foreach (KeyValuePair<string, Region> kv in regions)
+			{
+				MagickColor mg = MagickColor.FromRgb((byte)kv.Value.rgb[0], (byte)kv.Value.rgb[1], (byte)kv.Value.rgb[2]);
+				if (CompareColour(colour, mg))
+				{
+					return kv.Key;
+				}
+			}
+
+			return null;
+
+		}
 		private void GetCityCoordinates(string filepath)
 		{
 			MagickImage img = new MagickImage(filepath);
@@ -83,47 +97,87 @@ namespace RTWLib.Functions
 			Misc_Data.regionWater = new bool[img.Width, img.Height];
 			Misc_Data.editRegionWater = new bool[img.Width, img.Height];
 
-			var pixels = img.GetPixels();
-
 			MagickColor black = MagickColor.FromRgb(0, 0, 0);
 			MagickColor water = MagickColor.FromRgb(41, 140, 233);
-			img.Rotate(180);
-			for (int x = 0; x < img.Width; x++)
-				for (int y = 0; y < img.Height; y++)
-				{
-					int[] pixelCol = new int[] { pixels[x, y].ToColor().R, pixels[x, y].ToColor().G, pixels[x, y].ToColor().B };
-
-					if (CompareColour(pixelCol, black)) //check for city
+			//img.Flop();
+			using (IPixelCollection<UInt16> pixels = img.GetPixels())
+			{
+				for (int x = 0; x < img.Width; x++)
+					for (int y = 0; y < img.Height; y++)
 					{
-						int tr, tg, tb;
-						tr = pixels[x, y + 1].ToColor().R;
-						tg = pixels[x, y + 1].ToColor().G;
-						tb = pixels[x, y + 1].ToColor().B;
-
-						if (CompareColour(new int[] { tr, tg, tb }, water)) // check for water
+						MagickColor col = (MagickColor)pixels.GetPixel(x, y).ToColor();
+						int[] pixelCol = new int[] { pixels[x, y].ToColor().R, pixels[x, y].ToColor().G, pixels[x, y].ToColor().B };
+						MagickColor pix = new MagickColor();
+						if (CompareColour(col, black))
 						{
-							tr = pixels[x, y - 1].ToColor().R;
-							tg = pixels[x, y - 1].ToColor().G;
-							tb = pixels[x, y - 1].ToColor().B;
+							if (y + 1 < img.Height)
+								pix = (MagickColor)pixels.GetPixel(x, y + 1).ToColor();
+
+
+							if (CompareColour(pix, water))
+							{
+								if (y - 1 > 0)
+									pix = (MagickColor)pixels.GetPixel(x, y - 1).ToColor();
+							}
+
+							if (CompareColour(pix, water))
+							{
+								if (x + 1 < img.Width)
+									pix = (MagickColor)pixels.GetPixel(x + 1, y).ToColor();
+							}
+
+							if (CompareColour(pix, water))
+							{
+								if (x - 1 > 0)
+									pix = (MagickColor)pixels.GetPixel(x - 1, y).ToColor();
+							}
+
+
+							string index = FindRegionByColour(pix);
+
+							if (index != null)
+							{
+								regions[index].x = x;
+								regions[index].y = (img.Height - y) - 1;
+							}
+						}
+					
+					
+						//if (y + 1 < img.Height)
+						//{
+						//if (CompareColour(pixelCol, black)) //check for city
+						//{
+						//int tr, tg, tb;
+						//tr = pixels[x, y + 1].ToColor().R;
+						//tg = pixels[x, y + 1].ToColor().G;
+						//tb = pixels[x, y + 1].ToColor().B;
+
+							//if (CompareColour(new int[] { tr, tg, tb }, water)) // check for water
+							//{
+							//tr = pixels[x, y - 1].ToColor().R;
+							//tg = pixels[x, y - 1].ToColor().G;
+							//tb = pixels[x, y - 1].ToColor().B;
+							//}
+
+							//string index = FindRegionByColour(new int[] { tr, tg, tb });
+							//regions[index].x = x;
+							//regions[index].y = (img.Height - y) - 1;
+							//Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
+
+							//}
+							//}
+
+						else if (CompareColour(pixelCol, water))
+						{
+							Misc_Data.regionWater[x, (img.Height - y) - 1] = true;
 						}
 
-						string index = FindRegionByColour(new int[] { tr, tg, tb });
-						regions[index].x = x;
-						regions[index].y = (img.Height - y) -1;
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
-
+						else
+						{
+							Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
+						}
 					}
-
-					else if (CompareColour(pixelCol, water))
-					{
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = true;
-					}
-
-					else
-					{
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
-					}
-				}
+			}
 		}
 		private bool CompareColour(int[] col1, int[] col2)
 		{
@@ -140,6 +194,16 @@ namespace RTWLib.Functions
 		private bool CompareColour(int[] col1, MagickColor col2)
 		{
 			if (col1[0] == col2.R && col1[1] == col2.G && col1[2] == col2.B)
+			{
+				return true;
+
+
+			}
+			else return false;
+		}
+		private bool CompareColour(MagickColor col1, MagickColor col2)
+		{
+			if (col1 == col2)
 			{
 				return true;
 

@@ -50,7 +50,7 @@ namespace RTWLib.Functions
 				factionMap.Alpha(AlphaOption.Remove);
 				factionMap.AdaptiveResize(mag);
 
-				using (IPixelCollection fmPixels = factionMap.GetPixels())
+				using (IPixelCollection<UInt16> fmPixels = factionMap.GetPixels())
 				{
 					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
 					{
@@ -145,7 +145,7 @@ namespace RTWLib.Functions
 				factionMap.Alpha(AlphaOption.Remove);
 				factionMap.AdaptiveResize(mag);
 
-				using (IPixelCollection fmPixels = factionMap.GetPixels())
+				using (IPixelCollection<UInt16> fmPixels = factionMap.GetPixels())
 				{
 					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
 					{
@@ -229,13 +229,13 @@ namespace RTWLib.Functions
 
 			//colours
 
-			MagickColor fac1 = new MagickColor(Color.Gold); //get the faction colour primary
-			MagickColor facCol2 = new MagickColor(Color.White); // secondary colour
-			MagickColor allied = new MagickColor(Color.Green);
-			MagickColor suspicous = new MagickColor(Color.Blue);
-			MagickColor neutral = new MagickColor(Color.Aqua);
-			MagickColor hostile = new MagickColor(Color.MediumVioletRed);
-			MagickColor war = new MagickColor(Color.DarkRed);
+			MagickColor fac1 = new MagickColor("gold"); //get the faction colour primary
+			MagickColor facCol2 = new MagickColor("white"); // secondary colour
+			MagickColor allied = new MagickColor("green");
+			MagickColor suspicous = new MagickColor("blue");
+			MagickColor neutral = new MagickColor("neutral");
+			MagickColor hostile = new MagickColor("pink");
+			MagickColor war = new MagickColor("red");
 			MagickColor currentColour1 = fac1;
 			MagickColor currentColour2 = facCol2;
 			MagickImage factionMap = new MagickImage(radarMapLocation);
@@ -265,7 +265,7 @@ namespace RTWLib.Functions
 
 
 
-				using (IPixelCollection fmPixels = factionMap.GetPixels())
+				using (IPixelCollection<UInt16> fmPixels = factionMap.GetPixels())
 				{
 					foreach (Settlement s in f.settlements) //loop through settlements to get the regions
 					{
@@ -339,21 +339,21 @@ namespace RTWLib.Functions
 			full_map.Write(@path, MagickFormat.Png);
 			full_map.Dispose();
 		}
-		private int BorderCheck(int x, int y, IPixelCollection pixels, MagickImage regionMap, MagickColor mc)
+		private int BorderCheck(int x, int y, IPixelCollection<UInt16> pixels, MagickImage regionMap, MagickColor mc)
 		{
 			int bcount = 0;
-
+			
 			if (x + 1 < regionMap.Width)
-				if (pixels[x + 1, y].ToColor() == mc)
+				if ((MagickColor)pixels[x + 1, y].ToColor() == mc)
 					bcount++;
 			if (x - 1 > -1)
-				if (pixels[x - 1, y].ToColor() == mc)
+				if ((MagickColor)pixels[x - 1, y].ToColor() == mc)
 					bcount++;
 			if (y + 1 < regionMap.Height)
-				if (pixels[x, y + 1].ToColor() == mc)
+				if ((MagickColor)pixels[x, y + 1].ToColor() == mc)
 					bcount++;
 			if (y - 1 > -1)
-				if (pixels[x, y - 1].ToColor() == mc)
+				if ((MagickColor)pixels[x, y - 1].ToColor() == mc)
 					bcount++;
 
 			return bcount;

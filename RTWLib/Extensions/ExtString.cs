@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RTWLib.Extensions
 {
 	public static class EString
-    {
+	{
 
 		public static readonly string NewLine = "\r\n";
 
@@ -46,7 +46,18 @@ namespace RTWLib.Extensions
 			float output = float.Parse(input, System.Globalization.CultureInfo.InvariantCulture);
 			return output;
 		}
-
+		/// <summary>
+		/// Removes and amount of characters from the start and from the end.
+		/// </summary>
+		/// <param name="fromStart"></param>
+		/// <param name="fromEnd"></param>
+		/// <returns></returns>
+		public static string RemoveEx(this string str, int fromStart, int fromEnd)
+		{
+			string remStrt = str.Remove(0, fromStart);
+			string remEnd = remStrt.Remove(remStrt.Length - fromEnd, fromEnd);
+			return remEnd;
+		}
 		public static string GetPathFrom(this string fullpath, string pathStart, int counterMatchesToIgnore)
 		{
 			string[] split = fullpath.Split('\\');
@@ -172,6 +183,53 @@ namespace RTWLib.Extensions
 
 			}
 		}
+
+		public static string GetQuotedWord(this string word)
+		{
+			string strim = word.Trim('\t');
+			string quoted = string.Empty;
+			int quotes = 0;
+			foreach (char c in word)
+			{
+				if (c == '"')
+				{
+					quotes += 1; ;
+					continue;
+				}
+				if (quotes==1)
+					quoted += c;
+				if (quotes == 2)
+					break;
+			}
+
+			if (quoted == string.Empty)
+				return strim;
+			return quoted;
+
+		}
+
+		/// <summary>
+		/// Get string after chosen deliminator
+		/// </summary>
+		/// <param name="delim"></param>
+		/// <returns></returns>
+		public static string GetSubStr(this string str, char delim)
+		{
+			string quoted = string.Empty;
+			bool open = false;
+			foreach (char c in str)
+			{
+				if (c == delim)
+				{
+					open = true;
+					continue;
+				}
+				if (open)
+					quoted += c;
+			}
+
+			return quoted;
+		} 
 
 		public static string[] SplitFirst(this string str, char tagDelim, char paramDelim)
 		{

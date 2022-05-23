@@ -42,7 +42,7 @@ namespace RTWLib.MapGen
             get {
                 int[,] mask;
 
-                using (IPixelCollection pixels = mapHeights.GetPixels())
+                using (IPixelCollection<UInt16> pixels = mapHeights.GetPixels())
                 {
                     mask = pixels.ToIntArray(mapHeights.Width, mapHeights.Height, true);
                 }

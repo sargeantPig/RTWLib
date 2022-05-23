@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RTWLib.Objects.Descr_strat;
+
 namespace RTWLib.Remaster
 {
     public class RemasterResource : Resource

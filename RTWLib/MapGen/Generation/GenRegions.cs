@@ -20,27 +20,35 @@ namespace RTWLib.MapGen
     {
         public void GenerateRegions(Random rng)
         {
+            Logger.Logger log = new Logger.Logger();
             int lineNumber;
             string currentLine;
 
             Descr_Region dr = new Descr_Region(true, regionsImagePath, descrRegionPath);
             dr.Parse(new string[] { descrRegionPath, regionsImagePath }, out lineNumber, out currentLine);
-            map.mapRegions = new MagickImage(MapColours.mapWaterColours[WaterColours.RegionWater], width / 2, height / 2);
+            map.mapRegions = new MagickImage(MapColours.mapWaterColours[WaterColours.RegionWater], width , height );
             int maxRegions = dr.regions.Count();
-            int[,] regionstga = new int[width/2, height/2];
+            int[,] regionstga = new int[width, height];
             var regList = dr.regions.Values.ToArray();
             int[,] mask;
             LibVoronoi voronoi = new LibVoronoi(rng);
             LibVoronoi regEd = new LibVoronoi(rng);
 
             mask = map.GetHeightMask;
-            voronoi.GeneratePoints(0, width / 2, 0, height / 2, 100, maxRegions,  mask, 2, 1, (x, y) => x >= y, true);
-            regEd.GeneratePoints(0, width / 2, 0 , height / 2, 25, (int)frequency, mask, 2, 1, (x, y) => x >= y);
+            voronoi.GeneratePoints(0, width , 0, height , 100, maxRegions,  mask, 1, 1, (x, y) => x >= y, true);
+
+            if (voronoi.points.Count != maxRegions)
+            {
+                log.PLog("Region limit not reached!");
+                log.DisplayLog();
+            }
+
+            regEd.GeneratePoints(0, width , 0 , height, 25, (int)frequency, mask, 1, 1, (x, y) => x >= y);
             voronoi.LinkVoronoiGrid(regEd, 10);
             UpdateImage(map.mapRegions);
 
             List<int[]> threadBounds = new List<int[]>();
-            float segment = (width/2) / threads;
+            float segment = (width / threads);
 
             for (int i = 0; i < threads; i++)
             {
@@ -48,10 +56,10 @@ namespace RTWLib.MapGen
                 if (index == threads - 1)
                 {
                     int max = (int)((index * segment) + segment);
-                    int rmax = ((width/2) - max) + max;
-                    threadBounds.Add(new int[4] { (int)(index * segment), 0, rmax, height/2 });
+                    int rmax = (width - max) + max;
+                    threadBounds.Add(new int[4] { (int)(index * segment), 0, rmax, height });
                 }
-                else threadBounds.Add(new int[4] { (int)(index * segment), 0, (int)((index * segment) + segment), height/2 });
+                else threadBounds.Add(new int[4] { (int)(index * segment), 0, (int)((index * segment) + segment), height });
                 threadManager.CreateThread(() => DiscernRegions(map.mapRegions, mask, voronoi, regEd, threadBounds[index], regList, index + threadManager.threads.Count, rng));
             }
 
@@ -66,7 +74,7 @@ namespace RTWLib.MapGen
              {
                 for (int y = bounds[1]; y < bounds[3]; y++)
                 {
-                    if (mask[x * 2, y * 2] >= 1)
+                    if (mask[x, y] >= 1)
                     {
                         double detailDis;
                         double normDis; 
@@ -117,7 +125,7 @@ namespace RTWLib.MapGen
         
         protected void PaintPixel(HashSet<VoronoiPoint> pixels, MagickImage map, Region[] regList)
         {
-            using (IPixelCollection pix = map.GetPixels())
+            using (IPixelCollection<UInt16> pix = map.GetPixels())
             {
                 foreach (var pixel in pixels)
                 {

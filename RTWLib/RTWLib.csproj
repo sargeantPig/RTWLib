@@ -107,9 +107,14 @@
     <Reference Include="LibNoise, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\RTWRandomiser\packages\LibNoise.0.2\lib\NET45\LibNoise.dll</HintPath>
     </Reference>
-    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.6.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Magick.NET-Q16-AnyCPU.7.14.5\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=8.4.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\..\RTWRandomiser\packages\Magick.NET-Q16-AnyCPU.8.4.0\lib\net20\Magick.NET-Q16-AnyCPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=8.4.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\..\RTWRandomiser\packages\Magick.NET.Core.8.4.0\lib\net20\Magick.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.SystemDrawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\..\RTWRandomiser\packages\Magick.NET.SystemDrawing.4.0.9\lib\net40\Magick.NET.SystemDrawing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -170,6 +175,7 @@
     <Compile Include="Functions\Functions_SelectMaps.cs" />
     <Compile Include="Functions\GenericFile.cs" />
     <Compile Include="Functions\GenericLineParser.cs" />
+    <Compile Include="Functions\LibRandom.cs" />
     <Compile Include="Functions\SimpleParser.cs" />
     <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
     <Compile Include="Functions\DR\Functions_DR.cs" />
@@ -243,6 +249,12 @@
     <Compile Include="Remaster\RemasterDescrStrat.cs" />
     <Compile Include="Remaster\RemasterResource.cs" />
     <Compile Include="Remaster\RemasterUnit.cs" />
+    <Compile Include="Remaster\SMFactoins\ReFunctions_SMF.cs" />
+    <Compile Include="Remaster\SMFactoins\SMData\ReMapColour.cs" />
+    <Compile Include="Remaster\SMFactoins\SMData\ReSMFArray.cs" />
+    <Compile Include="Remaster\SMFactoins\SMData\ReSMFBase.cs" />
+    <Compile Include="Remaster\SMFactoins\ReSMFaction.cs" />
+    <Compile Include="Remaster\SMFactoins\ReSMFLineParser.cs" />
     <Compile Include="RTWLIB.cs" />
   </ItemGroup>
   <ItemGroup>
