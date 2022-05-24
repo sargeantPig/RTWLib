@@ -25,17 +25,25 @@ namespace RTWLib.Functions.Remaster
                 if ((bool)(object)value == true)
                 {
                     return string.Format("{0}{1}{2},\r\n",
-                        StrFo.tab(tabDepth), FormatTag(tag), true);
+                        StrFo.tab(tabDepth), FormatTag(tag), "true");
                 }
                 else
                 {
                     return string.Format("{0}{1}{2},\r\n",
-                        StrFo.tab(tabDepth), FormatTag(tag), false);
+                        StrFo.tab(tabDepth), FormatTag(tag), "false");
                 }
             }
 
-            int result;
-            if(int.TryParse((string)(object)value,out result))
+            bool result;
+            if(bool.TryParse((string)(object)value, out result))
+            {
+                return string.Format("{0}{1}    {2}\r\n",
+                StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, false));
+            }
+
+
+            int res;
+            if(int.TryParse((string)(object)value,out res))
             {
                 return string.Format("{0}{1}    {2}\r\n",
                 StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, false));
@@ -89,7 +97,6 @@ namespace RTWLib.Functions.Remaster
                     clean[i] = ((string)clean[i]).GetQuotedWord();
                 }
                 this.value = (T)(object)clean;
-
             }
         }
 

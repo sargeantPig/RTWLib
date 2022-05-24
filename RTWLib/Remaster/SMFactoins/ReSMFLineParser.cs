@@ -33,9 +33,11 @@ namespace RTWLib.Functions.Remaster
             else if (firstWord.StartsWith(";") || line == "" || line == "\t")
                 return false;
 
+            bool isArray = false;
             string[] sepData;
             if (data.Contains("["))
             {
+                isArray = true;
                 string attri = data.GetSubStr('[', ']');
                 if (attri.Contains("\""))
                     sepData = attri.GetQuotedWords().ToArray();
@@ -56,7 +58,7 @@ namespace RTWLib.Functions.Remaster
             }
 
             else {
-                if (sepData.Count() == 1)
+                if (sepData.Count() == 1 && !isArray)
                 {
                     var li = GetObjectByDepth(det);
                     li.Add(new ReSMFBase<string>());
