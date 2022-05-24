@@ -6,173 +6,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace RTWLib.Functions.Remaster
 {
     public partial class ReSMFactions
     { 
         int depth = 0;
+        int item = 0;
         string prevLine = string.Empty;
-        protected bool ParseLine(string line, Dictionary<string, ReSMFaction> details)
-        {
-            string[] data = line.GetSubStr(':').Split('\t', ',', ' ').CleanStringArray();
-            //string firstWord = line.GetFirstWord(null, 0, ' ').Trim('/', ' ');
 
+        protected bool Parse(string line, List<ReSMFBase<string>> det)
+        {
+            string data = line.GetSubStr(':');//.Split('\t', ',', ' ').CleanStringArray();
+           
+            //string firstWord = line.GetFirstWord(null, 0, ' ').Trim('/', ' ');
             string firstWord = line.GetQuotedWord();
-            if (firstWord.StartsWith("{"))
-            {
+
+            if (firstWord.StartsWith("{") || line == "[") {
                 depth++;
+                return false;
             }
-            else if (firstWord.StartsWith("}"))
-            {
+            else if (firstWord.StartsWith("}") || firstWord.StartsWith("]")) {
                 depth--;
+                return false;
             }
-            else if (firstWord.StartsWith(";"))
+            else if (firstWord.StartsWith(";") || line == "" || line == "\t")
                 return false;
 
-            string clean = firstWord;
-
-            if (depth == 0 && (prevLine == "[" || prevLine == "}," ))
-            {// new faction
-                details.Add(clean, new ReSMFaction());
-                details.Last().Value.faction = new ReSMFBase<string>();
-                details.Last().Value.faction.ProcessFaction(firstWord);
-            }
-
-            if (depth == 1)
+            string[] sepData;
+            if (data.Contains("["))
             {
-                switch(clean)
+                string attri = data.GetSubStr('[', ']');
+                if (attri.Contains("\""))
+                    sepData = attri.GetQuotedWords().ToArray();
+                else sepData = attri.Split(',').CleanStrings().CleanStringArray();
+            }
+            else sepData = new string[1] { data };
+
+            if (data.Count() == 0) {
+                if (det.Count == 0)
                 {
-                    case "string":
-                        details.Last().Value.name = new ReSMFBase<string>();
-                        details.Last().Value.name.ProcessLine(clean, data);
-                        break;
-                    case "description":
-                        details.Last().Value.descr = new ReSMFBase<string>();
-                        details.Last().Value.descr.ProcessLine(clean, data);
-                        break;
-                    case "culture":
-                        details.Last().Value.culture = new ReSMFBase<string>();
-                        details.Last().Value.culture.ProcessLine(clean, data);
-                        break;
-                    case "ethnicity":
-                        details.Last().Value.ethnicity = new ReSMFBase<string>();
-                        details.Last().Value.ethnicity.ProcessLine(clean, data);
-                        break;
-                    case "tags":
-                        details.Last().Value.tags = new ReSMFBase<object[]>();
-                        details.Last().Value.tags.ProcessLine(clean, data);
-                        break;
-                    case "available in custom battles":
-                        details.Last().Value.custBattleAvailable = new ReSMFBase<bool>();
-                        details.Last().Value.custBattleAvailable.ProcessLine(clean, data);
-                        break;
-                    case "prefer naval invasions":
-                        details.Last().Value.navalInvader = new ReSMFBase<bool>();
-                        details.Last().Value.navalInvader.ProcessLine(clean, data);
-                        break;
-                    case "default battle ai personality":
-                        details.Last().Value.aiPersona = new ReSMFBase<string>();
-                        details.Last().Value.aiPersona.ProcessLine(clean, data);
-                        break;
-                    case "allow reproduction":
-                        details.Last().Value.reproduction = new ReSMFBase<bool>();
-                        details.Last().Value.reproduction.ProcessLine(clean, data);
-                        break;
+                    det.Add(new SMFGroup<string>());
+                    det.Last().ProcessFaction(firstWord, depth);
+                    return true;
                 }
+                var li = GetObjectByDepth(det);
+                li.Add(new SMFGroup<string>());
+                li.Last().ProcessFaction(firstWord, depth);
             }
 
-            if(depth == 2)
-            {
-                switch (clean)
+            else {
+                if (sepData.Count() == 1)
                 {
-                    case "men":
-                        details.Last().Value.men = new ReSMFBase<string>();
-                        details.Last().Value.men.ProcessLine(clean, data);
-                        break;
-                    case "women":
-                        details.Last().Value.women = new ReSMFBase<string>();
-                        details.Last().Value.women.ProcessLine(clean, data);
-                        break;
-                    case "surnames":
-                        details.Last().Value.surnames = new ReSMFBase<string>();
-                        details.Last().Value.surnames.ProcessLine(clean, data);
-                        break;
-                    case "loading screen icon":
-                        details.Last().Value.loadScrIcon = new ReSMFBase<string>();
-                        details.Last().Value.loadScrIcon.ProcessLine(clean, data);
-                        break;
-                    case "standard index":
-                        details.Last().Value.stdIndex = new ReSMFBase<int>();
-                        details.Last().Value.stdIndex.ProcessLine(clean, data);
-                        break;
-                    case "rebel standard index":
-                        details.Last().Value.rebStdInd = new ReSMFBase<int>();
-                        details.Last().Value.rebStdInd.ProcessLine(clean, data);
-                        break;
-                    case "logo index":
-                        details.Last().Value.logoInd = new ReSMFBase<int>();
-                        details.Last().Value.logoInd.ProcessLine(clean, data);
-                        break;
-                    case "rebel logo index":
-                        details.Last().Value.rebLogoInd = new ReSMFBase<int>();
-                        details.Last().Value.rebLogoInd.ProcessLine(clean, data);
-                        break;
-                    case "strat symbol model":
-                        details.Last().Value.stratSymModel = new ReSMFBase<string>();
-                        details.Last().Value.stratSymModel.ProcessLine(clean, data);
-                        break;
-                    case "strat rebel symbol model":
-                        details.Last().Value.sratRebSymModel = new ReSMFBase<string>();
-                        details.Last().Value.sratRebSymModel.ProcessLine(clean, data);
-                        break;
-                    case "primary":
-                        details.Last().Value.factionColour = new MapColour();
-                        details.Last().Value.factionColour.ProcessLine(data, 0);
-                        break;
-                    case "secondary":
-                        details.Last().Value.factionColour.ProcessLine(data, 1);
-                        break;
-                    case "intro":
-                        details.Last().Value.intro = new ReSMFBase<string>();
-                        details.Last().Value.intro.ProcessLine(clean, data);
-                        break;
-                    case "victory":
-                        details.Last().Value.victory = new ReSMFBase<string>();
-                        details.Last().Value.victory.ProcessLine(clean, data);
-                        break;
-                    case "defeat":
-                        details.Last().Value.defeat = new ReSMFBase<string>();
-                        details.Last().Value.defeat.ProcessLine(clean, data);
-                        break;
+                    var li = GetObjectByDepth(det);
+                    li.Add(new ReSMFBase<string>());
+                    li.Last().ProcessLine(firstWord, sepData, depth);
+                }
+                else
+                {
+                    var li = GetObjectByDepth(det);
+                    li.Add(new MapColour<string>());
+                    ((MapColour<string>)li.Last()).ProcessLine(firstWord, sepData, depth);
                 }
             }
-
-            if (depth == 3)
-            { 
-                switch(clean)
-                {
-                    case "background":
-                        details.Last().Value.familyTree = new MapColour(4);
-                        details.Last().Value.familyTree.ProcessLine(data, 0);
-                        break;
-                    case "font":
-                        details.Last().Value.familyTree.ProcessLine(data, 1);
-                        break;
-                    case "selected line":
-                        details.Last().Value.familyTree.ProcessLine(data, 2);
-                        break;
-                    case "unselected line":
-                        details.Last().Value.familyTree.ProcessLine(data, 3);
-                        break;
-
-                }
-
-            }
-
             prevLine = line.Trim('\t');
             return true;
 
         }
 
+        protected List<ReSMFBase<string>> GetObjectByDepth(List<ReSMFBase<string>> det, int curDepth = 0)
+        {
+            if (depth == curDepth)
+                return det;
+
+            for(int i = det.Count-1; i >= 0; i--) {
+                if (typeof(SMFGroup<string>) == det[i].GetType())
+                {
+                    curDepth++;
+                    return GetObjectByDepth(((SMFGroup<string>)det[i]).objects, curDepth);
+                }
+            }
+            return null;
+        }
     }
 }

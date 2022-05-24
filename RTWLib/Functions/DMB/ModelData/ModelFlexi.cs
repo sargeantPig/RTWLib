@@ -42,13 +42,13 @@ namespace RTWLib.Functions.DMB.ModelData
             if(valueStr != null)
                 str = String.Format("{0}{1}{2}, {3}",
                 type.ToString(),
-                StrFormat.GetNewWhiteSpace(type.ToString()),
+                StrFo.GetNewWhiteSpace(type.ToString()),
                 filepath,
                 valueStr); 
             else if(valueInt != int.MaxValue)
                 str = String.Format("{0}{1}{2}, {3}",
                 type.ToString(),
-                StrFormat.GetNewWhiteSpace(type.ToString()),
+                StrFo.GetNewWhiteSpace(type.ToString()),
                 filepath,
                 valueInt.ToString());
 

@@ -231,7 +231,7 @@ namespace RTWLib.Functions
         void UpdateLine(string name, string editstr, string attribute, bool append)
         {
             int lineNumber = attributeLineNumbers[name][attribute];
-            lines[lineNumber] = String.Format(Format, name, StrFormat.GetNewWhiteSpace(name, MaxSizeOfTag), attributes[name][attribute].items.OutputArrayAsLine(", "));
+            lines[lineNumber] = String.Format(Format, name, StrFo.GetNewWhiteSpace(name, MaxSizeOfTag), attributes[name][attribute].items.OutputArrayAsLine(", "));
         }
 
         public void RefreshLines()
@@ -243,7 +243,7 @@ namespace RTWLib.Functions
                     int lineno = param.Value;
                     string p = param.Key;
                     string a = attr.Key;
-                    lines[lineno] = String.Format(Format, p, StrFormat.GetNewWhiteSpace(p, MaxSizeOfTag), attributes[a][p].items.OutputArrayAsLine(", "));
+                    lines[lineno] = String.Format(Format, p, StrFo.GetNewWhiteSpace(p, MaxSizeOfTag), attributes[a][p].items.OutputArrayAsLine(", "));
                 }
             }
         }

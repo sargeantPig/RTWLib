@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RTWLib.Extensions;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RTWLib.Data;
-using RTWLib.Extensions;
 
 namespace RTWLib.Functions.Remaster
 {
@@ -13,9 +9,11 @@ namespace RTWLib.Functions.Remaster
         public string tag { get; set; }
         public T value { get; set; }
 
+        public int tabDepth = 0;
+
         public ReSMFBase()
-        { 
-            
+        {
+
         }
 
         public string Output()
@@ -26,23 +24,44 @@ namespace RTWLib.Functions.Remaster
 
                 if ((bool)(object)value == true)
                 {
-                    return string.Format("{0}{1}{2}\r\n",
-                        tag, StrFormat.GetTabSpacing(tag, 7), "yes");
+                    return string.Format("{0}{1}{2},\r\n",
+                        StrFo.tab(tabDepth), FormatTag(tag), true);
                 }
                 else
                 {
-                    return string.Format("{0}{1}{2}\r\n",
-                        tag, StrFormat.GetTabSpacing(tag, 7), "no");
-                }     
+                    return string.Format("{0}{1}{2},\r\n",
+                        StrFo.tab(tabDepth), FormatTag(tag), false);
+                }
             }
-            return string.Format("{0}{1}{2}\r\n",
-                tag, StrFormat.GetTabSpacing(tag, 7), value);
+
+            int result;
+            if(int.TryParse((string)(object)value,out result))
+            {
+                return string.Format("{0}{1}    {2}\r\n",
+                StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, false));
+            }
+
+            else return string.Format("{0}{1}    {2}\r\n",
+                StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, true));
+
         }
 
-        public void ProcessLine(string tag, string[] data)
+        public string FormatTag(string toForm)
+        {
+            return string.Format("\"{0}\":", toForm);
+        }
+
+        public string FormatValue(string toForm, bool quote = true)
+        {
+            if(quote)
+                return string.Format("\"{0}\",", toForm);
+            else return string.Format("{0},", toForm);
+        }
+
+        public void ProcessLine(string tag, string[] data, int depth)
         {
             this.tag = tag;
-
+            this.tabDepth = depth;
             if (typeof(T) == typeof(int))
             {
                 int val = Convert.ToInt32(data[0]);
@@ -51,6 +70,8 @@ namespace RTWLib.Functions.Remaster
             else if (typeof(T) == typeof(string))
             {
                 string clean = data[0].GetQuotedWord();
+
+                clean = clean.Trim(',', ' ');
                 this.value = (T)(object)clean;
             }
             else if (typeof(T) == typeof(bool))
@@ -63,7 +84,7 @@ namespace RTWLib.Functions.Remaster
             else if (typeof(T) == typeof(object[]))
             {
                 object[] clean = data.RemoveElementsAt(data.Count() - 1).RemoveElementsAt(0);
-                for(int i =0; i < clean.Count(); i++)
+                for (int i = 0; i < clean.Count(); i++)
                 {
                     clean[i] = ((string)clean[i]).GetQuotedWord();
                 }
@@ -72,9 +93,10 @@ namespace RTWLib.Functions.Remaster
             }
         }
 
-        public void ProcessFaction(string tag)
+        public void ProcessFaction(string tag, int depth)
         {
             this.tag = tag;
+            this.tabDepth = depth;
         }
     }
 }

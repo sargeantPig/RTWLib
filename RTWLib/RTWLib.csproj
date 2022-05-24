@@ -255,6 +255,7 @@
     <Compile Include="Remaster\SMFactoins\SMData\ReSMFBase.cs" />
     <Compile Include="Remaster\SMFactoins\ReSMFaction.cs" />
     <Compile Include="Remaster\SMFactoins\ReSMFLineParser.cs" />
+    <Compile Include="Remaster\SMFactoins\SMData\SMFGroup.cs" />
     <Compile Include="RTWLIB.cs" />
   </ItemGroup>
   <ItemGroup>

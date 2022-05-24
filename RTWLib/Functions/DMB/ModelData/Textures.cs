@@ -49,14 +49,14 @@ namespace RTWLib.Functions.DMB.ModelData
             if (factions != null)
                 str = String.Format("{0}{1}{2}{3}", 
                     tag,
-                    StrFormat.GetNewWhiteSpace(tag),
+                    StrFo.GetNewWhiteSpace(tag),
                    factions.ToArray().ArrayToString( false, false, false, 0),
                     filepath);
             else
             {
                 str = String.Format("{0}{1}{2}", 
                     tag,
-                    StrFormat.GetNewWhiteSpace(tag),
+                    StrFo.GetNewWhiteSpace(tag),
                     filepath);
             }
 

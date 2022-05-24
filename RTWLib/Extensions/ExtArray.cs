@@ -266,7 +266,7 @@ namespace RTWLib.Extensions
 
 			return value;
 		}
-		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, bool insertSeperator = true)
+		public static string ArrayToString(this string[] array, bool idx = false, bool insertNewlines = false, bool removeTrailingComma = false, int newLineCount = 1, bool insertSeperator = true, bool quote = false)
 		{
 			string value = "";
 			int i = 0;
@@ -274,8 +274,10 @@ namespace RTWLib.Extensions
 			{
 				if (idx)
 					value += i.ToString() + ": ";
-				value += str;
 
+				if (quote)
+					value += string.Format("\"{0}\"", str);
+				else value += str;
 				if (insertNewlines)
 					for (int nl = 0; nl < newLineCount; nl++)
 						value += "\r\n";

@@ -94,10 +94,11 @@ namespace RTWLib.Extensions
 
 		}
 
-		public static void CleanStrings(this string[] a)
+		public static string[] CleanStrings(this string[] a)
 		{
 			for (int i = 0; i < a.Count(); i++)
 				a[i] = a[i].Trim();
+			return a;
 		}
 
 		public static string ReplaceSpaces(this string a, string replacer)
@@ -208,12 +209,34 @@ namespace RTWLib.Extensions
 
 		}
 
+		public static List<string> GetQuotedWords(this string word)
+        {
+			List<string> words = new List<string>();
+			bool quotes = false;
+			foreach (char c in word)
+			{
+				if (c == '"')
+				{
+					quotes = !quotes;
+					if(quotes)
+						words.Add(string.Empty);
+					continue;
+				}
+				if (quotes == true)
+                    words[words.Count-1] += c;
+			}
+
+			return words;
+		}
+
+
+
 		/// <summary>
 		/// Get string after chosen deliminator
 		/// </summary>
 		/// <param name="delim"></param>
 		/// <returns></returns>
-		public static string GetSubStr(this string str, char delim)
+		public static string GetSubStr(this string str, char delim, char stopAt = '#')
 		{
 			string quoted = string.Empty;
 			bool open = false;
@@ -224,6 +247,12 @@ namespace RTWLib.Extensions
 					open = true;
 					continue;
 				}
+
+				if(c == stopAt)
+                {
+					break;
+                }
+
 				if (open)
 					quoted += c;
 			}

@@ -12,6 +12,8 @@ namespace RTWLib.Functions.Remaster
 	public partial class ReSMFactions : FileBase, IFile
 	{
 		public Dictionary<string, ReSMFaction> facDetails = new Dictionary<string, ReSMFaction>();
+		public List<ReSMFBase<string>> data = new List<ReSMFBase<string>>();
+
 
 		public ReSMFactions() 
 			: base(FileNames.descr_sm_faction, @"data\descr_sm_factions.txt", "Describes the faction colours")
@@ -31,7 +33,7 @@ namespace RTWLib.Functions.Remaster
 
 			while ((currentLine = dmb.ReadLine()) != null)
 			{
-				bool success = ParseLine(currentLine, facDetails);
+				bool success = Parse(currentLine, data);
 				lineNumber++;
 			}
 
@@ -48,9 +50,13 @@ namespace RTWLib.Functions.Remaster
 		public override string Output()
 		{
 			string str = "";
-			foreach (var faction in facDetails)
-				str += faction.Value.Output();
+			foreach (var d in data) {
+				if(typeof(SMFGroup<string>) == d.GetType())
+                {
+					str += ((SMFGroup<string>)d).Output();
 
+                }
+            }
 			return str;
 		}
 

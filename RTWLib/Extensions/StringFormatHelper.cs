@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Extensions
 {
-    public static class StrFormat
-    {
+	public static class StrFo
+	{
 		public static string GetTabSpacing(string ident, int maxtabs, int lettersPerTab = 4)
 		{
 			int tabs = maxtabs - (ident.Length / lettersPerTab);
@@ -17,6 +17,10 @@ namespace RTWLib.Extensions
 		{
 			int il = identifierLength(ident, def);
 			return identSpacing(il);
+		}
+		public static string tab(int depth)
+		{
+			return identSpacing(depth, '\t');
 		}
 		public static int identifierLength(string ident, int def = 20)
 		{

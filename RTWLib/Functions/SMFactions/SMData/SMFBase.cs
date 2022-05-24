@@ -27,16 +27,16 @@ namespace RTWLib.Functions
                 if ((bool)(object)value == true)
                 {
                     return string.Format("{0}{1}{2}\r\n",
-                        tag, StrFormat.GetTabSpacing(tag, 7), "yes");
+                        tag, StrFo.GetTabSpacing(tag, 7), "yes");
                 }
                 else
                 {
                     return string.Format("{0}{1}{2}\r\n",
-                        tag, StrFormat.GetTabSpacing(tag, 7), "no");
+                        tag, StrFo.GetTabSpacing(tag, 7), "no");
                 }     
             }
             return string.Format("{0}{1}{2}\r\n",
-                tag, StrFormat.GetTabSpacing(tag, 7), value);
+                tag, StrFo.GetTabSpacing(tag, 7), value);
         }
 
         public void ProcessLine(string tag, string[] data)

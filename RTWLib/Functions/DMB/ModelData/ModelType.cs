@@ -25,7 +25,7 @@ namespace RTWLib.Functions.DMB.ModelData
             string str = "";
             str = String.Format("{0}{1}{2}", 
                 tag,
-                StrFormat.GetNewWhiteSpace(tag),
+                StrFo.GetNewWhiteSpace(tag),
                 type);
 
             return str.CRL();

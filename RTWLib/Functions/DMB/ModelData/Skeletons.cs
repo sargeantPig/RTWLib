@@ -107,19 +107,19 @@ namespace RTWLib.Functions.DMB
             string str = ""; 
 
             if (skeleton != null)
-                str += string.Format("{0}{1}{2}", tag, StrFormat.GetNewWhiteSpace(tag),
+                str += string.Format("{0}{1}{2}", tag, StrFo.GetNewWhiteSpace(tag),
                     skeleton.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if(skeleHorse != null)
-                str += string.Format("{0}{1}{2}{3}", tag, horse, StrFormat.GetNewWhiteSpace(tag + horse),
+                str += string.Format("{0}{1}{2}{3}", tag, horse, StrFo.GetNewWhiteSpace(tag + horse),
                     skeleHorse.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if (skeleElephant != null)
-                str += string.Format("{0}{1}{2}{3}", tag, elephant, StrFormat.GetNewWhiteSpace(tag + elephant),
+                str += string.Format("{0}{1}{2}{3}", tag, elephant, StrFo.GetNewWhiteSpace(tag + elephant),
                    skeleElephant.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if(skeleChariot != null)
-                str += string.Format("{0}{1}{2}{3}", tag, chariot, StrFormat.GetNewWhiteSpace(tag + chariot),
+                str += string.Format("{0}{1}{2}{3}", tag, chariot, StrFo.GetNewWhiteSpace(tag + chariot),
                     skeleChariot.ToArray().ArrayToString(false, false, true, 0)).CRL();
             if (skeleCamel != null)
-                str += string.Format("{0}{1}{2}{3}", tag, camel, StrFormat.GetNewWhiteSpace(tag + camel),
+                str += string.Format("{0}{1}{2}{3}", tag, camel, StrFo.GetNewWhiteSpace(tag + camel),
                     skeleCamel.ToArray().ArrayToString(false, false, true, 0)).CRL();
 
             return str;

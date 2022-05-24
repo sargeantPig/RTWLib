@@ -64,12 +64,12 @@ namespace RTWLib.Functions.DMB.ModelData
          
             if(factions == null)
                 str = String.Format("{0}{1}{2}, {3}", tag,
-                    StrFormat.GetNewWhiteSpace(tag), 
+                    StrFo.GetNewWhiteSpace(tag), 
                     value, 
                     filepath );
             else if(factions.Count > 0)
                 str = String.Format("{0}{1}{2}{3}, {4}", tag,
-                   StrFormat.GetNewWhiteSpace(tag),
+                   StrFo.GetNewWhiteSpace(tag),
                    factions.ToArray().ArrayToString(false, false, true, 1),
                    value,
                    filepath );

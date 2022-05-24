@@ -9,33 +9,38 @@ using RTWLib.Extensions;
 
 namespace RTWLib.Functions.Remaster
 {
-    public class MapColour
+    public class MapColour<T> : ReSMFBase<T>
     {
-        string priTag = "primary_colour";
-        string secTag = "secondary_colour";
-
-        public Color[] colours { get; set; }
+        public string[] colour { get; set; }
 
         public MapColour()
         {
-            colours = new Color[2];
         }
         public MapColour(int number)
         {
-            colours = new Color[number];
-        }
-        public void ProcessLine(string[] data, int colIndex)
-        {
-            object[] clean = data.RemoveElementsAt(data.Count() - 1).RemoveElementsAt(0);
-            colours[colIndex] = GetColour(clean);
         }
 
-        public string Output()
+        new public void ProcessLine(string tag, string[] data, int depth)
         {
-            return string.Format("primary_colour{0}red {1}, green {2}, blue {3}\r\n" +
-                "secondary_colour{4}red {5}, green {6}, blue {7}\r\n",
-                StrFormat.GetTabSpacing(priTag, 7), colours[0].R, colours[0].G, colours[0].B,
-                StrFormat.GetTabSpacing(secTag, 7), colours[1].R, colours[1].G, colours[1].B);  
+            this.tag = tag;
+            this.tabDepth = depth;
+            colour = data;
+        }
+
+        new public string Output()
+        {
+            int res;
+            string str = string.Empty;
+            if (colour.Count() != 0)
+            {
+                if (int.TryParse(colour[0], out res))
+                    str = colour.ArrayToString(false, false, false, 1, true, false);
+                else str = colour.ArrayToString(false, false, false, 1, true, true);
+            }
+            return string.Format(
+                "{0}{1}   [{2}],\r\n",
+                StrFo.tab(tabDepth), FormatTag(tag), str);
+               
          }
 
         private Color GetColour(object[] data)

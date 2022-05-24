@@ -36,7 +36,7 @@ namespace RTWLib.Functions.DMB.ModelData
             {
                 str = String.Format("{0}{1}{2}{3}",
                     tag,
-                    StrFormat.GetNewWhiteSpace(tag),
+                    StrFo.GetNewWhiteSpace(tag),
                     val.ToString() + ", ",
                     modelTri.ArrayToString(false, false, true, 0, "f"));
             }
