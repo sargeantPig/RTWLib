@@ -18,7 +18,8 @@ namespace RTWLib.Functions.Remaster
         protected bool Parse(string line, List<ReSMFBase<string>> det)
         {
             string data = line.GetSubStr(':');//.Split('\t', ',', ' ').CleanStringArray();
-           
+            if (data.Contains(";"))
+                data = data.Split(';')[0];
             //string firstWord = line.GetFirstWord(null, 0, ' ').Trim('/', ' ');
             string firstWord = line.GetQuotedWord();
 
