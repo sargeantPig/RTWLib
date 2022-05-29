@@ -99,7 +99,7 @@ namespace RTWLib.Functions
 
 			MagickColor black = MagickColor.FromRgb(0, 0, 0);
 			MagickColor water = MagickColor.FromRgb(41, 140, 233);
-			//img.Flop();
+		   //img.Flop();
 			using (IPixelCollection<UInt16> pixels = img.GetPixels())
 			{
 				for (int x = 0; x < img.Width; x++)
@@ -138,7 +138,7 @@ namespace RTWLib.Functions
 							if (index != null)
 							{
 								regions[index].x = x;
-								regions[index].y = (img.Height - y) - 1;
+								regions[index].y = y; //(img.Height - y) - 1;
 							}
 						}
 					
@@ -167,14 +167,14 @@ namespace RTWLib.Functions
 							//}
 							//}
 
-						else if (CompareColour(pixelCol, water))
+						if (CompareColour(pixelCol, water))
 						{
-							Misc_Data.regionWater[x, (img.Height - y) - 1] = true;
+							Misc_Data.regionWater[x, y] = true;//(img.Height - y) - 1] = true;
 						}
 
 						else
 						{
-							Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
+							Misc_Data.regionWater[x, y] = false;  //(img.Height - y) - 1] = false;
 						}
 					}
 			}

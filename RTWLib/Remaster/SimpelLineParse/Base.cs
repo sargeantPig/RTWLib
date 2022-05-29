@@ -1,20 +1,20 @@
 ﻿using RTWLib.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RTWLib.Functions.Remaster
 {
-    public class ReSMFBase<T>
+    public class Base<T>
     {
         public string tag { get; set; }
         public T value { get; set; }
 
         public int tabDepth = 0;
 
-        public ReSMFBase()
-        {
-
-        }
+        public Base() { }
 
         public string Output()
         {
@@ -35,15 +35,14 @@ namespace RTWLib.Functions.Remaster
             }
 
             bool result;
-            if(bool.TryParse((string)(object)value, out result))
+            if (bool.TryParse((string)(object)value, out result))
             {
                 return string.Format("{0}{1}    {2}\r\n",
                 StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, false));
             }
 
-
             int res;
-            if(int.TryParse((string)(object)value,out res))
+            if (int.TryParse((string)(object)value, out res))
             {
                 return string.Format("{0}{1}    {2}\r\n",
                 StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, false));
@@ -53,7 +52,10 @@ namespace RTWLib.Functions.Remaster
                 StrFo.tab(tabDepth), FormatTag(tag), FormatValue((string)(object)value, true));
 
         }
-
+        public string SimpleOutput()
+        {
+            return string.Format("{0}{1}{2}\r\n", tag, StrFo.GetNewWhiteSpace(tag), value);
+        }
         public string FormatTag(string toForm)
         {
             return string.Format("\"{0}\":", toForm);
@@ -61,7 +63,7 @@ namespace RTWLib.Functions.Remaster
 
         public string FormatValue(string toForm, bool quote = true)
         {
-            if(quote)
+            if (quote)
                 return string.Format("\"{0}\",", toForm);
             else return string.Format("{0},", toForm);
         }
@@ -100,10 +102,12 @@ namespace RTWLib.Functions.Remaster
             }
         }
 
-        public void ProcessFaction(string tag, int depth)
+        public void ProcessFaction(string tag, int depth, string[] data = null)
         {
-            this.tag = tag;
-            this.tabDepth = depth;
+           this.tabDepth = depth;
+           this.tag = tag;
+           value = (T)(object)data[0]; 
         }
     }
+
 }

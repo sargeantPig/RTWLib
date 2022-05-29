@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,10 +9,16 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Extensions
 {
-	public static class EString
+	public static class EStr
 	{
 
 		public static readonly string NewLine = "\r\n";
+
+
+		public static int ToInt(this string s)
+        {
+			return Convert.ToInt32(s);
+        }
 
 		public static string[] Array(params string[] strings)
 		{
@@ -236,7 +243,7 @@ namespace RTWLib.Extensions
 		/// </summary>
 		/// <param name="delim"></param>
 		/// <returns></returns>
-		public static string GetSubStr(this string str, char delim, char stopAt = '#')
+		public static string GetSubStr(this string str, char delim, bool ignoreFutureDelim = true, char stopAt = '#')
 		{
 			string quoted = string.Empty;
 			bool open = false;
@@ -245,7 +252,8 @@ namespace RTWLib.Extensions
 				if (c == delim)
 				{
 					open = true;
-					continue;
+					if(ignoreFutureDelim)
+						continue;
 				}
 
 				if(c == stopAt)

@@ -1,6 +1,7 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -10,9 +11,13 @@ using System.Threading.Tasks;
 
 namespace RTWLib.Extensions
 {
-	public static class ExtArray
+	public static class ExtArr
 	{
-
+		public static Color ColStr(this string[] a)
+		{
+			a.CleanStringArray();
+			return Color.FromArgb(a[0].ToInt(), a[1].ToInt(), a[2].ToInt());
+		}
 		public static int[,] InitiliseWithValue(this int[,] a, int value)
 		{
 			for (int x = 0; x < a.GetLength(0); x++)

@@ -88,7 +88,7 @@ namespace RTWLib.Functions
 
 			MagickColor black = MagickColor.FromRgb(0, 0, 0);
 			MagickColor water = MagickColor.FromRgb(41, 140, 233);
-			img.Rotate(180);
+			//img.Rotate(180);
 			for (int x = 0; x < img.Width; x++)
 				for (int y = 0; y < img.Height; y++)
 				{
@@ -110,19 +110,19 @@ namespace RTWLib.Functions
 
 						string index = FindRegionByColour(new int[] { tr, tg, tb });
 						regions[index].x = x;
-						regions[index].y = (img.Height - y) -1;
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
+						regions[index].y = y;  //(img.Height - y) -1;
+						Misc_Data.regionWater[x, y] = false;
 
 					}
 
 					else if (CompareColour(pixelCol, water))
 					{
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = true;
+						Misc_Data.regionWater[x, y] = true; //(img.Height - y) - 1] = true;
 					}
 
 					else
 					{
-						Misc_Data.regionWater[x, (img.Height - y) - 1] = false;
+						Misc_Data.regionWater[x, y] = false; //(img.Height - y) - 1] = false;
 					}
 				}
 		}

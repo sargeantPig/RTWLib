@@ -176,7 +176,13 @@
     <Compile Include="Functions\GenericFile.cs" />
     <Compile Include="Functions\GenericLineParser.cs" />
     <Compile Include="Functions\LibRandom.cs" />
-    <Compile Include="Functions\SimpleParser.cs" />
+    <Compile Include="Remaster\RemasterEDB.cs" />
+    <Compile Include="Remaster\SimpelLineParse\Array.cs" />
+    <Compile Include="Remaster\SimpelLineParse\Base.cs" />
+    <Compile Include="Remaster\SimpelLineParse\FileWrapper.cs" />
+    <Compile Include="Remaster\SimpelLineParse\Group.cs" />
+    <Compile Include="Remaster\SimpelLineParse\RawData.cs" />
+    <Compile Include="Remaster\SimpelLineParse\SimpleParser.cs" />
     <Compile Include="Functions\SMFactions\Functions_SMF.cs" />
     <Compile Include="Functions\DR\Functions_DR.cs" />
     <Compile Include="Functions\SMFactions\SMData\MapColour.cs" />
@@ -251,7 +257,6 @@
     <Compile Include="Remaster\RemasterUnit.cs" />
     <Compile Include="Remaster\SMFactoins\ReFunctions_SMF.cs" />
     <Compile Include="Remaster\SMFactoins\SMData\ReMapColour.cs" />
-    <Compile Include="Remaster\SMFactoins\SMData\ReSMFArray.cs" />
     <Compile Include="Remaster\SMFactoins\SMData\ReSMFBase.cs" />
     <Compile Include="Remaster\SMFactoins\ReSMFaction.cs" />
     <Compile Include="Remaster\SMFactoins\ReSMFLineParser.cs" />

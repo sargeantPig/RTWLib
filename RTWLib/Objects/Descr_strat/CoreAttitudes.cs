@@ -102,21 +102,24 @@ namespace RTWLib.Objects.Descr_strat
                             output +=
                             text + "\t"
                             + faction.Key + ",\t"
-                            + "at_war_with" + "\t";
+                            + "at_war_with" + "\t"
+                            + rel + "\r\n";
                         }
                         else if (is_bi && (int)relation.Key == 0)
                         {
                             output +=
                             text + "\t"
                             + faction.Key + ",\t"
-                            + "allied_to" + "\t";
+                            + "allied_to" + "\t" 
+                            + rel + "\r\n";
                         }
                         else
                         {
                             output +=
                                 text + "\t"
                                 + faction.Key + ",\t"
-                                + relation.Key.ToString() + "\t";
+                                + relation.Key.ToString() + "\t"
+                                + rel + "\r\n";
                         }
                     }
                 }

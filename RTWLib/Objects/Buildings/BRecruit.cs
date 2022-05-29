@@ -30,8 +30,11 @@ namespace RTWLib.Objects.Buildings
         {
             string a = "";
 
-            a += Functions.Helpers_EDB.EDBTabSpacers[3] + "recruit " + "\"" + name + "\"" + "  " + experience.ToString() + "  " + "requires factions " + "{ ";
+            a += Functions.Helpers_EDB.EDBTabSpacers[3] + "recruit " + "\"" + name + "\"" + "  " + experience.ToString(); // + "  " + "requires factions " + "{ ";
 
+            if (requiresFactions.Count == 0)
+                return a;
+            else a += "  " + "requires factions " + "{ ";
             foreach (string faction in requiresFactions)
             {
                 a += faction + ", ";

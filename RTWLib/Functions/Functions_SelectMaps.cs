@@ -12,6 +12,7 @@ using RTWLib.Logger;
 using System.Windows.Forms;
 using RTWLib.Extensions;
 using System.IO;
+using RTWLib.Functions.Remaster;
 
 namespace RTWLib.Functions
 {
@@ -123,7 +124,7 @@ namespace RTWLib.Functions
 			return fullFactionMap.ToBitmap();
 		}
 
-		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, FileBase smf)
+		public Image CreateCompleteMap(Descr_Strat ds, Descr_Region dr, FileWrapper smf)
 		{
 			MagickImage regionMap = new MagickImage(dr.FilePathRegions); //use region map to map out regions
 			MagickImage fullFactionMap = new MagickImage(radarMapLocation); // use radar map as a base
@@ -152,12 +153,12 @@ namespace RTWLib.Functions
 						int[] regColour = dr.GetRGBValue(s.region); //get the colour of a region
 						MagickColor regCol = MagickColor.FromRgb((byte)regColour[0], (byte)regColour[1], (byte)regColour[2]);
 
-						var colourParamPri = smf.data[f.name]["primary_colour"];
-						var colourParamSec = smf.data[f.name]["secondary_colour"];
+						var colourParamPri = smf.GetValues(smf.objects, "factions", f.name, "colours", "primary").ColStr();
+						var colourParamSec = smf.GetValues(smf.objects, "factions", f.name, "colours", "secondary").ColStr();
 
 
-						Color facCol1 = Color.FromArgb((int)colourParamPri.GetValue(0, true), (int)colourParamPri.GetValue(1, true), (int)colourParamPri.GetValue(2, true)); //get the faction colour primary
-						Color facCol2 = Color.FromArgb((int)colourParamSec.GetValue(0, true), (int)colourParamSec.GetValue(1, true), (int)colourParamSec.GetValue(2, true));   // secondary colour
+						Color facCol1 = colourParamPri; //get the faction colour primary
+						Color facCol2 = colourParamSec;   // secondary colour
 
 						MagickColor priCol = MagickColor.FromRgb(facCol1.R, facCol1.G, facCol1.B); //convert the colours to magickcolour
 						MagickColor secCol = MagickColor.FromRgb(facCol2.R, facCol2.G, facCol2.B);
@@ -219,6 +220,7 @@ namespace RTWLib.Functions
 			}
 
 			full_map = fullFactionMap;
+			fullFactionMap.Flip();
 			return fullFactionMap.ToBitmap();
 		}
 		public MagickImage CreateDiplomacyMap(Descr_Strat ds, Descr_Region dr, SMFactions smf, string factionName, string savepath)
