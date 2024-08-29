@@ -1,3 +1,5 @@
+This version is no longer supported see here for the current repository: [RTWLibTools](https://github.com/sargeantPig/RTWLibTools)
+
 # RTWLib
 
 This library contains features to parse/output RTW files.
